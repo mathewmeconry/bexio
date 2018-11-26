@@ -1,4 +1,3 @@
-import { BaseOptions } from "./index";
 import { Contact } from "./interfaces/Contact";
 import Scopes from './constants/Scopes'
 import OAuth2, { AuthorizationResponse } from './libs/OAuth2'
@@ -10,6 +9,8 @@ export interface BaseOptions {
     order_by?: string,
     [index: string]: any
 }
+
+export { Contact, Scopes }
 
 export default class Bexio {
     private clientId: string
@@ -222,6 +223,7 @@ export default class Bexio {
      */
     private optionsToQuery(options: BaseOptions): string {
         let str = []
+
         for (let i in options) {
             if (options.hasOwnProperty(i)) {
                 str.push(encodeURIComponent(i) + '=' + encodeURIComponent(options[i]))
@@ -243,4 +245,4 @@ export default class Bexio {
             throw new Error(neededScope + ' not in available scopes')
         }
     }
-}.
+}
