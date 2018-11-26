@@ -1,0 +1,29 @@
+{
+  "name": "bexio",
+  "version": "0.0.1",
+  "description": "NPM Package for bexio.com",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathewmeconry/bexio.git"
+  },
+  "author": "Mathias Scherer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mathewmeconry/bexio/issues"
+  },
+  "homepage": "https://github.com/mathewmeconry/bexio#readme",
+  "dependencies": {
+    "@types/node": "^10.12.10",
+    "@types/request": "^2.48.1",
+    "@types/request-promise-native": "^1.0.15",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "express": "^4.16.4"
+  }
+}
