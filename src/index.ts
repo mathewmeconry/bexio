@@ -1,9 +1,11 @@
-import { Contact } from "./interfaces/Contact";
 import Scopes from './constants/Scopes'
 import OAuth2, { AuthorizationResponse } from './libs/OAuth2'
 import Contacts from "./ressources/Contacts";
+import Notes from "./ressources/Notes";
+import { ContactsStatic } from './interfaces/ContactsStatic';
+import { NotesStatic } from './interfaces/NotesStatic';
 
-export { Contact, Scopes }
+export { ContactsStatic, NotesStatic, Scopes }
 
 export default class Bexio {
     private clientId: string
@@ -15,6 +17,7 @@ export default class Bexio {
 
     // Ressources
     public contacts: Contacts
+    public notes: Notes
 
     constructor(clientId: string, clientSecret: string, redirectUri: string, scopes: Array<Scopes>) {
         this.clientId = clientId
@@ -22,10 +25,14 @@ export default class Bexio {
         this.redirectUri = redirectUri
         this.scopes = scopes
 
+        // add general scope to the request list
+        this.scopes.push(Scopes.GENERAL)
+
         this.bexioAuth = new OAuth2(this.clientId, this.clientSecret, this.redirectUri, this.scopes)
 
         // Init ressources
         this.contacts = new Contacts(this.bexioAuth, this.scopes)
+        this.notes = new Notes(this.bexioAuth, this.scopes)
     }
 
     /**
