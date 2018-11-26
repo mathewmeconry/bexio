@@ -1,16 +1,27 @@
 {
   "name": "bexio",
   "version": "0.0.1",
-  "description": "NPM Package for bexio.com",
-  "main": "dist/index.js",
+  "description": "NPM Package for the api of bexio.com",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "bexio",
+    "bexioAPI",
+    "bexio.com",
+    "office.bexio.com"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepare" : "npm run build",
+    "version" : "git add -A src",
+    "postversion" : "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mathewmeconry/bexio.git"
   },
-  "author": "Mathias Scherer",
+  "author": "Mathias Scherer <scherer.mat@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mathewmeconry/bexio/issues"

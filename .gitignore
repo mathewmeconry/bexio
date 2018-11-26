@@ -61,7 +61,7 @@ typings/
 .next
 
 # typescript target directory
-dist/
+lib/
 
 # custom exlusion
 src/test.ts
