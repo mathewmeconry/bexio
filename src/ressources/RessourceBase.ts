@@ -80,4 +80,17 @@ export default abstract class RessourceBase {
             throw new Error(neededScope + ' not in available scopes')
         }
     }
+
+    /**
+     * validate multiple scopes
+     *
+     * @protected
+     * @param {Array<Scopes>} neededScopes
+     * @memberof RessourceBase
+     */
+    protected validateScopes(neededScopes: Array<Scopes>): void {
+        for (let scope of neededScopes) {
+            this.validateScope(scope)
+        }
+    }
 }

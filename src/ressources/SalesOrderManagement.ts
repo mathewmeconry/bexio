@@ -1,4 +1,3 @@
-import { Invoice } from "./../interfaces/SalesOrderManagementStatic";
 import RessourceBase, { BaseOptions } from "./RessourceBase";
 import Scopes from "../constants/Scopes";
 import { SalesOrderManagementStatic } from "../interfaces/SalesOrderManagementStatic";
@@ -322,7 +321,7 @@ export default class SalesOrderManagement extends RessourceBase {
      *
      * @param {number} estimateId
      * @param {SalesOrderManagementStatic.Comment} estimate
-     * @returns {Promise<SalesOrderManagementStatic.Estimate>}
+     * @returns {Promise<SalesOrderManagementStatic.Comment>}
      * @memberof SalesOrderManagement
      */
     public async createEstimateComment(estimateId: number, comment: SalesOrderManagementStatic.Comment): Promise<SalesOrderManagementStatic.Comment> {
@@ -337,7 +336,7 @@ export default class SalesOrderManagement extends RessourceBase {
      * =====================================================
      */
 
-         /**
+    /**
      * list all orders
      *
      * @param {BaseOptions} options
@@ -483,7 +482,7 @@ export default class SalesOrderManagement extends RessourceBase {
         return this.request<BaseStatic.PdfResponse>('GET', '/kb_order/' + orderId.toString() + '/pdf', {})
     }
 
-        /**
+    /**
      * list all comments of an estimate
      *
      * @param {number} orderId
@@ -541,7 +540,7 @@ export default class SalesOrderManagement extends RessourceBase {
      *
      * @param {number} orderId
      * @param {SalesOrderManagementStatic.Comment} estimate
-     * @returns {Promise<SalesOrderManagementStatic.Estimate>}
+     * @returns {Promise<SalesOrderManagementStatic.Comment>}
      * @memberof SalesOrderManagement
      */
     public async createOrderComment(orderId: number, comment: SalesOrderManagementStatic.Comment): Promise<SalesOrderManagementStatic.Comment> {
@@ -590,5 +589,347 @@ export default class SalesOrderManagement extends RessourceBase {
         this.validateScope(Scopes.KB_ORDER_SHOW)
 
         return (await this.request<{ success: boolean }>('DELETE', '/kb_order/' + orderId.toString() + '/repetition/' + repetitionId.toString(), {})).success
+    }
+
+    /** 
+     * =====================================================
+     *                DELIVERY SECTION
+     * =====================================================
+     */
+
+    /**
+    * list all deliveries
+    *
+    * @param {BaseOptions} options
+    * @returns {Promise<Array<SalesOrderManagementStatic.Delivery>>}
+    * @memberof SalesOrderManagement
+    */
+    public async listDeliveries(options: BaseOptions): Promise<Array<SalesOrderManagementStatic.Delivery>> {
+        // TODO: Add scope validation (ps.: no scope defined in documentation)
+        return this.request<Array<SalesOrderManagementStatic.Order>>('GET', '/kb_delivery', options)
+    }
+
+    /**
+     * get one specific delivery
+     *
+     * @param {number} deliveryId
+     * @returns {Promise<SalesOrderManagementStatic.Delivery>}
+     * @memberof SalesOrderManagement
+     */
+    public async showDelivery(deliveryId: number): Promise<SalesOrderManagementStatic.Delivery> {
+        // TODO: Add scope validation (ps.: no scope defined in documentation)
+        return this.request<SalesOrderManagementStatic.Order>('GET', '/kb_delivery/' + deliveryId.toString(), {})
+    }
+
+    /**
+     * issue a delivery
+     *
+     * @param {number} deliveryId
+     * @returns {Promise<boolean>}
+     * @memberof SalesOrderManagement
+     */
+    public async issueDelivery(deliveryId: number): Promise<boolean> {
+        // TODO: Add scope validation (ps.: no scope defined in documentation)
+        return (await this.request<{ success: boolean }>('POST', '/kb_delivery/' + deliveryId.toString() + '/issue', {})).success
+    }
+
+    /** 
+     * =====================================================
+     *                INVOICES SECTION
+     * =====================================================
+     */
+
+    /**
+     * list all invoices
+     *
+     * @param {BaseOptions} options
+     * @returns {Promise<Array<SalesOrderManagementStatic.Invoice>>}
+     * @memberof SalesOrderManagement
+     */
+    public async listInvoices(options: BaseOptions): Promise<Array<SalesOrderManagementStatic.Invoice>> {
+        this.validateScope(Scopes.KB_INVOICE_SHOW)
+
+        return this.request<Array<SalesOrderManagementStatic.Invoice>>('GET', '/kb_invoice', options)
+    }
+
+    /**
+     * search all invoices
+     *
+     * @param {BaseOptions} options
+     * @param {SalesOrderManagementStatic.InvoiceSearchParameters} searchParams
+     * @returns {Promise<Array<SalesOrderManagementStatic.Invoice>>}
+     * @memberof SalesOrderManagement
+     */
+    public async searchInvoices(options: BaseOptions, searchParams: SalesOrderManagementStatic.InvoiceSearchParameters): Promise<Array<SalesOrderManagementStatic.Invoice>> {
+        this.validateScope(Scopes.KB_INVOICE_SHOW)
+
+        let data = []
+        for (let i in searchParams) {
+            if (searchParams.hasOwnProperty(i)) {
+                data.push({
+                    'field': i,
+                    'value': searchParams[i]
+                })
+            }
+        }
+
+        return this.request<Array<SalesOrderManagementStatic.Invoice>>('POST', '/kb_invoice/search', options)
+    }
+
+    /**
+     * get one specific invoice
+     *
+     * @param {number} invoiceId
+     * @returns {Promise<SalesOrderManagementStatic.Invoice>}
+     * @memberof SalesOrderManagement
+     */
+    public async showInvoice(invoiceId: number): Promise<SalesOrderManagementStatic.Invoice> {
+        this.validateScope(Scopes.KB_INVOICE_SHOW)
+
+        return this.request<SalesOrderManagementStatic.Invoice>('GET', '/kb_invoice/' + invoiceId.toString(), {})
+    }
+
+    /**
+     * create a new invoice
+     *
+     * @param {SalesOrderManagementStatic.Invoice} invoice
+     * @returns {Promise<SalesOrderManagementStatic.Invoice>}
+     * @memberof SalesOrderManagement
+     */
+    public async createInvoice(invoice: SalesOrderManagementStatic.Invoice): Promise<SalesOrderManagementStatic.Invoice> {
+        this.validateScope(Scopes.KB_INVOICE_EDIT)
+
+        return this.request<SalesOrderManagementStatic.Invoice>('POST', '/kb_invoice', {}, invoice)
+    }
+
+    /**
+     * overwrite a specific invoice
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.Invoice} invoice
+     * @returns {Promise<SalesOrderManagementStatic.Invoice>}
+     * @memberof SalesOrderManagement
+     */
+    public async overwriteInvoice(invoiceId: number, invoice: SalesOrderManagementStatic.Invoice): Promise<SalesOrderManagementStatic.Invoice> {
+        this.validateScope(Scopes.KB_INVOICE_EDIT)
+
+        return this.request<SalesOrderManagementStatic.Invoice>('PUT', '/kb_invoice/' + invoiceId.toString(), {}, invoice)
+    }
+
+    /**
+     * edit a invoice
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.Invoice} invoice
+     * @returns {Promise<SalesOrderManagementStatic.Invoice>}
+     * @memberof SalesOrderManagement
+     */
+    public async editInvoice(invoiceId: number, invoice: SalesOrderManagementStatic.Invoice): Promise<SalesOrderManagementStatic.Invoice> {
+        this.validateScope(Scopes.KB_INVOICE_EDIT)
+
+        return this.request<SalesOrderManagementStatic.Invoice>('POST', '/kb_invoice/' + invoiceId.toString(), {}, invoice)
+    }
+
+    /**
+     * delete a invoice
+     *
+     * @param {number} invoiceId
+     * @returns {Promise<boolean>}
+     * @memberof SalesOrderManagement
+     */
+    public async deleteInvoice(invoiceId: number): Promise<boolean> {
+        this.validateScope(Scopes.KB_INVOICE_EDIT)
+
+        return (await this.request<{ success: boolean }>('DELETE', '/kb_invoice/' + invoiceId.toString(), {})).success
+    }
+
+    /**
+     * get one specific invoices pdf
+     *
+     * @param {number} invoiceId
+     * @returns {Promise<BaseStatic.PdfResponse>}
+     * @memberof SalesOrderManagement
+     */
+    public async showInvoicePdf(invoiceId: number): Promise<BaseStatic.PdfResponse> {
+        this.validateScope(Scopes.KB_INVOICE_SHOW)
+
+        return this.request<BaseStatic.PdfResponse>('GET', '/kb_invoice/' + invoiceId.toString() + '/pdf', {})
+    }
+
+    /**
+     * copy a invoice
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.InvoiceCopy} copyCommand
+     * @returns {Promise<SalesOrderManagementStatic.Invoice>}
+     * @memberof SalesOrderManagement
+     */
+    public async copyInvoice(invoiceId: number, copyCommand: SalesOrderManagementStatic.InvoiceCopy): Promise<SalesOrderManagementStatic.Invoice> {
+        this.validateScope(Scopes.KB_INVOICE_SHOW)
+
+        return this.request<SalesOrderManagementStatic.Invoice>('POST', '/kb_invoice/' + invoiceId.toString() + '/copy', {}, copyCommand)
+    }
+
+    /**
+ * issue a invoice
+ *
+ * @param {number} invoiceId
+ * @returns {Promise<boolean>}
+ * @memberof SalesOrderManagement
+ */
+    public async issueInvoice(invoiceId: number): Promise<boolean> {
+        this.validateScope(Scopes.KB_OFFER_SHOW)
+
+        return (await this.request<{ success: boolean }>('POST', '/kb_invoice/' + invoiceId.toString() + '/issue', {})).success
+    }
+
+    /**
+     * mark as sent a invoice
+     *
+     * @param {number} invoiceId
+     * @returns {Promise<boolean>}
+     * @memberof SalesOrderManagement
+     */
+    public async markAsSentInvoice(invoiceId: number): Promise<boolean> {
+        this.validateScope(Scopes.KB_OFFER_SHOW)
+
+        return (await this.request<{ success: boolean }>('POST', '/kb_invoice/' + invoiceId.toString() + '/mark_as_sent', {})).success
+    }
+
+    /**
+     * send a invoice
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.InvoiceSend} message
+     * @returns {Promise<boolean>}
+     * @memberof SalesOrderManagement
+     */
+    public async sendInvoice(invoiceId: number, message: SalesOrderManagementStatic.InvoiceSend): Promise<boolean> {
+        this.validateScope(Scopes.KB_OFFER_SHOW)
+
+        return (await this.request<{ success: boolean }>('POST', '/kb_invoice/' + invoiceId.toString() + '/send', {}, message)).success
+    }
+
+    /**
+     * list all comments of an invoice
+     *
+     * @param {number} invoiceId
+     * @param {BaseOptions} options
+     * @returns {Promise<Array<SalesOrderManagementStatic.Comment>>}
+     * @memberof SalesOrderManagement
+     */
+    public async listInvoiceComments(invoiceId: number, options: BaseOptions): Promise<Array<SalesOrderManagementStatic.Comment>> {
+        this.validateScope(Scopes.GENERAL)
+
+        return this.request<Array<SalesOrderManagementStatic.Comment>>('GET', '/kb_invoice/' + invoiceId.toString() + '/comment', options)
+    }
+
+    /**
+     * search all comments
+     *
+     * @param {number} invoiceId
+     * @param {BaseOptions} options
+     * @param {SalesOrderManagementStatic.CommentSearchParameters} searchParams
+     * @returns {Promise<Array<SalesOrderManagementStatic.Comment>>}
+     * @memberof SalesOrderManagement
+     */
+    public async searchInvoiceComments(invoiceId: number, options: BaseOptions, searchParams: SalesOrderManagementStatic.CommentSearchParameters): Promise<Array<SalesOrderManagementStatic.Comment>> {
+        this.validateScope(Scopes.GENERAL)
+
+        let data = []
+        for (let i in searchParams) {
+            if (searchParams.hasOwnProperty(i)) {
+                data.push({
+                    'field': i,
+                    'value': searchParams[i]
+                })
+            }
+        }
+
+        return this.request<Array<SalesOrderManagementStatic.Comment>>('POST', '/kb_invoice/' + invoiceId.toString() + '/comment/search', options, data)
+    }
+
+    /**
+     * get one specific comment
+     *
+     * @param {number} invoiceId
+     * @param {number} commentId
+     * @returns {Promise<SalesOrderManagementStatic.Comment>}
+     * @memberof SalesOrderManagement
+     */
+    public async showInvoiceComment(invoiceId: number, commentId: number): Promise<SalesOrderManagementStatic.Comment> {
+        this.validateScope(Scopes.GENERAL)
+
+        return this.request<SalesOrderManagementStatic.Comment>('GET', '/kb_invoice/' + invoiceId.toString() + '/comment/' + commentId.toString(), {})
+    }
+
+    /**
+     * create a new comment
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.Comment} invoice
+     * @returns {Promise<SalesOrderManagementStatic.Comment>}
+     * @memberof SalesOrderManagement
+     */
+    public async createInvoiceComment(invoiceId: number, comment: SalesOrderManagementStatic.Comment): Promise<SalesOrderManagementStatic.Comment> {
+        this.validateScope(Scopes.GENERAL)
+
+        return this.request<SalesOrderManagementStatic.Comment>('POST', '/kb_invoice/' + invoiceId.toString() + '/comment/', {}, comment)
+    }
+
+    /**
+     * list all payments
+     *
+     * @param {number} invoiceId
+     * @param {BaseOptions} options
+     * @returns {Promise<Array<SalesOrderManagementStatic.Payment>>}
+     * @memberof SalesOrderManagement
+     */
+    public async listInvoicePayments(invoiceId: number, options: BaseOptions): Promise<Array<SalesOrderManagementStatic.Payment>> {
+        this.validateScopes([Scopes.KB_INVOICE_SHOW, Scopes.KB_BILL_SHOW, Scopes.KB_CREDIT_VOUCHER_SHOW])
+
+        return this.request<Array<SalesOrderManagementStatic.Payment>>('GET', '/kb_invoice/' + invoiceId.toString() + '/payment', options)
+    }
+    
+    /**
+     * create a new payment
+     *
+     * @param {number} invoiceId
+     * @param {SalesOrderManagementStatic.Payment} payment
+     * @returns {Promise<SalesOrderManagementStatic.Payment>}
+     * @memberof SalesInvoiceManagement
+     */
+    public async createInvoicePayment(invoiceId: number, payment: SalesOrderManagementStatic.Payment): Promise<SalesOrderManagementStatic.Payment> {
+        this.validateScopes([Scopes.KB_INVOICE_SHOW, Scopes.KB_BILL_SHOW, Scopes.KB_CREDIT_VOUCHER_SHOW])
+
+        return this.request<SalesOrderManagementStatic.Payment>('POST', '/kb_invoice/' + invoiceId.toString() + '/payment/', {}, payment)
+    }
+
+    /**
+     * get one specific payment
+     *
+     * @param {number} invoiceId
+     * @param {number} paymentId
+     * @returns {Promise<SalesOrderManagementStatic.Payment>}
+     * @memberof SalesInvoiceManagement
+     */
+    public async showInvoicePayment(invoiceId: number, paymentId: number): Promise<SalesOrderManagementStatic.Payment> {
+        this.validateScopes([Scopes.KB_INVOICE_SHOW, Scopes.KB_BILL_SHOW, Scopes.KB_CREDIT_VOUCHER_SHOW])
+
+        return this.request<SalesOrderManagementStatic.Payment>('GET', '/kb_invoice/' + invoiceId.toString() + '/payment/' + paymentId.toString(), {})
+    }
+
+    /**
+     * delete a payment
+     *
+     * @param {number} invoiceId
+     * @param {number} paymentId
+     * @returns {Promise<boolean>}
+     * @memberof SalesInvoiceManagement
+     */
+    public async deleteInvoicePayment(invoiceId: number, paymentId: number): Promise<boolean> {
+        this.validateScopes([Scopes.KB_INVOICE_SHOW, Scopes.KB_BILL_SHOW, Scopes.KB_CREDIT_VOUCHER_SHOW])
+
+        return (await this.request<{ success: boolean }>('DELETE', '/kb_invoice/' + invoiceId.toString() + '/payment/' + paymentId.toString(), {})).success
     }
 }
