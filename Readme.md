@@ -1,5 +1,7 @@
 # Bexio
 ## Description
+**Basic build and NPM-Package is in ES6!**
+
 NPM Package for the API of [Bexio](https://www.bexio.com)
 
 ## Typings
