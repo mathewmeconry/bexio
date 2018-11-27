@@ -16,7 +16,7 @@ You can find a list of all implements functions in the [wiki](https://github.com
 ## Example with express
 List all contacts ordered by name
 ```javascript
-const Bexio = require('./index');
+const Bexio = require('bexio');
 const express = require('express');
 const createServer = require('http').createServer;
 
