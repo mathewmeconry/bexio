@@ -65,3 +65,4 @@ lib/
 
 # custom exlusion
 src/test.ts
+.vscode/
