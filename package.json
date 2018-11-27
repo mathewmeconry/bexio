@@ -1,6 +1,6 @@
 {
   "name": "bexio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NPM Package for the api of bexio.com",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -13,9 +13,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "prepare" : "npm run build",
-    "version" : "git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "npm run build",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/mathewmeconry/bexio#readme",
   "dependencies": {
-    "@types/node": "^10.12.10",
-    "@types/request": "^2.48.1",
-    "@types/request-promise-native": "^1.0.15",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
-    "express": "^4.16.4"
+    "@types/node": "^10.12.10",
+    "@types/request": "^2.48.1",
+    "@types/request-promise-native": "^1.0.15",
+    "typescript": "^3.1.6"
   }
 }
