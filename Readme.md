@@ -17,6 +17,26 @@ The whole documentation of the API can be found here: [https://docs.bexio.com/](
 ## Functions
 You can find a list of all implements functions in the [wiki](https://github.com/mathewmeconry/bexio/wiki)
 
+## TLTR;
+### get the auth url for the bexio authentication
+```javascript
+const Bexio = require('bexio');
+
+// initialize the object
+const bexioApi = new Bexio.default('CLIENT_ID', 'CLIENT_SECRET', 'http://127.0.0.1/callback', [Bexio.Scopes.CONTACT_SHOW]);
+
+// get the auth url
+bexioApi.getAuthUrl()
+```
+
+### get the access token
+```javascript
+bexioApi.generateAccessToken("QUERY_STRING_OF_THE_BEXIO_RESPONSE")
+```
+
+### refresh the token
+gets handled by the package
+
 ## Example with express
 List all contacts ordered by name
 ```javascript
