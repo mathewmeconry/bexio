@@ -5,6 +5,7 @@ import Notes from "./ressources/Notes";
 import { ContactsStatic } from './interfaces/ContactsStatic';
 import { NotesStatic } from './interfaces/NotesStatic';
 import Calendar from './ressources/Calendar';
+import SalesOrderManagement from './ressources/SalesOrderManagement';
 
 export { ContactsStatic, NotesStatic, Scopes }
 
@@ -20,6 +21,7 @@ export default class Bexio {
     public contacts: Contacts
     public notes: Notes
     public calendar: Calendar
+    public salesOrderManagement: SalesOrderManagement
 
     constructor(clientId: string, clientSecret: string, redirectUri: string, scopes: Array<Scopes>) {
         this.clientId = clientId
@@ -36,6 +38,7 @@ export default class Bexio {
         this.contacts = new Contacts(this.bexioAuth, this.scopes)
         this.notes = new Notes(this.bexioAuth, this.scopes)
         this.calendar = new Calendar(this.bexioAuth, this.scopes)
+        this.salesOrderManagement = new SalesOrderManagement(this.bexioAuth, this.scopes)
     }
 
     /**
