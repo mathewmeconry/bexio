@@ -1,4 +1,8 @@
 # Bexio
+[![Dependencies](https://david-dm.org/mathewmeconry/bexio/status.svg)](https://david-dm.org/mathewmeconry/bexio)
+[![Known Vulnerabilities](https://snyk.io/test/npm/bexio/badge.svg)](https://snyk.io/test/npm/bexio)
+
+
 ## Description
 **Basic build and NPM-Package is in ES6!**
 
