@@ -4,6 +4,7 @@ import Contacts from "./ressources/Contacts";
 import Notes from "./ressources/Notes";
 import { ContactsStatic } from './interfaces/ContactsStatic';
 import { NotesStatic } from './interfaces/NotesStatic';
+import Calendar from './ressources/Calendar';
 
 export { ContactsStatic, NotesStatic, Scopes }
 
@@ -18,6 +19,7 @@ export default class Bexio {
     // Ressources
     public contacts: Contacts
     public notes: Notes
+    public calendar: Calendar
 
     constructor(clientId: string, clientSecret: string, redirectUri: string, scopes: Array<Scopes>) {
         this.clientId = clientId
@@ -33,6 +35,7 @@ export default class Bexio {
         // Init ressources
         this.contacts = new Contacts(this.bexioAuth, this.scopes)
         this.notes = new Notes(this.bexioAuth, this.scopes)
+        this.calendar = new Calendar(this.bexioAuth, this.scopes)
     }
 
     /**
@@ -45,9 +48,9 @@ export default class Bexio {
         return this.bexioAuth.getAuthorizationUrl();
     }
 
-    /**
-     * Parses the token out of the reponse url
-     *
+    /*generate
+     *generaterl
+     *generate
      * @param {AuthorizationResponse} query
      * @returns {Promise<void>}
      * @memberof Bexio
