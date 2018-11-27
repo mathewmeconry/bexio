@@ -15,7 +15,11 @@ The typings for the module are already included in the package
 The whole documentation of the API can be found here: [https://docs.bexio.com/](https://docs.bexio.com/)
 
 ## Functions
+### Implemented
 You can find a list of all implements functions in the [wiki](https://github.com/mathewmeconry/bexio/wiki)
+
+### Missing
+You can find a list of all missing functions here: [Missing Functions](https://github.com/mathewmeconry/bexio/wiki#missing-functions)
 
 ## TLTR;
 ### get the auth url for the bexio authentication
