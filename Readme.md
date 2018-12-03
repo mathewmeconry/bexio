@@ -19,7 +19,8 @@ The whole documentation of the API can be found here: [https://docs.bexio.com/](
 You can find a list of all implements functions in the [wiki](https://github.com/mathewmeconry/bexio/wiki)
 
 ### Missing
-You can find a list of all missing functions here: [Missing Functions](https://github.com/mathewmeconry/bexio/wiki#missing-functions)
+You can find a list of all missing functions here: [Missing Functions](https://github.com/mathewmeconry/bexio/wiki#missing-functions).  
+If you need a function implemented, please fill out an issue.
 
 ## TLTR;
 ### get the auth url for the bexio authentication
