@@ -38,6 +38,12 @@ bexioApi.getAuthUrl()
 bexioApi.generateAccessToken("QUERY_STRING_OF_THE_BEXIO_RESPONSE")
 ```
 
+
+### check if it is initialized properly
+```javascript
+bexioApi.isInitialized()
+```
+
 ### refresh the token
 gets handled by the package
 
@@ -57,7 +63,11 @@ const server = createServer(app);
 
 // redirect the user to the Bexio login page
 app.get('/', (req, res) => {
-    res.redirect(bexioApi.getAuthUrl())
+    if(!bexioApi.isInitialized()) {
+        res.redirect(bexioApi.getAuthUrl())
+    } else {
+        res.redirect('/list_contacts')
+    }
 });
 
 // receive the callback of the bexio login page and get the access token

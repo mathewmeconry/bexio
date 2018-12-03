@@ -61,4 +61,14 @@ export default class Bexio {
     public async generateAccessToken(query: AuthorizationResponse): Promise<void> {
         await this.bexioAuth.generateAccessToken(query)
     }
+
+    /**
+     * returns if the authentication is already done
+     *
+     * @returns {boolean}
+     * @memberof Bexio
+     */
+    public isInitialized(): boolean {
+        return this.bexioAuth.isInitialized()
+    }
 }

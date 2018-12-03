@@ -97,10 +97,20 @@ export default class OAuth2 {
      * @memberof OAuth2
      */
     public async getBearerHeader(): Promise<string> {
-        if(!this.isAccessTokenStillValid()) {
+        if (!this.isAccessTokenStillValid()) {
             await this.refreshToken()
         }
         return 'Bearer ' + this.access_token
+    }
+
+    /**
+     * Returns if it is initlized
+     *
+     * @returns {boolean}
+     * @memberof OAuth2
+     */
+    public isInitialized(): boolean {
+        return this.isAccessTokenStillValid() || this.isRefreshTokenStillValid()
     }
 
     /**
@@ -123,7 +133,7 @@ export default class OAuth2 {
      */
     private isRefreshTokenStillValid(): boolean {
         let refresh_valid_until = new Date(this.valid_until || 0)
-        refresh_valid_until.setHours(refresh_valid_until.getHours() + 7*24)
+        refresh_valid_until.setHours(refresh_valid_until.getHours() + 7 * 24)
         return new Date() < refresh_valid_until
     }
 
@@ -135,7 +145,7 @@ export default class OAuth2 {
      * @memberof OAuth2
      */
     private async refreshToken(): Promise<void> {
-        if(!this.isRefreshTokenStillValid()) {
+        if (!this.isRefreshTokenStillValid()) {
             throw new Error('Refresh failed: Refresh token not valid anymore')
         }
 
