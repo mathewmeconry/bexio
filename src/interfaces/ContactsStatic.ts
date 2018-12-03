@@ -24,8 +24,8 @@ export namespace ContactsStatic {
         remarks?: string,
         language_id?: number
         is_lead?: boolean,
-        contact_group_ids?: Array<string>,
-        contact_branch_ids?: Array<string>,
+        contact_group_ids?: string,
+        contact_branch_ids?: string,
         user_id?: number,
         owner_id?: number,
         updated_at?: string
