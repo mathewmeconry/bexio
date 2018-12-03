@@ -24,8 +24,8 @@ export namespace ContactsStatic {
         remarks?: string,
         language_id?: number
         is_lead?: boolean,
-        contact_group_ids?: string,
-        contact_branch_ids?: string,
+        contact_group_ids?: Array<string>,
+        contact_branch_ids?: Array<string>,
         user_id?: number,
         owner_id?: number,
         updated_at?: string
@@ -89,14 +89,14 @@ export namespace ContactsStatic {
         postcode?: string,
         city?: string,
         country_id?: string,
-        contact_group_ids?: string,
+        contact_group_ids?: Array<string>,
         contact_type_id?: string,
         updated_at?: string,
         user_id?: string,
         phone_fixed?: string,
         phone_mobile?: string,
         fax?: string,
-        [index: string]: string | undefined
+        [index: string]: Array<string> | string | undefined
     }
 
     export interface TypeSearchParameters {
