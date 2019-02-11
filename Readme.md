@@ -8,6 +8,10 @@
 
 NPM Package for the API of [Bexio](https://www.bexio.com)
 
+## Version 0.1
+This version is a complete refactor (I know quite early for a complete refactor but it had to be done).  
+NO BACKWARDCOMPATIBILITY FOR < v0.1
+
 ## Typings
 The typings for the module are already included in the package
 
@@ -82,7 +86,7 @@ app.get('/callback', (req, res) => {
 
 // list all contacts
 app.get('/list_contacts', (req, res) => {
-    bexioApi.contacts.listContacts({ order_by: 'name_1' }).then(contacts => {
+    bexioApi.contacts.list({ order_by: 'name_1' }).then(contacts => {
         res.send(contacts)
     }).catch(err => {
         res.send(err)

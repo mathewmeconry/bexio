@@ -1,0 +1,169 @@
+import { BaseStatic } from "./../interfaces/BaseStatic";
+import { Scopes } from "..";
+import OAuth2 from "../libs/OAuth2";
+import request from 'request-promise-native'
+
+export default class BaseCrud<Small, Full, Search, SearchType> {
+    private bexioAuth: OAuth2
+    private apiEndpoint: string
+    private showScope: Scopes
+    private editScope: Scopes
+
+    constructor(bexioAuth: OAuth2, apiEndpoint: string, showScope: Scopes, editScope: Scopes) {
+        this.bexioAuth = bexioAuth
+        this.apiEndpoint = apiEndpoint
+        this.showScope = showScope
+        this.editScope = editScope
+    }
+
+    /**
+     * Lists the ressource
+     *
+     * @param {BaseStatic.BaseOptions} options
+     * @returns {Promise<Array<T>>}
+     * @memberof BaseCrud
+     */
+    public async list(options: BaseStatic.BaseOptions): Promise<Array<Small>> {
+        this.checkScope(this.showScope)
+        return this.request<Array<Small>>('GET', this.apiEndpoint, options)
+    }
+
+    /**
+     * search for resources
+     *
+     * @param {BaseStatic.BaseOptions} options
+     * @param {Array<BaseStatic.SearchParameter<SearchType>>} searchOptions
+     * @returns {Promise<Array<Search>>}
+     * @memberof BaseCrud
+     */
+    public async search(options: BaseStatic.BaseOptions, searchOptions: Array<BaseStatic.SearchParameter<SearchType>>): Promise<Array<Search>> {
+        this.checkScope(this.showScope)
+        return this.request<Array<Search>>('POST', this.apiEndpoint + '/search', options, searchOptions)
+    }
+
+    /**
+     * show a specific ressource
+     *
+     * @param {BaseStatic.BaseOptions} options
+     * @param {string} id
+     * @returns {Promise<Full>}
+     * @memberof BaseCrud
+     */
+    public async show(options: BaseStatic.BaseOptions, id: string): Promise<Full> {
+        this.checkScope(this.showScope)
+        return this.request<Full>('GET', this.apiEndpoint + '/' + id, options)
+    }
+
+    /**
+     * create a new ressource
+     *
+     * @param {Full} ressource
+     * @returns {Promise<Full>}
+     * @memberof BaseCrud
+     */
+    public async create(ressource: Full): Promise<Full> {
+        this.checkScope(this.editScope)
+        return this.request<Full>('POST', this.apiEndpoint, {}, ressource)
+    }
+
+    /**
+     * overwrite an existing ressource
+     *
+     * @param {string} id
+     * @param {Full} ressource
+     * @returns {Promise<Full>}
+     * @memberof BaseCrud
+     */
+    public async overwrite(id: string, ressource: Full): Promise<Full> {
+        this.checkScope(this.editScope)
+        return this.request<Full>('PUT', this.apiEndpoint + '/' + id, {}, ressource)
+    }
+
+    /**
+     * edit an existing ressource
+     *
+     * @param {string} id
+     * @param {Full} ressource
+     * @returns {Promise<Full>}
+     * @memberof BaseCrud
+     */
+    public async edit(id: string, ressource: Full): Promise<Full> {
+        this.checkScope(this.editScope)
+        return this.request<Full>('POST', this.apiEndpoint + '/' + id, {}, ressource)
+    }
+
+    /**
+     * delete an ressource
+     *
+     * @param {string} id
+     * @returns {Promise<boolean>}
+     * @memberof BaseCrud
+     */
+    public async delete(id: string): Promise<boolean> {
+        this.checkScope(this.editScope)
+        return (await this.request<{ success: boolean }>('DELETE', this.apiEndpoint + '/' + id, {})).success
+    }
+
+
+    /**
+     * Base request to the api
+     *
+     * @protected
+     * @template T
+     * @param {string} method
+     * @param {string} path
+     * @param {BaseStatic.BaseOptions} options
+     * @param {*} [data]
+     * @returns {Promise<T>}
+     * @memberof Bexio
+     */
+    protected async request<T>(method: string, path: string, options: BaseStatic.BaseOptions, data?: any): Promise<T> {
+        let requestOptions = {
+            method: method,
+            url: this.bexioAuth.getApiUrl() + path + '?' + this.optionsToQuery(options),
+            json: true,
+            headers: {
+                'Authorization': await this.bexioAuth.getBearerHeader()
+            }
+        }
+
+        if (data) {
+            //@ts-ignore
+            requestOptions.body = data
+        }
+        return await request(requestOptions)
+    }
+
+    /**
+     * Generates the querystring out of the options
+     *
+     * @protected
+     * @param {BaseStatic.BaseOptions} options
+     * @returns {string}
+     * @memberof Bexio
+     */
+    protected optionsToQuery(options: BaseStatic.BaseOptions): string {
+        let str = []
+
+        for (let i in options) {
+            if (options.hasOwnProperty(i)) {
+                str.push(encodeURIComponent(i) + '=' + encodeURIComponent(options[i]))
+            }
+        }
+
+        return str.join('&')
+    }
+
+    /**
+     * checks if the scope is authenticated. Throws error if not
+     *
+     * @protected
+     * @param {Scopes} scope
+     * @memberof BaseCrud
+     */
+    protected checkScope(scope: Scopes): void {
+        if (!this.bexioAuth.checkScope(scope)) {
+            throw new Error('Scope ' + scope + ' not authenticated')
+        }
+    }
+}

@@ -5,4 +5,36 @@ export namespace BaseStatic {
         mime: string,
         content: string
     }
+
+    export type SearchOperator =
+    '=' |
+    '!=' |
+    '>' |
+    '<' |
+    '>=' |
+    '<=' |
+    'equal' |
+    'not_equal' |
+    'greater_than' |
+    'less_than' |
+    'greater_equal' |
+    'less_equal' |
+    'like' |
+    'not_like' |
+    'is_null' |
+    'not_null'
+ 
+
+    export interface SearchParameter<T> {
+        field: T,
+        value: any,
+        operator: SearchOperator
+    }
+
+    export interface BaseOptions {
+        limit?: number,
+        offset?: number,
+        order_by?: string,
+        [index: string]: any
+    }
 }

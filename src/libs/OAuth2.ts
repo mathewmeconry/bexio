@@ -114,6 +114,17 @@ export default class OAuth2 {
     }
 
     /**
+     * Checks if the provided scope is also requested at the api
+     *
+     * @param {Scopes} scope
+     * @returns {boolean}
+     * @memberof OAuth2
+     */
+    public checkScope(scope: Scopes): boolean {
+        return this.scope.indexOf(scope) > -1
+    }
+
+    /**
      * checks if the access token is expired or not
      *
      * @private
