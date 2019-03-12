@@ -51,10 +51,24 @@ export default class OAuth2 {
      * Gets the initial access_token of the service
      *
      * @param {AuthorizationResponse} response
-     * @returns {Promise<string>}
+     * @returns {Promise<{
+     *       access_token: string,
+     *       expires_in: number,
+     *       refresh_token: string,
+     *       org: string,
+     *       user_id: number,
+     *       valid_until: Date
+     *   }>}
      * @memberof OAuth2
      */
-    public async generateAccessToken(response: AuthorizationResponse): Promise<void> {
+    public async generateAccessToken(response: AuthorizationResponse): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
         if (!this.verifyState(response.state)) {
             throw new Error('Invalid state')
         }
@@ -78,6 +92,10 @@ export default class OAuth2 {
         this.user_id = res.user_id
         this.valid_until = new Date()
         this.valid_until.setSeconds(this.valid_until.getSeconds() + (this.expires_in || 0))
+
+        return Object.assign(res, {
+            valid_until: this.valid_until
+        })
     }
 
     /**

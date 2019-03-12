@@ -61,15 +61,29 @@ export default class Bexio {
         return this.bexioAuth.getAuthorizationUrl();
     }
 
-    /*generate
-     *generaterl
-     *generate
+    /**
+     * Generates the Accesstoken out of the auth response
+     *
      * @param {AuthorizationResponse} query
-     * @returns {Promise<void>}
+     * @returns {Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }>}
      * @memberof Bexio
      */
-    public async generateAccessToken(query: AuthorizationResponse): Promise<void> {
-        await this.bexioAuth.generateAccessToken(query)
+    public async generateAccessToken(query: AuthorizationResponse): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
+        return this.bexioAuth.generateAccessToken(query)
     }
 
     /**
@@ -83,44 +97,149 @@ export default class Bexio {
     }
 
     /**
-     * Bypasses the login userinteraction with the api
+     * performs the fakelogin without preinitializing the api
      *
+     * @static
+     * @param {string} clientId
+     * @param {string} clientSecret
+     * @param {Array<Scopes>} scopes
      * @param {string} username
      * @param {string} password
-     * @returns {boolean}
+     * @returns {Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }>}
      * @memberof Bexio
      */
-    public async fakeLogin(username: string, password: string): Promise<boolean> {
-        let jar: CookieJar = request.jar()
-        let resp: Response = await request.get(this.getAuthUrl(), { jar: jar, resolveWithFullResponse: true })
-        if (resp.body.indexOf('username') > -1) {
-            let cookies = jar.getCookies('https://idp.bexio.com/')
-            let csrfToken = ''
-            for (let cookie of cookies) {
-                if (cookie.key === 'XSRF-TOKEN') {
-                    csrfToken = cookie.value
-                }
-            }
+    public static async fakeLogin(clientId: string, clientSecret: string, scopes: Array<Scopes>, username: string, password: string): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
+        let api = new this(clientId, clientSecret, 'https://office.bexio.com/fakecallback', scopes)
+        return api.fakeLogin(username, password)
+    }
 
-            request({
-                method: 'POST',
-                url: resp.request.href,
-                jar: jar,
+    /**
+     * Bypasses the login userinteraction with the api
+     * 
+     * The login procedure has following steps:
+     * 1. redirect to the login form via the authurl to grab all the cookies
+     * 2. login into the system and got to the SAML authorization
+     * 3. perform the SAML stuff and proceed to the "accept" section to accept the requested scopes
+     * 4. accept the stuff
+     * 5. ...
+     * 6. profit!
+     * 
+     * @param {string} username
+     * @param {string} password
+     * @returns {{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }}
+     * @memberof Bexio
+     */
+    public async fakeLogin(username: string, password: string): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
+        // very important cookie jar
+        let cookieJar: CookieJar = request.jar()
+        // untyped because of 'used before assigned' typescript error (But in real it is a request.FullResponse)
+        let res
+
+        // step 1: Grab the cookies and go the login form
+        try {
+            res = await request({
+                uri: this.getAuthUrl(),
+                followRedirect: true,
+                simple: false,
                 resolveWithFullResponse: true,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-                    'Referer': resp.request.href
-                },
-                body: 'username=' + username + '&password=' + password + '&_csrf=' + csrfToken
-            }).then(authResponse => {
-                console.log(authResponse.request.href)
-                console.log(authResponse.body)
-            }).catch(err => {
-                console.log(err)
+                jar: cookieJar
             })
-
+        } catch (err) {
+            throw new Error('Failed at step 1: grab the cookies and go the login form')
         }
-        return true
+
+        // step 2: grab the csrf token and perform the login
+        // can also be set by yourself with the same value in the cookie and the formdata
+        let csrfToken = cookieJar.getCookieString('https://idp.bexio.com').split('XSRF-TOKEN=')[1].split(';')[0]
+        try {
+            res = await request({
+                uri: res.request.href,
+                method: 'POST',
+                jar: cookieJar,
+                simple: false,
+                resolveWithFullResponse: true,
+                followAllRedirects: true,
+                form: {
+                    username: username,
+                    password: password,
+                    _csrf: csrfToken
+                }
+            })
+        } catch (err) {
+            throw new Error('Failed at step 2: do the login')
+        }
+
+        // step 3: perform the SAML stuff
+        let base64Regex = /"(\S+==)"/gm
+        let samlResponse = (base64Regex.exec(res.body as string) || [])[1]
+        try {
+            res = await request({
+                uri: 'https://office.bexio.com/index.php/samlauth/consume',
+                method: 'POST',
+                jar: cookieJar,
+                simple: false,
+                resolveWithFullResponse: true,
+                followAllRedirects: true,
+                form: {
+                    SAMLResponse: samlResponse
+                }
+            })
+        } catch (err) {
+            throw new Error('Failed at step 3: perform the necessary SAML stuff')
+        }
+
+        // step 4: accept the scopes
+        let csrfRegex = /value="(\S+)".+id="confirm_scopes__csrf_token"/gm
+        let csrfToken2 = (csrfRegex.exec(res.body) || [])[1]
+        try {
+            res = await request({
+                uri: res.request.href,
+                method: 'POST',
+                jar: cookieJar,
+                simple: false,
+                resolveWithFullResponse: true,
+                followAllRedirects: true,
+                form: {
+                    'confirm_scopes[_csrf_token]': csrfToken2,
+                    authorize: 1
+                }
+            })
+        } catch (err) {
+            throw new Error('Failed at step 4: accept the requested scopes')
+        }
+
+        let responseURL = new URL(res.request.href)
+        return this.generateAccessToken({
+            code: responseURL.searchParams.get('code') || '',
+            state: responseURL.searchParams.get('state') || ''
+        })
     }
 }
