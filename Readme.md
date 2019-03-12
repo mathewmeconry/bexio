@@ -26,6 +26,21 @@ You can find a list of all implements functions in the [wiki](https://github.com
 You can find a list of all missing functions here: [Missing Functions](https://github.com/mathewmeconry/bexio/wiki#missing-functions).  
 If you need a function implemented, please fill out an issue.
 
+### Additional
+#### fake login
+This can be used to automatically generate an access token without user input.  
+The function returns the following object:
+```javascript
+{
+    access_token: string,
+    expires_in: number,
+    refresh_token: string,
+    org: string,
+    user_id: number,
+    valid_until: Date
+}
+```
+
 ## TLTR;
 ### get the auth url for the bexio authentication
 ```javascript
@@ -98,6 +113,43 @@ server.listen(3000, () => {
     console.log('Listening on port 3000')
 });
 ```
+
+## Fake login
+### preinitialized API
+```javascript
+const Bexio = require('bexio');
+
+// initialize the object
+const bexioApi = new Bexio.default('CLIENT_ID', 'CLIENT_SECRET', 'http://127.0.0.1/callback', [Bexio.Scopes.CONTACT_SHOW]);
+
+bexioApi.fakeLogin('USERNAME', 'PASSWORD').then(res => {
+    if(res) {
+        console.log(res)
+    } else {
+        console.log('Failed')
+    }
+}).catch(err => {
+    console.log('Failed')
+    console.log(err)
+})
+
+```
+### static variant
+```javascript
+const Bexio = require('bexio');
+
+Bexio.fakeLogin('CLIENT_ID', 'CLIENT_SECRET', [Bexio.Scopes.CONTACT_SHOW], 'USERNAME', 'PASSWORD').then(res => {
+    if(res) {
+        console.log(res)
+    } else {
+        console.log('Failed')
+    }
+}).catch(err => {
+    console.log('Failed')
+    console.log(err)
+})
+```
+
 
 ## Contributing
 1. Fork it!
