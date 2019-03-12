@@ -61,9 +61,9 @@ export default class Bexio {
         return this.bexioAuth.getAuthorizationUrl();
     }
 
-    /*generate
-     *generaterl
-     *generate
+    /**
+     * Generates the Accesstoken out of the auth response
+     *
      * @param {AuthorizationResponse} query
      * @returns {Promise<void>}
      * @memberof Bexio
@@ -84,43 +84,81 @@ export default class Bexio {
 
     /**
      * Bypasses the login userinteraction with the api
-     *
+     * 
+     * The login procedure has following steps:
+     * 1. redirect to the login form via the authurl to grab all the cookies
+     * 2. login into the system and got to the SAML authorization
+     * 3. perform the SAML stuff and proceed to the "accept" section to accept the requested scopes
+     * 4. accept the stuff
+     * 5. ...
+     * 6. profit!
+     * 
      * @param {string} username
      * @param {string} password
      * @returns {boolean}
      * @memberof Bexio
      */
     public async fakeLogin(username: string, password: string): Promise<boolean> {
-        let jar: CookieJar = request.jar()
-        let resp: Response = await request.get(this.getAuthUrl(), { jar: jar, resolveWithFullResponse: true })
-        if (resp.body.indexOf('username') > -1) {
-            let cookies = jar.getCookies('https://idp.bexio.com/')
-            let csrfToken = ''
-            for (let cookie of cookies) {
-                if (cookie.key === 'XSRF-TOKEN') {
-                    csrfToken = cookie.value
-                }
+        // very important cookie jar
+        let cookieJar: CookieJar = request.jar()
+
+        // step 1: Grab the cookie and go the login form
+        let res: request.FullResponse = await request({
+            uri: this.getAuthUrl(),
+            followRedirect: true,
+            simple: false,
+            resolveWithFullResponse: true,
+            jar: cookieJar
+        })
+
+        // step 2: grab the csrf token and perform the login
+        // can also be set by yourself with the same value in the cookie and the formdata
+        let csrfToken = cookieJar.getCookieString('https://idp.bexio.com').split('XSRF-TOKEN=')[1].split(';')[0]
+        res = await request({
+            uri: res.request.href,
+            method: 'POST',
+            jar: cookieJar,
+            simple: false,
+            resolveWithFullResponse: true,
+            followAllRedirects: true,
+            form: {
+                username: username,
+                password: password,
+                _csrf: csrfToken
             }
+        })
 
-            request({
-                method: 'POST',
-                url: resp.request.href,
-                jar: jar,
-                resolveWithFullResponse: true,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-                    'Referer': resp.request.href
-                },
-                body: 'username=' + username + '&password=' + password + '&_csrf=' + csrfToken
-            }).then(authResponse => {
-                console.log(authResponse.request.href)
-                console.log(authResponse.body)
-            }).catch(err => {
-                console.log(err)
-            })
+        // step 3: perform the SAML stuff
+        let base64Regex = /"(\S+==)"/gm
+        let samlResponse = (base64Regex.exec(res.body as string) || [])[1]
+        res = await request({
+            uri: 'https://office.bexio.com/index.php/samlauth/consume',
+            method: 'POST',
+            jar: cookieJar,
+            simple: false,
+            resolveWithFullResponse: true,
+            followAllRedirects: true,
+            form: {
+                SAMLResponse: samlResponse
+            }
+        })
 
-        }
+        // step 4: accept the scopes
+        let csrfRegex = /value="(\S+)".+id="confirm_scopes__csrf_token"/gm
+        let csrfToken2 = (csrfRegex.exec(res.body) || [])[1]
+        res = await request({
+            uri: res.request.href,
+            method: 'POST',
+            jar: cookieJar,
+            simple: false,
+            resolveWithFullResponse: true,
+            followAllRedirects: true,
+            form: {
+                'confirm_scopes[_csrf_token]': csrfToken2,
+                authorize: 1
+            }
+        })
+
         return true
     }
 }
