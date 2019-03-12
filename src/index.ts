@@ -65,11 +65,25 @@ export default class Bexio {
      * Generates the Accesstoken out of the auth response
      *
      * @param {AuthorizationResponse} query
-     * @returns {Promise<void>}
+     * @returns {Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }>}
      * @memberof Bexio
      */
-    public async generateAccessToken(query: AuthorizationResponse): Promise<void> {
-        await this.bexioAuth.generateAccessToken(query)
+    public async generateAccessToken(query: AuthorizationResponse): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
+        return this.bexioAuth.generateAccessToken(query)
     }
 
     /**
@@ -91,10 +105,24 @@ export default class Bexio {
      * @param {Array<Scopes>} scopes
      * @param {string} username
      * @param {string} password
-     * @returns {Promise<string>}
+     * @returns {Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }>}
      * @memberof Bexio
      */
-    public static async fakeLogin(clientId: string, clientSecret: string, scopes: Array<Scopes>, username: string, password: string): Promise<string> {
+    public static async fakeLogin(clientId: string, clientSecret: string, scopes: Array<Scopes>, username: string, password: string): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
         let api = new this(clientId, clientSecret, 'https://office.bexio.com/fakecallback', scopes)
         return api.fakeLogin(username, password)
     }
@@ -112,10 +140,24 @@ export default class Bexio {
      * 
      * @param {string} username
      * @param {string} password
-     * @returns {string}
+     * @returns {{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }}
      * @memberof Bexio
      */
-    public async fakeLogin(username: string, password: string): Promise<string> {
+    public async fakeLogin(username: string, password: string): Promise<{
+        access_token: string,
+        expires_in: number,
+        refresh_token: string,
+        org: string,
+        user_id: number,
+        valid_until: Date
+    }> {
         // very important cookie jar
         let cookieJar: CookieJar = request.jar()
         // untyped because of 'used before assigned' typescript error (But in real it is a request.FullResponse)
@@ -194,6 +236,10 @@ export default class Bexio {
             throw new Error('Failed at step 4: accept the requested scopes')
         }
 
-        return new URL(res.request.href).searchParams.get('code') || ''
+        let responseURL = new URL(res.request.href)
+        return this.generateAccessToken({
+            code: responseURL.searchParams.get('code') || '',
+            state: responseURL.searchParams.get('state') || ''
+        })
     }
 }
