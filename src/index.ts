@@ -226,7 +226,7 @@ export default class Bexio {
                 jar: cookieJar,
                 simple: false,
                 resolveWithFullResponse: true,
-                followAllRedirects: true,
+                followAllRedirects: false,
                 form: {
                     'confirm_scopes[_csrf_token]': csrfToken2,
                     authorize: 1
@@ -236,7 +236,7 @@ export default class Bexio {
             throw new Error('Failed at step 4: accept the requested scopes')
         }
 
-        let responseURL = new URL(res.request.href)
+        let responseURL = new URL(res.headers.location)
         return this.generateAccessToken({
             code: responseURL.searchParams.get('code') || '',
             state: responseURL.searchParams.get('state') || ''
