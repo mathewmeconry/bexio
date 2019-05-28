@@ -1,23 +1,59 @@
 import Scopes from "./constants/Scopes";
 import OAuth2, { AuthorizationResponse } from "./libs/OAuth2";
 import Contacts from "./resources/Contacts";
-import { ContactsStatic } from "./interfaces/ContactsStatic";
-import ContactTypes from "./resources/ContactTypes";
-import ContactSectors from "./resources/ContactSectors";
-import ContactGroups from "./resources/ContactGroups";
-import ContactRelations from "./resources/ContactRelations";
-import Orders from "./resources/Orders";
-import request from "request-promise-native";
-import { CookieJar, Response } from "request";
+import { ContactsStatic } from './interfaces/ContactsStatic';
+import ContactTypes from './resources/ContactTypes';
+import ContactSectors from './resources/ContactSectors';
+import ContactGroups from './resources/ContactGroups';
+import ContactRelations from './resources/ContactRelations';
+import Expenses from './resources/Expenses'
 import Bills from "./resources/Bills";
+import Orders from './resources/Orders';
+import request from 'request-promise-native'
+import { CookieJar } from 'request';
 
 export { ContactsStatic, Scopes };
 
 export default class Bexio {
-  private clientId: string;
-  private clientSecret: string;
-  private redirectUri: string;
-  private scopes: Array<Scopes>;
+    private clientId: string
+    private clientSecret: string
+    private redirectUri: string
+    private scopes: Array<Scopes>
+
+    private bexioAuth: OAuth2
+
+    // Resources
+    // Contacts
+    public contacts: Contacts
+    public contactTypes: ContactTypes
+    public contactSectors: ContactSectors
+    public contactGroups: ContactGroups
+    public contactRelations: ContactRelations
+
+    // Sales Order Management
+    public orders: Orders
+    public expenses: Expenses
+
+    constructor(clientId: string, clientSecret: string, redirectUri: string, scopes: Array<Scopes>) {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+        this.redirectUri = redirectUri
+        this.scopes = scopes
+
+        // add general scope to the request list
+        this.scopes.push(Scopes.GENERAL)
+
+        this.bexioAuth = new OAuth2(this.clientId, this.clientSecret, this.redirectUri, this.scopes)
+
+        // Init resources
+        this.contacts = new Contacts(this.bexioAuth)
+        this.contactTypes = new ContactTypes(this.bexioAuth)
+        this.contactSectors = new ContactSectors(this.bexioAuth)
+        this.contactGroups = new ContactGroups(this.bexioAuth)
+        this.contactRelations = new ContactRelations(this.bexioAuth)
+        this.orders = new Orders(this.bexioAuth)
+        this.expenses = new Expenses(this.bexioAuth)
+    }
 
   private bexioAuth: OAuth2;
 

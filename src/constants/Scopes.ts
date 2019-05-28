@@ -15,6 +15,8 @@ enum Scopes {
     KB_BILL_EDIT = 'kb_bill_edit',
     KB_CREDIT_VOUCHER_SHOW = 'kb_credit_voucher_show',
     KB_CREDIT_VOUCHER_EDIT = 'kb_credit_voucher_edit',
+    KB_EXPENSE_SHOW = 'kb_expense_show',
+    KB_EXPENSE_EDIT = 'kb_expense_edit',
     LEAD_SHOW = 'lead_show',
     LEAD_EDIT = 'lead_edit',
     MONITORING_SHOW = 'monitoring_show',
