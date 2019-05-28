@@ -6,9 +6,10 @@ import ContactTypes from './resources/ContactTypes';
 import ContactSectors from './resources/ContactSectors';
 import ContactGroups from './resources/ContactGroups';
 import ContactRelations from './resources/ContactRelations';
+import Expenses from './resources/Expenses'
 import Orders from './resources/Orders';
 import request from 'request-promise-native'
-import { CookieJar, Response } from 'request';
+import { CookieJar } from 'request';
 
 export { ContactsStatic, Scopes }
 
@@ -30,6 +31,7 @@ export default class Bexio {
 
     // Sales Order Management
     public orders: Orders
+    public expenses: Expenses
 
     constructor(clientId: string, clientSecret: string, redirectUri: string, scopes: Array<Scopes>) {
         this.clientId = clientId
@@ -49,6 +51,7 @@ export default class Bexio {
         this.contactGroups = new ContactGroups(this.bexioAuth)
         this.contactRelations = new ContactRelations(this.bexioAuth)
         this.orders = new Orders(this.bexioAuth)
+        this.expenses = new Expenses(this.bexioAuth)
     }
 
     /**
