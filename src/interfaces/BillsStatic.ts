@@ -39,9 +39,32 @@ export namespace BillsStatic {
   }
 
   export interface BillCreate {
-    user_id: number;
     contact_id: number;
-    positions: Array<CustomPosition | ArticlePosition>;
+    user_id: number;
+    api_reference?: string;
+    bank_account_id?: number;
+    contact_address_id?: number;
+    contact_address_manual?: string;
+    contact_sub_id?: number;
+    currency_id?: number;
+    footer?: string;
+    header?: string;
+    is_compact_view?: boolean;
+    is_valid_from?: string;
+    is_valid_to?: string;
+    language_id?: number;
+    logopaper_id?: number;
+    mwst_is_net?: boolean;
+    mwst_type?: 0 | 1 | 2;
+    nb_decimals_amount?: number;
+    nb_decimals_price?: number;
+    payment_type_id?: number;
+    pr_project_id?: number;
+    show_position_taxes?: boolean;
+    terms_of_payment_text?: string;
+    title?: string;
+    viewed_by_client_at?: string;
+    positions: Array<CustomPositionCreate | ArticlePositionCreate>;
   }
 
   export interface Tax {
@@ -86,9 +109,29 @@ export namespace BillsStatic {
     is_optional: boolean;
   }
 
-  export interface CustomPosition extends Position {}
+  export interface PositionCreate {
+    type: "KbPositionCustom" | "KbPositionArticle";
+    unit_price: string;
+    tax_id: number;
+    amount: string;
+    text?: string;
+  }
+
+  export interface CustomPositionCreate extends PositionCreate {
+    type: "KbPositionCustom";
+  }
+
+  export interface CustomPosition extends Position {
+    type: "KbPositionCustom";
+  }
+
+  export interface ArticlePositionCreate extends PositionCreate {
+    type: "KbPositionArticle";
+    article_id: number;
+  }
 
   export interface ArticlePosition extends Position {
+    type: "KbPositionArticle";
     article_id: number;
   }
 }
