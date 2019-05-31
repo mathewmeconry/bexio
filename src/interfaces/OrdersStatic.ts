@@ -43,6 +43,12 @@ export namespace OrdersStatic {
     positions: Position[];
   }
 
+  export interface OrderCreate {
+    user_id: number;
+    contact_id: number;
+    positions: Position[];
+  }
+
   export interface Position {
     id: number;
     type: string;

@@ -35,6 +35,15 @@ export namespace ContactsStatic {
     profile_image: string;
   }
 
+  export interface ContactCreate {
+    name_1: string;
+    user_id: number;
+    country_id: number;
+    owner_id: number;
+    contact_type_id: number;
+    contact_group_ids: Array<number>;
+  }
+
   export type ContactSearchParameters =
     | "id"
     | "name_1"

@@ -4,5 +4,9 @@ export namespace ContactGroupsStatic {
     name: string;
   }
 
+  export interface ContactGroupCreate {
+      name: string;
+  }
+
   export type ContactGroupSearchParameters = "name";
 }

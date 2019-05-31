@@ -3,7 +3,7 @@ import { Scopes } from "..";
 import OAuth2 from "../libs/OAuth2";
 import request from "request-promise-native";
 
-export default class BaseCrud<Small, Full, Search, SearchType> {
+export default class BaseCrud<Small, Full, Search, SearchType, Create> {
   private bexioAuth: OAuth2;
   private apiEndpoint: string;
   private showScope: Scopes;
@@ -77,7 +77,7 @@ export default class BaseCrud<Small, Full, Search, SearchType> {
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
-  public async create(ressource: Full): Promise<Full> {
+  public async create(ressource: Create): Promise<Full> {
     this.checkScope(this.editScope);
     return this.request<Full>("POST", this.apiEndpoint, {}, ressource);
   }

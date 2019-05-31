@@ -7,7 +7,8 @@ export default class ContactSectors extends BaseCrud<
   ContactSectorsStatic.ContactSector,
   ContactSectorsStatic.ContactSector,
   ContactSectorsStatic.ContactSector,
-  ContactSectorsStatic.ContactSectorSearchParameters
+  ContactSectorsStatic.ContactSectorSearchParameters,
+  {}
 > {
   constructor(bexioAuth: OAuth2) {
     super(
@@ -16,5 +17,9 @@ export default class ContactSectors extends BaseCrud<
       Scopes.CONTACT_SHOW,
       Scopes.CONTACT_EDIT
     );
+  }
+
+  public create(ressource: {}): Promise<ContactSectorsStatic.ContactSector> {
+    throw new Error("Not available on the API");
   }
 }

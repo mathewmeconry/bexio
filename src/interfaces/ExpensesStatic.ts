@@ -39,6 +39,14 @@ export namespace ExpensesStatic {
     value: string;
   }
 
+  export interface ExpenseCreate {
+    user_id: number;
+    contact_id: number;
+    tax_id: number;
+    amount: number;
+    account_id: number;
+  }
+
   export type SearchParameters =
     | "id"
     | "kb_item_status_id"

@@ -7,7 +7,8 @@ export default class ContactGroups extends BaseCrud<
   ContactGroupsStatic.ContactGroup,
   ContactGroupsStatic.ContactGroup,
   ContactGroupsStatic.ContactGroup,
-  ContactGroupsStatic.ContactGroupSearchParameters
+  ContactGroupsStatic.ContactGroupSearchParameters,
+  ContactGroupsStatic.ContactGroupCreate
 > {
   constructor(bexioAuth: OAuth2) {
     super(

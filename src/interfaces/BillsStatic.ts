@@ -38,6 +38,12 @@ export namespace BillsStatic {
     positions: Array<CustomPosition | ArticlePosition>;
   }
 
+  export interface BillCreate {
+    user_id: number;
+    contact_id: number;
+    positions: Array<CustomPosition | ArticlePosition>;
+  }
+
   export interface Tax {
     percentage: number;
     value: string;
