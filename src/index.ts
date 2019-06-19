@@ -1,7 +1,6 @@
 import Scopes from "./constants/Scopes";
 import OAuth2, { AuthorizationResponse } from "./libs/OAuth2";
 import Contacts from "./resources/Contacts";
-import { ContactsStatic } from "./interfaces/ContactsStatic";
 import ContactTypes from "./resources/ContactTypes";
 import ContactSectors from "./resources/ContactSectors";
 import ContactGroups from "./resources/ContactGroups";
@@ -12,7 +11,18 @@ import Orders from "./resources/Orders";
 import request from "request-promise-native";
 import { CookieJar } from "request";
 
-export { ContactsStatic, Scopes };
+export * from './interfaces/BillsStatic'
+export * from './interfaces/CalendarStatic'
+export * from './interfaces/ContactGroupsStatic'
+export * from './interfaces/ContactRelationsStatic'
+export * from './interfaces/ContactSectorsStatic'
+export * from './interfaces/ContactTypesStatic'
+export * from './interfaces/ContactsStatic'
+export * from './interfaces/ExpensesStatic'
+export * from './interfaces/NotesStatic'
+export * from './interfaces/OrdersStatic'
+export * from './interfaces/SalesOrderManagementStatic'
+export { Scopes };
 
 export default class Bexio {
   private clientId: string;

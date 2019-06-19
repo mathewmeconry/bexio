@@ -4,13 +4,18 @@ import OAuth2 from "../libs/OAuth2";
 import Scopes from "../constants/Scopes";
 
 export default class ContactRelations extends BaseCrud<
-ContactRelationsStatic.ContactRelation,
-ContactRelationsStatic.ContactRelation,
-ContactRelationsStatic.ContactRelation,
-ContactRelationsStatic.ContactRelationSearchParameters> {
-
-
-    constructor(bexioAuth: OAuth2) {
-        super(bexioAuth, '/contact_relation', Scopes.CONTACT_SHOW, Scopes.CONTACT_EDIT)
-    }
+  ContactRelationsStatic.ContactRelation,
+  ContactRelationsStatic.ContactRelation,
+  ContactRelationsStatic.ContactRelation,
+  ContactRelationsStatic.ContactRelationSearchParameters,
+  ContactRelationsStatic.ContactRelationCreate
+> {
+  constructor(bexioAuth: OAuth2) {
+    super(
+      bexioAuth,
+      "/contact_relation",
+      Scopes.CONTACT_SHOW,
+      Scopes.CONTACT_EDIT
+    );
+  }
 }
