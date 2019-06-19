@@ -114,7 +114,10 @@ export namespace BillsStatic {
     unit_price: string;
     tax_id: number;
     amount: string;
+    account_id: number
     text?: string;
+    discount_in_percent?: number
+    unit_id?: number
   }
 
   export interface CustomPositionCreate extends PositionCreate {
