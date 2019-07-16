@@ -204,70 +204,66 @@ export namespace SalesOrderManagementStatic {
     kb_credit_voucher_text: string;
   }
 
-  export interface EstimateSearchParameters {
-    id?: string;
-    kb_item_status_id?: string;
-    document_nr?: string;
-    title?: string;
-    contact_id?: string;
-    contact_sub_id?: string;
-    user_id?: string;
-    currency_id?: string;
-    total_gross?: string;
-    total_net?: string;
-    total?: string;
-    is_valid_from?: string;
-    is_valid_to?: string;
-    is_valid_until?: string;
-    updated_at?: string;
-    [index: string]: string | undefined;
+  export enum EstimateSearchParameters {
+    id = 'id',
+    kb_item_status_id = 'kb_item_status_id',
+    document_nr = 'document_nr',
+    title = 'title',
+    contact_id = 'contact_id',
+    contact_sub_id = 'contact_sub_id',
+    user_id = 'user_id',
+    currency_id = 'currency_id',
+    total_gross = 'total_gross',
+    total_net = 'total_net',
+    total = 'total',
+    is_valid_from = 'is_valid_from',
+    is_valid_to = 'is_valid_to',
+    is_valid_until = 'is_valid_until',
+    updated_at = 'updated_at'
   }
 
-  export interface CommentSearchParameters {
-    id?: string;
-    user_id?: string;
-    text?: string;
-    date?: string;
-    is_public?: string;
-    [index: string]: string | undefined;
+  export enum CommentSearchParameters {
+    id = 'id',
+    user_id = 'user_id',
+    text = 'text',
+    date = 'date',
+    is_public = 'is_public'
   }
 
-  export interface OrderSearchParameters {
-    id?: string;
-    kb_item_status_id?: string;
-    document_nr?: string;
-    title?: string;
-    contact_id?: string;
-    contact_sub_id?: string;
-    user_id?: string;
-    currency_id?: string;
-    total_gross?: string;
-    total_net?: string;
-    total?: string;
-    is_valid_from?: string;
-    is_valid_to?: string;
-    is_valid_until?: string;
-    updated_at?: string;
-    [index: string]: string | undefined;
+  export enum OrderSearchParameters {
+    id = 'id',
+    kb_item_status_id = 'kb_item_status_id',
+    document_nr = 'document_nr',
+    title = 'title',
+    contact_id = 'contact_id',
+    contact_sub_id = 'contact_sub_id',
+    user_id = 'user_id',
+    currency_id = 'currency_id',
+    total_gross = 'total_gross',
+    total_net = 'total_net',
+    total = 'total',
+    is_valid_from = 'is_valid_from',
+    is_valid_to = 'is_valid_to',
+    is_valid_until = 'is_valid_until',
+    updated_at = 'updated_at'
   }
 
-  export interface InvoiceSearchParameters {
-    id?: string;
-    kb_item_status_id?: string;
-    document_nr?: string;
-    title?: string;
-    contact_id?: string;
-    contact_sub_id?: string;
-    user_id?: string;
-    currency_id?: string;
-    total_gross?: string;
-    total_net?: string;
-    total?: string;
-    is_valid_from?: string;
-    is_valid_to?: string;
-    is_valid_until?: string;
-    updated_at?: string;
-    [index: string]: string | undefined;
+  export enum InvoiceSearchParameters {
+    id = 'id',
+    kb_item_status_id = 'kb_item_status_id',
+    document_nr = 'document_nr',
+    title = 'title',
+    contact_id = 'contact_id',
+    contact_sub_id = 'contact_sub_id',
+    user_id = 'user_id',
+    currency_id = 'currency_id',
+    total_gross = 'total_gross',
+    total_net = 'total_net',
+    total = 'total',
+    is_valid_from = 'is_valid_from',
+    is_valid_to = 'is_valid_to',
+    is_valid_until = 'is_valid_until',
+    updated_at = 'updated_at'
   }
 
   export interface EstimateAcceptDecline {

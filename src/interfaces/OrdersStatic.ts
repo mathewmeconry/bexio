@@ -69,20 +69,21 @@ export namespace OrdersStatic {
     article_id: number;
   }
 
-  export type OrderSearchParameters =
-    | "id"
-    | "kb_item_status_id"
-    | "document_nr"
-    | "title"
-    | "contact_id"
-    | "contact_sub_id"
-    | "user_id"
-    | "currency_id"
-    | "total_gross"
-    | "total_net"
-    | "total"
-    | "is_valid_from"
-    | "is_valid_to"
-    | "is_valid_until"
-    | "updated_at";
+  export enum OrderSearchParameters {
+    id = "id",
+    kb_item_status_id = "kb_item_status_id",
+    document_nr = "document_nr",
+    title = "title",
+    contact_id = "contact_id",
+    contact_sub_id = "contact_sub_id",
+    user_id = "user_id",
+    currency_id = "currency_id",
+    total_gross = "total_gross",
+    total_net = "total_net",
+    total = "total",
+    is_valid_from = "is_valid_from",
+    is_valid_to = "is_valid_to",
+    is_valid_until = "is_valid_until",
+    updated_at = "updated_at"
+  }
 }

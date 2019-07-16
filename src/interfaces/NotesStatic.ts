@@ -13,13 +13,12 @@ export namespace NotesStatic {
     pr_project_id?: number;
   }
 
-  export interface SearchParameters {
-    event_start?: string;
-    contact_id?: string;
-    user_id?: string;
-    subject?: string;
-    module_id?: string;
-    entry_id?: string;
-    [index: string]: string | undefined;
+  export enum SearchParameters {
+    event_start = 'event_start',
+    contact_id = 'contact_id',
+    user_id = 'user_id',
+    subject = 'subject',
+    module_id = 'module_id',
+    entry_id = 'entry_id'
   }
 }
