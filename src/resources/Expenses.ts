@@ -8,7 +8,8 @@ export default class Contacts extends BaseCrud<
   ExpensesStatic.Expense,
   ExpensesStatic.Expense,
   ExpensesStatic.SearchParameters,
-  ExpensesStatic.ExpenseCreate
+  ExpensesStatic.ExpenseCreate,
+  ExpensesStatic.Expense
 > {
   constructor(bexioAuth: OAuth2) {
     super(

@@ -3,7 +3,7 @@ import { Scopes } from "..";
 import OAuth2 from "../libs/OAuth2";
 import request from "request-promise-native";
 
-export default class BaseCrud<Small, Full, Search, SearchType, Create> {
+export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite> {
   private bexioAuth: OAuth2;
   private apiEndpoint: string;
   private showScope: Scopes;
@@ -58,13 +58,13 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create> {
    * show a specific ressource
    *
    * @param {BaseStatic.BaseOptions} options
-   * @param {string} id
+   * @param {number} id
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
   public async show(
     options: BaseStatic.BaseOptions,
-    id: string
+    id: number
   ): Promise<Full> {
     this.checkScope(this.showScope);
     return this.request<Full>("GET", this.apiEndpoint + "/" + id, options);
@@ -85,12 +85,12 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create> {
   /**
    * overwrite an existing ressource
    *
-   * @param {string} id
-   * @param {Full} ressource
+   * @param {number} id
+   * @param {Overwrite} ressource
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
-  public async overwrite(id: string, ressource: Full): Promise<Full> {
+  public async overwrite(id: number, ressource: Overwrite): Promise<Full> {
     this.checkScope(this.editScope);
     return this.request<Full>(
       "PUT",
@@ -103,12 +103,12 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create> {
   /**
    * edit an existing ressource
    *
-   * @param {string} id
-   * @param {Full} ressource
+   * @param {number} id
+   * @param {Partial<Full>} ressource
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
-  public async edit(id: string, ressource: Full): Promise<Full> {
+  public async edit(id: number, ressource: Partial<Full>): Promise<Full> {
     this.checkScope(this.editScope);
     return this.request<Full>(
       "POST",
@@ -121,11 +121,11 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create> {
   /**
    * delete an ressource
    *
-   * @param {string} id
+   * @param {number} id
    * @returns {Promise<boolean>}
    * @memberof BaseCrud
    */
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: number): Promise<boolean> {
     this.checkScope(this.editScope);
     return (await this.request<{ success: boolean }>(
       "DELETE",

@@ -8,7 +8,8 @@ export default class Contacts extends BaseCrud<
   ContactsStatic.ContactFull,
   ContactsStatic.ContactSmall,
   ContactsStatic.ContactSearchParameters,
-  ContactsStatic.ContactCreate
+  ContactsStatic.ContactCreate,
+  ContactsStatic.ContactOverwrite
 > {
   constructor(bexioAuth: OAuth2) {
     super(bexioAuth, "/contact", Scopes.CONTACT_SHOW, Scopes.CONTACT_EDIT);
