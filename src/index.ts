@@ -203,12 +203,13 @@ export default class Bexio {
     // very important cookie jar
     let cookieJar: CookieJar = request.jar();
     // untyped because of 'used before assigned' typescript error (But in real it is a request.FullResponse)
-    let res;
+    let res: request.FullResponse;
 
     // step 1: Grab the cookies and go the login form
+    const authUrl = this.getAuthUrl()
     try {
       res = await request({
-        uri: this.getAuthUrl(),
+        uri: authUrl,
         followRedirect: true,
         simple: false,
         resolveWithFullResponse: true,
@@ -245,8 +246,10 @@ export default class Bexio {
     }
 
     // step 3: perform the SAML stuff
-    let base64Regex = /"(\S+==)"/gm;
+    let base64Regex = /name="SAMLResponse" value="(\S+)"/gm;
     let samlResponse = (base64Regex.exec(res.body as string) || [])[1];
+    if (!samlResponse) throw new Error("Failed at step 2: do the login");
+
     try {
       res = await request({
         uri: "https://office.bexio.com/index.php/samlauth/consume",
@@ -265,17 +268,19 @@ export default class Bexio {
 
     // step 4: accept the scopes
     let csrfRegex = /value="(\S+)".+id="confirm_scopes__csrf_token"/gm;
-    let csrfToken2 = (csrfRegex.exec(res.body) || [])[1];
+    csrfToken = (csrfRegex.exec(res.body) || [])[1];
+    if (!csrfToken) throw new Error("Failed at step 3: perform the necessary SAML stuff");
+
     try {
       res = await request({
-        uri: res.request.href,
+        uri: `https://office.bexio.com/index.php/oauth/authorize?client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${this.scopes.join('+')}&state=${new URL(authUrl).searchParams.get('state')}&is_mobile=0&is_ios=0&response_type=code`,
         method: "POST",
         jar: cookieJar,
         simple: false,
         resolveWithFullResponse: true,
         followAllRedirects: false,
         form: {
-          "confirm_scopes[_csrf_token]": csrfToken2,
+          "confirm_scopes[_csrf_token]": csrfToken,
           authorize: 1
         }
       });
@@ -283,6 +288,7 @@ export default class Bexio {
       throw new Error("Failed at step 4: accept the requested scopes");
     }
 
+    if (!res.headers.location || res.statusCode !== 302) throw Error('Something failed....')
     let responseURL = new URL(res.headers.location);
     return this.generateAccessToken({
       code: responseURL.searchParams.get("code") || "",
