@@ -43,8 +43,28 @@ export namespace ExpensesStatic {
     user_id: number;
     contact_id: number;
     tax_id: number;
-    amount: number;
+    amount: string;
     account_id: number;
+    mwst_type: 0 | 1 | 2;
+  }
+
+  export interface ExpenseOverwrite {
+    user_id: number;
+    contact_id: number;
+    tax_id: number;
+    amount: string;
+    account_id: number;
+    mwst_type: 0 | 1 | 2;
+    logopaper_id: number;
+    language_id: number;
+    bank_account_id: number;
+    currency_id: number;
+    nb_decimals_amount: number;
+    nb_decimals_price: number;
+    is_valid_from: number;
+    is_compact_view: boolean;
+    show_position_taxes: boolean;
+    payment_type_id: number;
   }
 
   export enum SearchParameters {
