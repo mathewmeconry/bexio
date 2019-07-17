@@ -109,10 +109,28 @@ workflows:
           requires:
             - test
           filters:
-              branches:
-                ignore: /.*/
-              tags:
-                only: /\d+\.\d+\.\d+/
+            branches:
+              ignore: /.*/
+            tags:
+              only: /\d+\.\d+\.\d+/
+      - pushToGit:
+          requires:
+            - publish
+  tag:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /\d+\.\d+\.\d+/
+      - test:
+          requires:
+            - build
+      - persistCache:
+          requires:
+            - build
+      - publish:
+          requires:
+            - test
       - pushToGit:
           requires:
             - publish
