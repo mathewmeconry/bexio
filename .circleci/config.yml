@@ -50,6 +50,7 @@ jobs:
           command: | 
             git config user.email "automated@circleci.com"
             git config user.name "CircleCI"
+      - run: git checkout master
       - run:
           name: set package version
           command: npm version $(git describe --tag)
