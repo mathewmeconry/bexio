@@ -105,24 +105,16 @@ workflows:
       - persistCache:
           requires:
             - build
-  publish:
-    jobs:
-        - build:
-            filters:
+      - publish:
+          requires:
+            - test
+          filters:
               branches:
                 ignore: /.*/
               tags:
                 only: /\d+\.\d+\.\d+/
-        - test:
-            requires:
-              - build
-        - persistCache:
-            requires:
-              - build
-        - publish:
-            requires:
-              - test
-        - pushToGit:
-            requires:
-              - publish
+      - pushToGit:
+          requires:
+            - publish
+
           
