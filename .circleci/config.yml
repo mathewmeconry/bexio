@@ -44,26 +44,6 @@ jobs:
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/project/.npmrc
-      - run:
-          name: set package version
-          command: npm version from-git
-      - run:
-          name: Publish package
-          command: npm publish
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./package.json
-  pushToGit:
-    docker:
-      - image: circleci/node:10
-    working_directory: ~/project
-    environment:
-      BASH_ENV: bash_env
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project/
       - add_ssh_keys
       - run:
           name: configure git
@@ -71,14 +51,15 @@ jobs:
             git config user.email "automated@circleci.com"
             git config user.name "CircleCI"
       - run:
-          name: commit
-          command: |
-            git add . 
-            git commit -m "[skip ci] bump version"
+          name: set package version
+          command: npm version $(git describe --tag)
       - run:
-          name: push to git
-          command: git push
-      
+          name: Publish package
+          command: npm publish
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./package.json
   persistCache:
     docker:
       - image: circleci/node:10
@@ -132,14 +113,6 @@ workflows:
       - publish:
           requires:
             - test
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /\d+\.\d+\.\d+/
-      - pushToGit:
-          requires:
-            - publish
           filters:
             branches:
               ignore: /.*/
