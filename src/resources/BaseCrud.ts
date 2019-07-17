@@ -104,11 +104,11 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * edit an existing ressource
    *
    * @param {number} id
-   * @param {Partial<Full>} ressource
+   * @param {Partial<Overwrite>} ressource
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
-  public async edit(id: number, ressource: Partial<Full>): Promise<Full> {
+  public async edit(id: number, ressource: Partial<Overwrite>): Promise<Full> {
     this.checkScope(this.editScope);
     return this.request<Full>(
       "POST",

@@ -49,6 +49,14 @@ describe("ContactTypes", function() {
     expect(contactType.name).include("type-");
   });
 
+  it("should return a not implemented error on creation", async () => {
+    try {
+      contactType = await moduleToTest.create({ name: `type-${Date.now()}` });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
+
   it("list contact types", async () => {
     const list = await moduleToTest.list({});
     expect(list.map(el => el.id)).includes(contactType.id);
@@ -80,6 +88,17 @@ describe("ContactTypes", function() {
     expect(overwritten.name).include("overwritten");
   });
 
+  it("should return a not implemented error on overwrite", async () => {
+    try {
+      const overwritten = await moduleToTest.overwrite(contactType.id, {
+        name: `overwritten-${Date.now()}`,
+        id: 1
+      });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
+
   it.skip("edit contact type (not implemented by Bexio yet)", async () => {
     const edited = await moduleToTest.edit(contactType.id, {
       name: `edited-${Date.now()}`
@@ -87,8 +106,26 @@ describe("ContactTypes", function() {
     expect(edited.name).include("edited-");
   });
 
+  it("should return a not implemented error on edit", async () => {
+    try {
+      const edited = await moduleToTest.edit(contactType.id, {
+        name: `edited-${Date.now()}`
+      });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
+
   it.skip("delete contact type (not implemented by Bexio yet)", async () => {
     const result = await moduleToTest.delete(contactType.id);
     expect(result).to.be.true;
+  });
+
+  it("should return a not implemented error on delete", async () => {
+    try {
+      const result = await moduleToTest.delete(contactType.id);
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
   });
 });

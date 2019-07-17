@@ -94,4 +94,12 @@ describe("ContactGroups", function() {
     const result = await moduleToTest.delete(contactGroup.id);
     expect(result).to.be.true;
   });
+
+  it("should return a not implemented error on delete", async () => {
+    try {
+      await moduleToTest.delete(contactGroup.id);
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
 });

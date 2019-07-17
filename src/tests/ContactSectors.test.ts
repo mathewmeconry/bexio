@@ -48,8 +48,19 @@ describe("ContactSectors", function() {
   });
 
   it.skip("create new contact sector (not implemented by Bexio yet)", async () => {
-    contactSector = { id: 1, name: `sector-${Date.now()}` };
+    contactSector = await moduleToTest.create({
+      id: 1,
+      name: `sector-${Date.now()}`
+    });
     expect(contactSector.name).include("sector-");
+  });
+
+  it("should return a not implemented error on creation", async () => {
+    try {
+      await moduleToTest.create({ id: 1, name: `sector-${Date.now()}` });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
   });
 
   it("list contact sectors", async () => {
@@ -83,6 +94,17 @@ describe("ContactSectors", function() {
     expect(overwritten.name).include("overwritten");
   });
 
+  it("should return a not implemented error on overwrite", async () => {
+    try {
+      const overwritten = await moduleToTest.overwrite(contactSector.id, {
+        name: `overwritten-${Date.now()}`,
+        id: 1
+      });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
+
   it.skip("edit contact sector (not implemented by Bexio yet)", async () => {
     const edited = await moduleToTest.edit(contactSector.id, {
       name: `edited-${Date.now()}`
@@ -90,8 +112,26 @@ describe("ContactSectors", function() {
     expect(edited.name).include("edited-");
   });
 
+  it("should return a not implemented error on edit", async () => {
+    try {
+      const edited = await moduleToTest.edit(contactSector.id, {
+        name: `edited-${Date.now()}`
+      });
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
+  });
+
   it.skip("delete contact sector (not implemented by Bexio yet)", async () => {
     const result = await moduleToTest.delete(contactSector.id);
     expect(result).to.be.true;
+  });
+
+  it("should return a not implemented error on deletion", async () => {
+    try {
+      const result = await moduleToTest.delete(contactSector.id);
+    } catch (err) {
+      expect(err.message).to.be.eq("not implemented by Bexio yet");
+    }
   });
 });

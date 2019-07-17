@@ -40,18 +40,54 @@ export namespace OrdersStatic {
   }
 
   export interface OrderFull extends OrderSmall {
-    positions: Position[];
+    positions: Array<CustomPosition | ArticlePosition>;
   }
 
   export interface OrderCreate {
     user_id: number;
     contact_id: number;
-    positions: Position[];
+    positions: Array<CustomPositionCreate | ArticlePositionCreate>;
+    logopaper_id: number;
+    language_id: number;
+    bank_account_id: number;
+    currency_id: number;
+    mwst_type: number;
+    nb_decimals_amount: number;
+    nb_decimals_price: number;
+    is_valid_from: number;
+    is_compact_view: boolean;
+    show_position_taxes: boolean;
+    payment_type_id: number;
+  }
+
+  export interface PositionCreate {
+    type: "KbPositionCustom" | "KbPositionArticle";
+    unit_price: string;
+    tax_id: number;
+    amount: string;
+    text?: string;
+    discount_in_percent?: number;
+    unit_id?: number;
+    is_optional: boolean;
+  }
+
+  export interface CustomPositionCreate extends PositionCreate {}
+
+  export interface CustomPosition extends Position {}
+
+  export interface ArticlePositionCreate extends PositionCreate {
+    type: "KbPositionArticle";
+    article_id: number;
+  }
+
+  export interface ArticlePosition extends Position {
+    type: "KbPositionArticle";
+    article_id: number;
   }
 
   export interface Position {
     id: number;
-    type: string;
+    type: "KbPositionArticle" | "KbPositionCustom";
     amount: string;
     unit_id?: number;
     account_id: number;

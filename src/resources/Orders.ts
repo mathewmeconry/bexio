@@ -9,7 +9,7 @@ export default class Orders extends BaseCrud<
   OrdersStatic.OrderSmall,
   OrdersStatic.OrderSearchParameters,
   OrdersStatic.OrderCreate,
-  OrdersStatic.OrderFull
+  OrdersStatic.OrderCreate
 > {
   constructor(bexioAuth: OAuth2) {
     super(bexioAuth, "/kb_order", Scopes.KB_ORDER_SHOW, Scopes.KB_ORDER_EDIT);

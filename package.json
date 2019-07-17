@@ -11,7 +11,7 @@
     "office.bexio.com"
   ],
   "scripts": {
-    "test": "nyc mocha --require ts-node/register --require source-map-support/register --recursive ./src/tests/Orders.test.ts --exit",
+    "test": "nyc mocha --require ts-node/register --require source-map-support/register --recursive ./src/tests/*.test.ts --exit",
     "build": "./node_modules/.bin/tsc",
     "prepare": "npm run build",
     "version": "git add -A src",
