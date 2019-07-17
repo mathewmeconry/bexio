@@ -1,0 +1,128 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/project
+    environment:
+      BASH_ENV: BASH_ENV
+    steps:
+      - checkout
+      - restore_cache:
+           keys:
+             - v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install npm modules
+          command: yarn
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules/
+  test:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/project
+    environment:
+      BASH_ENV: BASH_ENV
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project/
+      - run:
+          name: run tests
+          command: npm run test
+  publish:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/project
+    environment:
+      BASH_ENV: bash_env
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project/
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: set package version
+          command: npm version from-git
+      - run:
+          name: Publish package
+          command: npm publish
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./package.json
+  pushToGit:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/project
+    environment:
+      BASH_ENV: bash_env
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project/
+      - add_ssh_keys
+      - run:
+          name: configure git
+          command: | 
+            git config user.email "automated@circleci.com"
+            git config user.name "CircleCI"
+      - run:
+          name: commit
+          command: |
+            git add . 
+            git commit -m "[skip ci] bump version"
+      - run:
+          name: push to git
+          command: git push
+      
+  persistCache:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/project
+    environment:
+      BASH_ENV: bash_env
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project/
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - persistCache:
+          requires:
+            - build
+  publish:
+    jobs:
+        - build:
+            filters:
+              branches:
+                ignore: /.*/
+              tags:
+                only: /\d+\.\d+\.\d+/
+        - test:
+            requires:
+              - build
+        - persistCache:
+            requires:
+              - build
+        - publish:
+            requires:
+              - test
+        - pushToGit:
+            requires:
+              - publish
+          
