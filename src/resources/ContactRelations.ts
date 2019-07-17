@@ -8,7 +8,8 @@ export default class ContactRelations extends BaseCrud<
   ContactRelationsStatic.ContactRelation,
   ContactRelationsStatic.ContactRelation,
   ContactRelationsStatic.ContactRelationSearchParameters,
-  ContactRelationsStatic.ContactRelationCreate
+  ContactRelationsStatic.ContactRelationCreate,
+  ContactRelationsStatic.ContactRelationOverwrite
 > {
   constructor(bexioAuth: OAuth2) {
     super(

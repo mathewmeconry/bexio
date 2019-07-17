@@ -4,5 +4,5 @@ export namespace ContactTypesStatic {
     name: string;
   }
 
-  export type ContactTypeSearchParameters = "name";
+  export enum ContactTypeSearchParameters { name = 'name' }
 }

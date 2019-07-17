@@ -8,7 +8,8 @@ export default class Bills extends BaseCrud<
   BillsStatic.BillFull,
   BillsStatic.Bill,
   BillsStatic.SearchParameters,
-  BillsStatic.BillCreate
+  BillsStatic.BillCreate,
+  BillsStatic.BillOverwrite
 > {
   constructor(bexioAuth: OAuth2) {
     super(bexioAuth, "/kb_bill", Scopes.KB_BILL_SHOW, Scopes.KB_BILL_EDIT);

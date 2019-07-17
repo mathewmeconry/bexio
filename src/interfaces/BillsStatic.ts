@@ -20,8 +20,8 @@ export namespace BillsStatic {
     total_paid_payments: string;
     total_remaining_payments: string;
     total: string;
-    total_rounding_differnce: number;
-    mwst_type: number;
+    total_rounding_difference: number;
+    mwst_type: 0 | 1 | 2;
     mwst_is_net: boolean;
     show_position_taxes: boolean;
     is_valid_from: string;
@@ -72,22 +72,22 @@ export namespace BillsStatic {
     value: string;
   }
 
-  export interface SearchParameters {
-    id?: string;
-    kb_item_status_id?: string;
-    document_nr?: string;
-    title?: string;
-    contact_id?: string;
-    contact_sub_id?: string;
-    user_id?: string;
-    currency_id?: string;
-    total_gross?: string;
-    total_net?: string;
-    total?: string;
-    is_valid_from?: string;
-    is_valid_to?: string;
-    is_valid_until?: string;
-    updated_at?: string;
+  export enum SearchParameters {
+    id = 'id',
+    kb_item_status_id = 'kb_item_status_id',
+    document_nr = 'document_nr',
+    title = 'title',
+    contact_id = 'contact_id',
+    contact_sub_id = 'contact_sub_id',
+    user_id = 'user_id',
+    currency_id = 'currency_id',
+    total_gross = 'total_gross',
+    total_net = 'total_net',
+    total = 'total',
+    is_valid_from = 'is_valid_from',
+    is_valid_to = 'is_valid_to',
+    is_valid_until = 'is_valid_until',
+    updated_at = 'updated_at',
   }
 
   export interface Position {
@@ -114,18 +114,16 @@ export namespace BillsStatic {
     unit_price: string;
     tax_id: number;
     amount: string;
-    account_id: number
+    account_id: number;
     text?: string;
-    discount_in_percent?: number
-    unit_id?: number
+    discount_in_percent?: number;
+    unit_id?: number;
   }
 
   export interface CustomPositionCreate extends PositionCreate {
-    type: "KbPositionCustom";
   }
 
   export interface CustomPosition extends Position {
-    type: "KbPositionCustom";
   }
 
   export interface ArticlePositionCreate extends PositionCreate {
@@ -137,4 +135,48 @@ export namespace BillsStatic {
     type: "KbPositionArticle";
     article_id: number;
   }
+
+  export interface BillOverwrite {
+    contact_id: number;
+    user_id: number;
+    api_reference: string;
+    bank_account_id: number;
+    contact_address_id?: number;
+    contact_address_manual?: string;
+    contact_sub_id: number;
+    currency_id: number;
+    footer: string;
+    header: string;
+    is_valid_from: string;
+    is_valid_to: string;
+    language_id: number;
+    logopaper_id: number;
+    mwst_is_net: boolean;
+    mwst_type: 0 | 1 | 2;
+    show_position_taxes: boolean;
+    title: string;
+    positions: Array<CustomPositionOverwrite | ArticlePositionOverwrite>;
+    nb_decimals_amount: number,
+    nb_decimals_price: number,
+    is_compact_view: boolean,
+    payment_type_id: number
+  }
+
+  export interface PositionOverwrite {
+    type: "KbPositionCustom" | "KbPositionArticle";
+    unit_price: string;
+    tax_id: number;
+    amount: string;
+    account_id: number;
+    text: string;
+  }
+
+  export interface ArticlePositionOverwrite extends PositionOverwrite {
+    type: "KbPositionArticle";
+    article_id: number;
+  }
+
+  export interface CustomPositionOverwrite extends PositionOverwrite {
+  }
+
 }

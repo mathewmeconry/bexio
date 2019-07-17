@@ -43,24 +43,45 @@ export namespace ExpensesStatic {
     user_id: number;
     contact_id: number;
     tax_id: number;
-    amount: number;
+    amount: string;
     account_id: number;
+    mwst_type: 0 | 1 | 2;
   }
 
-  export type SearchParameters =
-    | "id"
-    | "kb_item_status_id"
-    | "document_nr"
-    | "title"
-    | "contact_id"
-    | "contact_sub_id"
-    | "user_id"
-    | "currency_id"
-    | "total_gross"
-    | "total_net"
-    | "total"
-    | "is_valid_from"
-    | "is_valid_to"
-    | "is_valid_until"
-    | "updated_at";
+  export interface ExpenseOverwrite {
+    user_id: number;
+    contact_id: number;
+    tax_id: number;
+    amount: string;
+    account_id: number;
+    mwst_type: 0 | 1 | 2;
+    logopaper_id: number;
+    language_id: number;
+    bank_account_id: number;
+    currency_id: number;
+    nb_decimals_amount: number;
+    nb_decimals_price: number;
+    is_valid_from: number;
+    is_compact_view: boolean;
+    show_position_taxes: boolean;
+    payment_type_id: number;
+  }
+
+  export enum SearchParameters {
+    id = "id",
+    kb_item_status_id = "kb_item_status_id",
+    document_nr = "document_nr",
+    title = "title",
+    contact_id = "contact_id",
+    contact_sub_id = "contact_sub_id",
+    user_id = "user_id",
+    currency_id = "currency_id",
+    total_gross = "total_gross",
+    total_net = "total_net",
+    total = "total",
+    is_valid_from = "is_valid_from",
+    is_valid_to = "is_valid_to",
+    is_valid_until = "is_valid_until",
+    updated_at = "updated_at"
+  }
 }

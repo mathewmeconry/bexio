@@ -18,15 +18,14 @@ export namespace CalendarStatic {
     is_private: boolean;
   }
 
-  export interface SearchParameters {
-    event_start?: string;
-    event_end?: string;
-    contact_id?: string;
-    user_id?: string;
-    subject?: string;
-    place?: string;
-    module_id?: string;
-    entry_id?: string;
-    [index: string]: string | undefined;
+  export enum SearchParameters {
+    event_start = 'event_start',
+    event_end = 'event_end',
+    contact_id = 'contact_id',
+    user_id = 'user_id',
+    subject = 'subject',
+    place = 'place',
+    module_id = 'module_id',
+    entry_id = 'entry_id'
   }
 }

@@ -8,8 +8,9 @@ export default class ContactGroups extends BaseCrud<
   ContactGroupsStatic.ContactGroup,
   ContactGroupsStatic.ContactGroup,
   ContactGroupsStatic.ContactGroupSearchParameters,
-  ContactGroupsStatic.ContactGroupCreate
-> {
+  ContactGroupsStatic.ContactGroupCreate,
+  ContactGroupsStatic.ContactGroup
+  > {
   constructor(bexioAuth: OAuth2) {
     super(
       bexioAuth,
@@ -17,5 +18,16 @@ export default class ContactGroups extends BaseCrud<
       Scopes.CONTACT_SHOW,
       Scopes.CONTACT_EDIT
     );
+  }
+
+  /**
+   * Not implemented by Bexio yet
+   * 
+   * @param {number} id
+   * @returns {Promise<boolean>}
+   * @memberof ContactGroups
+   */
+  public async delete(id: number): Promise<boolean> {
+    throw new Error('not implemented by Bexio yet')
   }
 }
