@@ -1,16 +1,12 @@
 # Bexio
 [![Dependencies](https://david-dm.org/mathewmeconry/bexio/status.svg)](https://david-dm.org/mathewmeconry/bexio)
 [![Known Vulnerabilities](https://snyk.io/test/npm/bexio/badge.svg)](https://snyk.io/test/npm/bexio)
-
+[![CircleCI](https://circleci.com/gh/mathewmeconry/bexio/tree/master.svg?style=svg)](https://circleci.com/gh/mathewmeconry/bexio/tree/master)
 
 ## Description
 **Basic build and NPM-Package is in ES6!**
 
 NPM Package for the API of [Bexio](https://www.bexio.com)
-
-## Version 0.1
-This version is a complete refactor (I know quite early for a complete refactor but it had to be done).  
-NO BACKWARDCOMPATIBILITY FOR < v0.1
 
 ## Typings
 The typings for the module are already included in the package
