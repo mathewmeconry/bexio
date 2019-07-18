@@ -10,18 +10,22 @@ import Bills from "./resources/Bills";
 import Orders from "./resources/Orders";
 import request from "request-promise-native";
 import { CookieJar } from "request";
+import Timetrackings from "./resources/Timetrackings";
+import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 
-export * from './interfaces/BillsStatic'
-export * from './interfaces/CalendarStatic'
-export * from './interfaces/ContactGroupsStatic'
-export * from './interfaces/ContactRelationsStatic'
-export * from './interfaces/ContactSectorsStatic'
-export * from './interfaces/ContactTypesStatic'
-export * from './interfaces/ContactsStatic'
-export * from './interfaces/ExpensesStatic'
-export * from './interfaces/NotesStatic'
-export * from './interfaces/OrdersStatic'
-export * from './interfaces/SalesOrderManagementStatic'
+export * from "./interfaces/BillsStatic";
+export * from "./interfaces/CalendarStatic";
+export * from "./interfaces/ContactGroupsStatic";
+export * from "./interfaces/ContactRelationsStatic";
+export * from "./interfaces/ContactSectorsStatic";
+export * from "./interfaces/ContactTypesStatic";
+export * from "./interfaces/ContactsStatic";
+export * from "./interfaces/ExpensesStatic";
+export * from "./interfaces/NotesStatic";
+export * from "./interfaces/OrdersStatic";
+export * from "./interfaces/SalesOrderManagementStatic";
+export * from "./interfaces/TimetrackingsStatic";
+export * from "./interfaces/TimetrackingStatusesStatic";
 export { Scopes };
 
 export default class Bexio {
@@ -44,6 +48,10 @@ export default class Bexio {
   public orders: Orders;
   public expenses: Expenses;
   public bills: Bills;
+
+  // Timesheets
+  public timetrackings: Timetrackings;
+  public timetrackingStatuses: TimetrackingStatuses;
 
   constructor(
     clientId: string,
@@ -75,6 +83,8 @@ export default class Bexio {
     this.orders = new Orders(this.bexioAuth);
     this.expenses = new Expenses(this.bexioAuth);
     this.bills = new Bills(this.bexioAuth);
+    this.timetrackings = new Timetrackings(this.bexioAuth);
+    this.timetrackingStatuses = new TimetrackingStatuses(this.bexioAuth);
   }
 
   /**
@@ -206,7 +216,7 @@ export default class Bexio {
     let res: request.FullResponse;
 
     // step 1: Grab the cookies and go the login form
-    const authUrl = this.getAuthUrl()
+    const authUrl = this.getAuthUrl();
     try {
       res = await request({
         uri: authUrl,
@@ -269,11 +279,18 @@ export default class Bexio {
     // step 4: accept the scopes
     let csrfRegex = /value="(\S+)".+id="confirm_scopes__csrf_token"/gm;
     csrfToken = (csrfRegex.exec(res.body) || [])[1];
-    if (!csrfToken) throw new Error("Failed at step 3: perform the necessary SAML stuff");
+    if (!csrfToken)
+      throw new Error("Failed at step 3: perform the necessary SAML stuff");
 
     try {
       res = await request({
-        uri: `https://office.bexio.com/index.php/oauth/authorize?client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${this.scopes.join('+')}&state=${new URL(authUrl).searchParams.get('state')}&is_mobile=0&is_ios=0&response_type=code`,
+        uri: `https://office.bexio.com/index.php/oauth/authorize?client_id=${
+          this.clientId
+        }&redirect_uri=${encodeURIComponent(
+          this.redirectUri
+        )}&scope=${this.scopes.join("+")}&state=${new URL(
+          authUrl
+        ).searchParams.get("state")}&is_mobile=0&is_ios=0&response_type=code`,
         method: "POST",
         jar: cookieJar,
         simple: false,
@@ -288,7 +305,8 @@ export default class Bexio {
       throw new Error("Failed at step 4: accept the requested scopes");
     }
 
-    if (!res.headers.location || res.statusCode !== 302) throw Error('Something failed....')
+    if (!res.headers.location || res.statusCode !== 302)
+      throw Error("Something failed....");
     let responseURL = new URL(res.headers.location);
     return this.generateAccessToken({
       code: responseURL.searchParams.get("code") || "",
