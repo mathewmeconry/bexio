@@ -1,8 +1,8 @@
 import Bexio, { Scopes } from "..";
 import { expect } from "chai";
 import dotenv from "dotenv";
-import Timetracking from "../resources/Timetracking";
-import { TimetrackingStatic } from "../interfaces/TimetrackingStatic";
+import Timetrackings from "../resources/Timetrackings";
+import { TimetrackingsStatic } from "../interfaces/TimetrackingsStatic";
 
 dotenv.config();
 
@@ -11,8 +11,8 @@ describe("Timetracking", function() {
   this.timeout(60000);
 
   let api: Bexio;
-  let moduleToTest: Timetracking;
-  let timetrackingEntry: TimetrackingStatic.TimetrackingFull;
+  let moduleToTest: Timetrackings;
+  let timetrackingEntry: TimetrackingsStatic.TimetrackingsFull;
   const {
     BEXIO_CLIENTID,
     BEXIO_CLIENTSECRET,
@@ -40,8 +40,8 @@ describe("Timetracking", function() {
     await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
   });
 
-  it("init bill timetracking", () => {
-    moduleToTest = new Timetracking(api["bexioAuth"]);
+  it("init timetracking", () => {
+    moduleToTest = new Timetrackings(api["bexioAuth"]);
   });
 
   it("create new timetracking entry", async () => {
@@ -66,7 +66,7 @@ describe("Timetracking", function() {
   it("search timetracking entry", async () => {
     const searchResult = await moduleToTest.search({}, [
       {
-        field: TimetrackingStatic.TimetrackingSearchParameters.id,
+        field: TimetrackingsStatic.TimetrackingsSearchParameters.id,
         value: timetrackingEntry.id,
         operator: "="
       }

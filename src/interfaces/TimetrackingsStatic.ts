@@ -1,5 +1,5 @@
-export namespace TimetrackingStatic {
-  export interface TimetrackingSmall {
+export namespace TimetrackingsStatic {
+  export interface TimetrackingsSmall {
     id: number;
     user_id: number;
     status_id?: number;
@@ -21,7 +21,7 @@ export namespace TimetrackingStatic {
     running: boolean;
   }
 
-  export enum TimetrackingSearchParameters {
+  export enum TimetrackingsSearchParameters {
     id = "id",
     client_service_id = "client_service_id",
     contact_id = "contact_id",
@@ -30,21 +30,21 @@ export namespace TimetrackingStatic {
     status_id = "status_id"
   }
 
-  export interface TimetrackingFull extends TimetrackingSmall {
-    tracking: TimetrackingTrackingRecord;
+  export interface TimetrackingsFull extends TimetrackingsSmall {
+    tracking: TimetrackingsTrackingRecord;
   }
 
-  export interface TimetrackingTrackingRecord {
+  export interface TimetrackingsTrackingRecord {
     type: "duration" | "range";
     date: string;
     duration: string;
   }
 
-  export interface TimetrackingCreate {
+  export interface TimetrackingsCreate {
     user_id: number;
     client_service_id: number;
     allowable_bill: boolean;
-    tracking: TimetrackingTrackingRecord;
+    tracking: TimetrackingsTrackingRecord;
     charge?: boolean;
     contact_id?: number;
     estimated_time?: string;
@@ -56,7 +56,7 @@ export namespace TimetrackingStatic {
     text?: string;
   }
 
-  export interface TimetrackingEdit {
+  export interface TimetrackingsEdit {
     allowable_bill?: boolean;
     charge?: number;
     client_service_id?: number;
@@ -68,7 +68,7 @@ export namespace TimetrackingStatic {
     status_id?: number;
     sub_contact_id?: number;
     text?: string;
-    tracking?: TimetrackingTrackingRecord
+    tracking?: TimetrackingsTrackingRecord
     user_id?: number;
   }
 }
