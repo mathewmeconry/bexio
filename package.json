@@ -1,6 +1,6 @@
 {
   "name": "bexio",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "NPM Package for the api of bexio.com",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
