@@ -4,10 +4,10 @@ import OAuth2 from "../libs/OAuth2";
 import request from "request-promise-native";
 
 export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite> {
-  private bexioAuth: OAuth2;
-  private apiEndpoint: string;
-  private showScope: Scopes;
-  private editScope: Scopes;
+  protected bexioAuth: OAuth2;
+  protected apiEndpoint: string;
+  protected showScope: Scopes;
+  protected editScope: Scopes;
 
   constructor(
     bexioAuth: OAuth2,

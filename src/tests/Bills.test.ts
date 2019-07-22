@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-describe("Bills", function() {
+describe("Bills", function () {
   // increasing timeout to 60s
   this.timeout(60000);
 
@@ -146,4 +146,14 @@ describe("Bills", function() {
     const result = await moduleToTest.delete(bill.id);
     expect(result).to.be.true;
   });
+
+  it("issue bill", async () => {
+    const result = await moduleToTest.issue(bill.id)
+    expect(result.success).to.be.true
+  })
+
+  it("revert issue bill", async () => {
+    const result = await moduleToTest.revertIssue(bill.id)
+    expect(result.success).to.be.true
+  })
 });
