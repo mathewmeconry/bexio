@@ -76,7 +76,7 @@ describe("TimetrackingStatuses", function() {
         field:
           TimetrackingStatusesStatic.TimetrackingStatusesSearchparameters.name,
         value: timetrackingStatusEntry.name,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.greaterThan(0);

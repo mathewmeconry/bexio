@@ -65,7 +65,7 @@ describe("Expenses", function() {
       {
         field: ExpensesStatic.SearchParameters.id,
         value: expense.id,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

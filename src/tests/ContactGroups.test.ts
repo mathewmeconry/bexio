@@ -62,7 +62,7 @@ describe("ContactGroups", function() {
       {
         field: ContactGroupsStatic.ContactGroupSearchParameters.name,
         value: contactGroup.name,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);
