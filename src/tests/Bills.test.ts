@@ -142,6 +142,16 @@ describe("Bills", function() {
     expect(edited.title).to.be.eq(`edit-${bill.title}`);
   });
 
+  it("issue bill", async () => {
+    const result = await moduleToTest.issue(bill.id);
+    expect(result.success).to.be.true;
+  });
+
+  it("revert issue bill", async () => {
+    const result = await moduleToTest.revertIssue(bill.id);
+    expect(result.success).to.be.true;
+  });
+
   it("delete bill", async () => {
     const result = await moduleToTest.delete(bill.id);
     expect(result).to.be.true;
