@@ -67,7 +67,7 @@ describe("Contacts", function() {
       {
         field: ContactsStatic.ContactSearchParameters.id,
         value: contact.id,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

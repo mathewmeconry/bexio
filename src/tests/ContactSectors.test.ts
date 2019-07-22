@@ -73,7 +73,7 @@ describe("ContactSectors", function() {
       {
         field: ContactSectorsStatic.ContactSectorSearchParameters.name,
         value: contactSector.name,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

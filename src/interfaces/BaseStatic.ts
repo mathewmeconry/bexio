@@ -6,7 +6,7 @@ export namespace BaseStatic {
     content: string;
   }
 
-  export type SearchOperator =
+  export type SearchCriteria =
     | "="
     | "!="
     | ">"
@@ -27,7 +27,7 @@ export namespace BaseStatic {
   export interface SearchParameter<T> {
     field: T;
     value: any;
-    operator: SearchOperator;
+    criteria?: SearchCriteria;
   }
 
   export interface BaseOptions {

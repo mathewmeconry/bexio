@@ -84,7 +84,7 @@ describe("Orders", function() {
       {
         field: OrdersStatic.OrderSearchParameters.id,
         value: order.id,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

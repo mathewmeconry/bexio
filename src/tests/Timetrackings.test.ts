@@ -68,7 +68,7 @@ describe("Timetracking", function() {
       {
         field: TimetrackingsStatic.TimetrackingsSearchParameters.id,
         value: timetrackingEntry.id,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

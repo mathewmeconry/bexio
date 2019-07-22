@@ -65,7 +65,7 @@ describe("ContactRelations", function() {
         field:
           ContactRelationsStatic.ContactRelationSearchParameters.contact_id,
         value: 1,
-        operator: "="
+        criteria: "="
       }
     ]);
     expect(searchResult.length).to.be.eq(1);

@@ -77,7 +77,7 @@ describe("Bills", function() {
 
   it("search bill", async () => {
     const searchResult = await moduleToTest.search({}, [
-      { field: BillsStatic.SearchParameters.id, value: bill.id, operator: "=" }
+      { field: BillsStatic.SearchParameters.id, value: bill.id, criteria: "=" }
     ]);
     expect(searchResult.length).to.be.eq(1);
     expect(searchResult[0].id).to.be.eq(bill.id);
