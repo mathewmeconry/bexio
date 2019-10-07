@@ -8,6 +8,7 @@ import ContactRelations from "./resources/ContactRelations";
 import Expenses from "./resources/Expenses";
 import Bills from "./resources/Bills";
 import Orders from "./resources/Orders";
+import Projects from "./resources/Projects";
 import request from "request-promise-native";
 import { CookieJar } from "request";
 import Timetrackings from "./resources/Timetrackings";
@@ -23,6 +24,7 @@ export * from "./interfaces/ContactsStatic";
 export * from "./interfaces/ExpensesStatic";
 export * from "./interfaces/NotesStatic";
 export * from "./interfaces/OrdersStatic";
+export * from "./interfaces/ProjectsStatic";
 export * from "./interfaces/SalesOrderManagementStatic";
 export * from "./interfaces/TimetrackingsStatic";
 export * from "./interfaces/TimetrackingStatusesStatic";
@@ -48,6 +50,8 @@ export default class Bexio {
   public orders: Orders;
   public expenses: Expenses;
   public bills: Bills;
+
+  public projects: Projects;
 
   // Timesheets
   public timetrackings: Timetrackings;
@@ -81,6 +85,7 @@ export default class Bexio {
     this.contactGroups = new ContactGroups(this.bexioAuth);
     this.contactRelations = new ContactRelations(this.bexioAuth);
     this.orders = new Orders(this.bexioAuth);
+    this.projects = new Projects(this.bexioAuth);
     this.expenses = new Expenses(this.bexioAuth);
     this.bills = new Bills(this.bexioAuth);
     this.timetrackings = new Timetrackings(this.bexioAuth);

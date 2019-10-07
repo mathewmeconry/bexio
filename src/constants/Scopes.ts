@@ -23,6 +23,8 @@ enum Scopes {
     MONITORING_EDIT = 'monitoring_edit',
     NOTE_SHOW = 'note_show',
     NOTE_EDIT = 'note_edit',
+    PROJECT_SHOW = 'project_show',
+    PROJECT_EDIT = 'project_edit',
     TASK_SHOW = 'task_show',
     TASK_EDIT = 'task_edit',
     GENERAL = 'general'
