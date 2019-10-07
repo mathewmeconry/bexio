@@ -64,8 +64,8 @@ describe("Projects", function() {
   it("search project", async () => {
     const searchResult = await moduleToTest.search({}, [
       {
-        field: ProjectsStatic.ProjectSearchParameters.id,
-        value: project.id,
+        field: ProjectsStatic.ProjectSearchParameters.name,
+        value: project.name,
         criteria: "="
       }
     ]);
