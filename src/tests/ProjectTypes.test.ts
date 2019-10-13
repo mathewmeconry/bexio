@@ -12,7 +12,7 @@ describe("ProjectTypes", function() {
 
   let api: Bexio;
   let moduleToTest: ProjectTypes;
-  let projectType: ProjectTypesStatic.ProjectType = { id: 1, name: "Client work" };
+  let projectType: ProjectTypesStatic.ProjectType = { id: 1, name: "Internes Projekt" };
   const {
     BEXIO_CLIENTID,
     BEXIO_CLIENTSECRET,
