@@ -1,5 +1,6 @@
 import Scopes from "./constants/Scopes";
 import OAuth2, { AuthorizationResponse } from "./libs/OAuth2";
+import BusinessActivities from "./resources/BusinessActivities";
 import Contacts from "./resources/Contacts";
 import ContactTypes from "./resources/ContactTypes";
 import ContactSectors from "./resources/ContactSectors";
@@ -18,6 +19,7 @@ import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/CalendarStatic";
+export * from "./interfaces/BusinessActivitiesStatic";
 export * from "./interfaces/ContactGroupsStatic";
 export * from "./interfaces/ContactRelationsStatic";
 export * from "./interfaces/ContactSectorsStatic";
@@ -43,6 +45,9 @@ export default class Bexio {
   private bexioAuth: OAuth2;
 
   // Resources
+  // Client Services
+  public businessActivities: BusinessActivities;
+
   // Contacts
   public contacts: Contacts;
   public contactTypes: ContactTypes;
@@ -86,6 +91,7 @@ export default class Bexio {
     );
 
     // Init resources
+    this.businessActivities = new BusinessActivities(this.bexioAuth);
     this.contacts = new Contacts(this.bexioAuth);
     this.contactTypes = new ContactTypes(this.bexioAuth);
     this.contactSectors = new ContactSectors(this.bexioAuth);
