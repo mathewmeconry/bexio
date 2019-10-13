@@ -1,5 +1,6 @@
 import Scopes from "./constants/Scopes";
 import OAuth2, { AuthorizationResponse } from "./libs/OAuth2";
+import BusinessActivities from "./resources/BusinessActivities";
 import Contacts from "./resources/Contacts";
 import ContactTypes from "./resources/ContactTypes";
 import ContactSectors from "./resources/ContactSectors";
@@ -8,12 +9,16 @@ import ContactRelations from "./resources/ContactRelations";
 import Expenses from "./resources/Expenses";
 import Bills from "./resources/Bills";
 import Orders from "./resources/Orders";
+import Projects from "./resources/Projects";
+import ProjectStatuses from "./resources/ProjectStatuses";
+import ProjectTypes from "./resources/ProjectTypes";
 import request from "request-promise-native";
 import { CookieJar } from "request";
 import Timetrackings from "./resources/Timetrackings";
 import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 
 export * from "./interfaces/BillsStatic";
+export * from "./interfaces/BusinessActivitiesStatic";
 export * from "./interfaces/CalendarStatic";
 export * from "./interfaces/ContactGroupsStatic";
 export * from "./interfaces/ContactRelationsStatic";
@@ -23,6 +28,9 @@ export * from "./interfaces/ContactsStatic";
 export * from "./interfaces/ExpensesStatic";
 export * from "./interfaces/NotesStatic";
 export * from "./interfaces/OrdersStatic";
+export * from "./interfaces/ProjectsStatic";
+export * from "./interfaces/ProjectStatusesStatic";
+export * from "./interfaces/ProjectTypesStatic";
 export * from "./interfaces/SalesOrderManagementStatic";
 export * from "./interfaces/TimetrackingsStatic";
 export * from "./interfaces/TimetrackingStatusesStatic";
@@ -37,6 +45,9 @@ export default class Bexio {
   private bexioAuth: OAuth2;
 
   // Resources
+  // Business Activities
+  public businessActivities: BusinessActivities;
+
   // Contacts
   public contacts: Contacts;
   public contactTypes: ContactTypes;
@@ -48,6 +59,11 @@ export default class Bexio {
   public orders: Orders;
   public expenses: Expenses;
   public bills: Bills;
+
+  // Projects
+  public projects: Projects;
+  public projectStatuses: ProjectStatuses;
+  public projectTypes: ProjectTypes;
 
   // Timesheets
   public timetrackings: Timetrackings;
@@ -75,12 +91,16 @@ export default class Bexio {
     );
 
     // Init resources
+    this.businessActivities = new BusinessActivities(this.bexioAuth);
     this.contacts = new Contacts(this.bexioAuth);
     this.contactTypes = new ContactTypes(this.bexioAuth);
     this.contactSectors = new ContactSectors(this.bexioAuth);
     this.contactGroups = new ContactGroups(this.bexioAuth);
     this.contactRelations = new ContactRelations(this.bexioAuth);
     this.orders = new Orders(this.bexioAuth);
+    this.projects = new Projects(this.bexioAuth);
+    this.projectStatuses = new ProjectStatuses(this.bexioAuth);
+    this.projectTypes = new ProjectTypes(this.bexioAuth);
     this.expenses = new Expenses(this.bexioAuth);
     this.bills = new Bills(this.bexioAuth);
     this.timetrackings = new Timetrackings(this.bexioAuth);
