@@ -35,7 +35,7 @@ describe("BusinessActivities", function() {
       BEXIO_CLIENTID,
       BEXIO_CLIENTSECRET,
       `http://${HOSTNAME}/callback`,
-      [Scopes.PROJECT_SHOW, Scopes.PROJECT_EDIT]
+      [Scopes.GENERAL, Scopes.GENERAL]
     );
     await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
   });
@@ -48,7 +48,6 @@ describe("BusinessActivities", function() {
     const name = `test-${Date.now()}`;
     businessActivities = await moduleToTest.create({
       name: name,
-      account_id: 1,
       default_is_billable: false,
       default_price_per_hour: "10.50"
     });
