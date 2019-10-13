@@ -14,9 +14,9 @@ export default class Users extends BaseCrud<
   constructor(bexioAuth: OAuth2) {
     super(
       bexioAuth,
-      "/timesheet_status",
-      Scopes.MONITORING_SHOW,
-      Scopes.MONITORING_EDIT
+      "/user",
+      Scopes.GENERAL,
+      Scopes.GENERAL
     );
   }
 
@@ -25,13 +25,13 @@ export default class Users extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<UsersStatic.UserSmall>}
+   * @returns {Promise<UsersStatic.UserFull>}
    * @memberof Users
    */
   public async overwrite(
     id: number,
     ressource: {}
-  ): Promise<UsersStatic.UserSmall> {
+  ): Promise<UsersStatic.UserFull> {
     throw new Error("not implemented by Bexio yet");
   }
 
@@ -40,13 +40,13 @@ export default class Users extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<UsersStatic.UserSmall>}
+   * @returns {Promise<UsersStatic.UserFull>}
    * @memberof Users
    */
   public async edit(
     id: number,
     ressource: {}
-  ): Promise<UsersStatic.UserSmall> {
+  ): Promise<UsersStatic.UserFull> {
     throw new Error("not implemented by Bexio yet");
   }
 
@@ -54,11 +54,11 @@ export default class Users extends BaseCrud<
    * Not implemented by Bexio yet
    *
    * @param {{}} ressource
-   * @returns {Promise<UsersStatic.UserSmall>}
+   * @returns {Promise<UsersStatic.UserFull>}
    * @memberof Users
    */
   public async create(ressource: {}): Promise<
-    UsersStatic.UserSmall
+    UsersStatic.UserFull
   > {
     throw new Error("not implemented by Bexio yet");
   }

@@ -35,7 +35,7 @@ describe("Users", function() {
       BEXIO_CLIENTID,
       BEXIO_CLIENTSECRET,
       `http://${HOSTNAME}/callback`,
-      [Scopes.MONITORING_EDIT, Scopes.MONITORING_SHOW]
+      [Scopes.GENERAL, Scopes.GENERAL]
     );
     await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
   });
@@ -53,8 +53,8 @@ describe("Users", function() {
   it("should return a not implemented error on creation", async () => {
     user = {
       id: 1,
-      firstname: "Alice",
-      lastname: "Bob",
+      firstname: "Mathias",
+      lastname: "Scherer",
       is_superadmin: false,
       color: "#ff00ff"
     };
@@ -67,13 +67,12 @@ describe("Users", function() {
     }
   });
 
-  it("list useres", async () => {
+  it("list users", async () => {
     const list = await moduleToTest.list({});
     expect(list.map(el => el.id)).includes(user.id);
   });
 
-  // search is currently broken on bexio side
-  it.skip("search users", async () => {
+  it("search users", async () => {
     const searchResult = await moduleToTest.search({}, [
       {
         field:
