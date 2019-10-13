@@ -20,7 +20,7 @@ export default class ProjectTypes extends BaseCrud<
    * Not implemented by Bexio yet
    *
    * @param {{}} ressource
-   * @returns {Promise<ProjectTypesStatic.ProjectSector>}
+   * @returns {Promise<ProjectTypesStatic.ProjectType>}
    * @memberof ProjectTypes
    */
   public async create(ressource: {}): Promise<ProjectTypesStatic.ProjectType> {
@@ -32,7 +32,7 @@ export default class ProjectTypes extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<ProjectTypesStatic.ProjectSector>}
+   * @returns {Promise<ProjectTypesStatic.ProjectType>}
    * @memberof ProjectTypes
    */
   public async edit(id: number, ressource: {}): Promise<ProjectTypesStatic.ProjectType> {
@@ -44,7 +44,7 @@ export default class ProjectTypes extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<ProjectTypesStatic.ProjectSector>}
+   * @returns {Promise<ProjectTypesStatic.ProjectType>}
    * @memberof ProjectTypes
    */
   public async overwrite(id: number, ressource: {}): Promise<ProjectTypesStatic.ProjectType> {

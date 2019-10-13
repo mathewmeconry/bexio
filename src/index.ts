@@ -18,8 +18,8 @@ import Timetrackings from "./resources/Timetrackings";
 import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 
 export * from "./interfaces/BillsStatic";
-export * from "./interfaces/CalendarStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
+export * from "./interfaces/CalendarStatic";
 export * from "./interfaces/ContactGroupsStatic";
 export * from "./interfaces/ContactRelationsStatic";
 export * from "./interfaces/ContactSectorsStatic";
@@ -45,7 +45,7 @@ export default class Bexio {
   private bexioAuth: OAuth2;
 
   // Resources
-  // Client Services
+  // Business Activities
   public businessActivities: BusinessActivities;
 
   // Contacts
