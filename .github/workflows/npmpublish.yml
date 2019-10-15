@@ -1,9 +1,9 @@
-name: Node.js Package
+name: Publish Package
 
 on:
-  push:
-    tags:
-      - "*.*.*"
+  release:
+    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
+    types: [published]
 
 jobs:
   build:
