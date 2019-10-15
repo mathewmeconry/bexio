@@ -16,6 +16,7 @@ import request from "request-promise-native";
 import { CookieJar } from "request";
 import Timetrackings from "./resources/Timetrackings";
 import TimetrackingStatuses from "./resources/TimetrackingStatuses";
+import Users from "./resources/Users";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
@@ -34,6 +35,7 @@ export * from "./interfaces/ProjectTypesStatic";
 export * from "./interfaces/SalesOrderManagementStatic";
 export * from "./interfaces/TimetrackingsStatic";
 export * from "./interfaces/TimetrackingStatusesStatic";
+export * from "./interfaces/UsersStatic";
 export { Scopes };
 
 export default class Bexio {
@@ -68,6 +70,9 @@ export default class Bexio {
   // Timesheets
   public timetrackings: Timetrackings;
   public timetrackingStatuses: TimetrackingStatuses;
+
+  // Users
+  public users: Users;
 
   constructor(
     clientId: string,
@@ -105,6 +110,7 @@ export default class Bexio {
     this.bills = new Bills(this.bexioAuth);
     this.timetrackings = new Timetrackings(this.bexioAuth);
     this.timetrackingStatuses = new TimetrackingStatuses(this.bexioAuth);
+    this.users = new Users(this.bexioAuth);
   }
 
   /**
