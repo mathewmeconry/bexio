@@ -30,3 +30,4 @@ jobs:
         BEXIO_HOSTNAME: ${{ secrets.BEXIO_HOSTNAME }}
         BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
         BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
+        HOSTNAME: "127.0.0.1"
