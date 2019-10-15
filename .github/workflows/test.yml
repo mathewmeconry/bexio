@@ -24,8 +24,8 @@ jobs:
         npm test
       env:
         CI: true
-        BEXIO_CLIENTID: ${{ secret.BEXIO_CLIENTID }}
-        BEXIO_CLIENTSECRET: ${{ secret.BEXIO_CLIENTSECRET }}
-        BEXIO_HOSTNAME: ${{ secret.BEXIO_HOSTNAME }}
-        BEXIO_PASSWORD: ${{ secret.BEXIO_PASSWORD }}
-        BEXIO_USERNAME: ${{ secret.BEXIO_USERNAME }}
+        BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
+        BEXIO_CLIENTSECRET: ${{ secrets.BEXIO_CLIENTSECRET }}
+        BEXIO_HOSTNAME: ${{ secrets.BEXIO_HOSTNAME }}
+        BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
+        BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
