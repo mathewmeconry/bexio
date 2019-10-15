@@ -1,0 +1,33 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: install
+      run: npm install
+    - name: build
+      run: npm build
+    - name: test
+      run: npm test
+      env:
+        CI: true
+        BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
+        BEXIO_CLIENTSECRET: ${{ secrets.BEXIO_CLIENTSECRET }}
+        BEXIO_HOSTNAME: ${{ secrets.BEXIO_HOSTNAME }}
+        BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
+        BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
+        HOSTNAME: "127.0.0.1"
