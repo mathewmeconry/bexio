@@ -1,7 +1,8 @@
 # Bexio
 [![Dependencies](https://david-dm.org/mathewmeconry/bexio/status.svg)](https://david-dm.org/mathewmeconry/bexio)
 [![Known Vulnerabilities](https://snyk.io/test/npm/bexio/badge.svg)](https://snyk.io/test/npm/bexio)
-[![CircleCI](https://circleci.com/gh/mathewmeconry/bexio/tree/master.svg?style=svg)](https://circleci.com/gh/mathewmeconry/bexio/tree/master)
+[![Tests](https://github.com/mathewmeconry/bexio/workflows/Test/badge.svg)](https://github.com/mathewmeconry/bexio/actions)
+[![Publish](https://github.com/mathewmeconry/bexio/workflows/Publish/badge.svg)](https://github.com/mathewmeconry/bexio/actions)
 
 ## Description
 **Basic build and NPM-Package is in ES6!**
@@ -13,6 +14,9 @@ The typings for the module are already included in the package
 
 ## API Documentation
 The whole documentation of the API can be found here: [https://docs.bexio.com/](https://docs.bexio.com/)
+
+## Support
+NodeJS >= 10.0
 
 ## Functions
 ### Implemented
