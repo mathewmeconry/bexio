@@ -45,4 +45,4 @@ jobs:
           scope: '@mathewmeconry'
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.github_registry_token}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
