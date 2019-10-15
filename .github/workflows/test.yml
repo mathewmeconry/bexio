@@ -8,8 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      max-parallel: 1
       matrix:
         node-version: [10.x, 12.x]
+        
 
     steps:
     - uses: actions/checkout@v1
@@ -31,3 +33,7 @@ jobs:
         BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
         BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
         HOSTNAME: "127.0.0.1"
+    - name: upload coverage
+      run: npm run report
+      env: 
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
