@@ -2,23 +2,35 @@ name: Publish
 
 on:
   release:
-    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
     types: [published]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: test
+          node-version: ${{ matrix.node-version }}
+      - name: install
+        run: npm install
+      - name: build
+        run: npm build
+      - name: test
+        run: npm test
+        env:
+          CI: true
+          BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
+          BEXIO_CLIENTSECRET: ${{ secrets.BEXIO_CLIENTSECRET }}
+          BEXIO_HOSTNAME: ${{ secrets.BEXIO_HOSTNAME }}
+          BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
+          BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
+          HOSTNAME: "127.0.0.1"
 
   publish-npm:
     needs: build
@@ -29,6 +41,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+      - name: set npm version according to tag
+        run: npm version $(git describe --tag)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -43,6 +57,8 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
           scope: '@mathewmeconry'
+      - name: set npm version according to tag
+        run: npm version $(git describe --tag)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
