@@ -1,0 +1,34 @@
+name: Nightly
+
+on:
+ schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: install
+      run: npm install
+    - name: build
+      run: npm build
+    - name: test
+      run: npm test
+      env:
+        CI: true
+        BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
+        BEXIO_CLIENTSECRET: ${{ secrets.BEXIO_CLIENTSECRET }}
+        BEXIO_HOSTNAME: ${{ secrets.BEXIO_HOSTNAME }}
+        BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
+        BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
+        HOSTNAME: "127.0.0.1"
+    - name: upload coverage
+      run: npm run report
+      env: 
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
