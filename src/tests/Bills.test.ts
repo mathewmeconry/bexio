@@ -3,6 +3,7 @@ import { expect } from "chai";
 import Bills from "../resources/Bills";
 import { BillsStatic } from "../interfaces/BillsStatic";
 import dotenv from "dotenv";
+import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ describe("Bills", function() {
   let api: Bexio;
   let moduleToTest: Bills;
   let bill: BillsStatic.BillFull;
+  let payment: PaymentsStatic.Payment;
   const {
     BEXIO_CLIENTID,
     BEXIO_CLIENTSECRET,
@@ -35,7 +37,12 @@ describe("Bills", function() {
       BEXIO_CLIENTID,
       BEXIO_CLIENTSECRET,
       `http://${HOSTNAME}/callback`,
-      [Scopes.KB_BILL_EDIT, Scopes.KB_BILL_SHOW]
+      [
+        Scopes.KB_BILL_EDIT,
+        Scopes.KB_BILL_SHOW,
+        Scopes.KB_INVOICE_SHOW,
+        Scopes.KB_CREDIT_VOUCHER_SHOW
+      ]
     );
     await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
   });
@@ -145,6 +152,29 @@ describe("Bills", function() {
   it("issue bill", async () => {
     const result = await moduleToTest.issue(bill.id);
     expect(result.success).to.be.true;
+  });
+
+  it("create payment", async () => {
+    payment = await moduleToTest.createPayment(bill.id, {
+      date: "01-01-1970",
+      value: 1
+    });
+  });
+
+  it("list payments", async () => {
+    const payments = await moduleToTest.listPayments({}, bill.id);
+    expect(payments.length).to.be.greaterThan(0);
+    expect(payments.map(p => p.id)).includes(payment.id);
+  });
+
+  it("show payment", async () => {
+    const p = await moduleToTest.showPayment({}, bill.id, payment.id);
+    expect(p.id).to.be.eq(payment.id);
+  });
+
+  it("delete payment", async () => {
+    const result = await moduleToTest.deletePayment(bill.id, payment.id);
+    expect(result).to.be.true;
   });
 
   it("revert issue bill", async () => {
