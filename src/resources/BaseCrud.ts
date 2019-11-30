@@ -3,22 +3,29 @@ import { Scopes } from "..";
 import OAuth2 from "../libs/OAuth2";
 import request from "request-promise-native";
 
-export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite> {
+export default class BaseCrud<
+  Small,
+  Full,
+  Search,
+  SearchType,
+  Create,
+  Overwrite
+> {
   protected bexioAuth: OAuth2;
   protected apiEndpoint: string;
-  protected showScope: Scopes;
-  protected editScope: Scopes;
+  protected showScopes: Scopes[];
+  protected editScopes: Scopes[];
 
   constructor(
     bexioAuth: OAuth2,
     apiEndpoint: string,
-    showScope: Scopes,
-    editScope: Scopes
+    showScopes: Scopes[] | Scopes,
+    editScopes: Scopes[] | Scopes
   ) {
     this.bexioAuth = bexioAuth;
     this.apiEndpoint = apiEndpoint;
-    this.showScope = showScope;
-    this.editScope = editScope;
+    this.showScopes = showScopes instanceof Array ? showScopes : [showScopes];
+    this.editScopes = editScopes instanceof Array ? editScopes : [editScopes];
   }
 
   /**
@@ -29,7 +36,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * @memberof BaseCrud
    */
   public async list(options: BaseStatic.BaseOptions): Promise<Array<Small>> {
-    this.checkScope(this.showScope);
+    this.checkScopes(this.showScopes);
     return this.request<Array<Small>>("GET", this.apiEndpoint, options);
   }
 
@@ -45,7 +52,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
     options: BaseStatic.BaseOptions,
     searchOptions: Array<BaseStatic.SearchParameter<SearchType>>
   ): Promise<Array<Search>> {
-    this.checkScope(this.showScope);
+    this.checkScopes(this.showScopes);
     return this.request<Array<Search>>(
       "POST",
       this.apiEndpoint + "/search",
@@ -66,7 +73,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
     options: BaseStatic.BaseOptions,
     id: number
   ): Promise<Full> {
-    this.checkScope(this.showScope);
+    this.checkScopes(this.showScopes);
     return this.request<Full>("GET", this.apiEndpoint + "/" + id, options);
   }
 
@@ -78,7 +85,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * @memberof BaseCrud
    */
   public async create(ressource: Create): Promise<Full> {
-    this.checkScope(this.editScope);
+    this.checkScopes(this.editScopes);
     return this.request<Full>("POST", this.apiEndpoint, {}, ressource);
   }
 
@@ -91,7 +98,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * @memberof BaseCrud
    */
   public async overwrite(id: number, ressource: Overwrite): Promise<Full> {
-    this.checkScope(this.editScope);
+    this.checkScopes(this.editScopes);
     return this.request<Full>(
       "PUT",
       this.apiEndpoint + "/" + id,
@@ -109,7 +116,7 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * @memberof BaseCrud
    */
   public async edit(id: number, ressource: Partial<Overwrite>): Promise<Full> {
-    this.checkScope(this.editScope);
+    this.checkScopes(this.editScopes);
     return this.request<Full>(
       "POST",
       this.apiEndpoint + "/" + id,
@@ -126,12 +133,14 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * @memberof BaseCrud
    */
   public async delete(id: number): Promise<boolean> {
-    this.checkScope(this.editScope);
-    return (await this.request<{ success: boolean }>(
-      "DELETE",
-      this.apiEndpoint + "/" + id,
-      {}
-    )).success;
+    this.checkScopes(this.editScopes);
+    return (
+      await this.request<{ success: boolean }>(
+        "DELETE",
+        this.apiEndpoint + "/" + id,
+        {}
+      )
+    ).success;
   }
 
   /**
@@ -193,12 +202,14 @@ export default class BaseCrud<Small, Full, Search, SearchType, Create, Overwrite
    * checks if the scope is authenticated. Throws error if not
    *
    * @protected
-   * @param {Scopes} scope
+   * @param {Scopes[]} scopes
    * @memberof BaseCrud
    */
-  protected checkScope(scope: Scopes): void {
-    if (!this.bexioAuth.checkScope(scope)) {
-      throw new Error("Scope " + scope + " not authenticated");
+  protected checkScopes(scopes: Scopes[]): void {
+    for (const scope of scopes) {
+      if (!this.bexioAuth.checkScope(scope)) {
+        throw new Error("Scope " + scope + " not authenticated");
+      }
     }
   }
 }
