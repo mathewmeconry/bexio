@@ -105,7 +105,6 @@ describe("OAuth2", function() {
   it("should refresh access token", async () => {
     await oauth["refreshToken"]();
     expect(oauth["access_token"]).not.be.eq(loginResponse.access_token);
-    expect(oauth["expires_in"]).not.be.eq(loginResponse.expires_in);
     expect(oauth["refresh_token"]).not.be.eq(loginResponse.refresh_token);
     expect(oauth["valid_until"]).not.be.eq(loginResponse.valid_until);
   });
