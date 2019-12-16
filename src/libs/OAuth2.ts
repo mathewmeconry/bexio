@@ -192,6 +192,7 @@ export default class OAuth2 {
 
     let response = await request({
       method: "POST",
+      json: true,
       url: this.refresh_token_uri,
       formData: {
         client_id: this.client_id,
