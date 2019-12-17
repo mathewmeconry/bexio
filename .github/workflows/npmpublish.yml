@@ -42,7 +42,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - name: set npm version according to tag
-        run: npm version $(git describe --tag)
+        run: npm version --no-git-tag-version $(git describe --tag)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -58,7 +58,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@mathewmeconry'
       - name: set npm version according to tag
-        run: npm version $(git describe --tag)
+        run: npm version --no-git-tag-version $(git describe --tag)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
