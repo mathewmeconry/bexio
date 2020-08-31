@@ -11,8 +11,8 @@
     "office.bexio.com"
   ],
   "scripts": {
-    "test": "nyc mocha --require ts-node/register --require source-map-support/register --recursive ./src/tests/*.test.ts --exit",
-    "report": "nyc report --reporter=text-lcov | ./node_modules/.bin/codecov --pipe",
+    "test": "jest",
+    "report": "./node_modules/.bin/codecov",
     "build": "./node_modules/.bin/tsc",
     "prepare": "npm run build",
     "version": "git add -A src",
@@ -45,6 +45,7 @@
     "typescript": "^4.0.2"
   },
   "jest": {
+    "collectCoverage":true,
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
