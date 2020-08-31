@@ -1,80 +1,20 @@
-
-import { expect } from "chai";
+import BaseCrud from "../resources/BaseCrud";
+import { mocked } from "ts-jest/utils";
 import ContactGroups from "../resources/ContactGroups";
-import { ContactGroupsStatic } from "../interfaces/ContactGroupsStatic";
-import dotenv from "dotenv";
+import Chance from "chance";
 
-dotenv.config();
+jest.mock("../resources/BaseCrud");
+const mockedBase = mocked(BaseCrud, true);
 
-describe("ContactGroups", function() {
-  // increasing timeout to 60s
-  this.timeout(60000);
+const seedgenerator = new Chance();
+const seed = seedgenerator.hash();
+console.log(`using chance seed ${seed}`);
+const chance = new Chance(seed);
 
-  
-  let moduleToTest: ContactGroups;
-  let contactGroup: ContactGroupsStatic.ContactGroup;
-  const { BEXIO_APITOKEN } = process.env;
-
-  it("init ContactGroups object", () => {
-    moduleToTest = new ContactGroups(BEXIO_APITOKEN as string);
-  });
-
-  it("create new contact group", async () => {
-    const name = `test-${Date.now()}`;
-    contactGroup = await moduleToTest.create({
-      name
-    });
-    expect(contactGroup.name).to.be.eq(name);
-  });
-
-  it("list contact groups", async () => {
-    const list = await moduleToTest.list({});
-    expect(list.map(el => el.id)).includes(contactGroup.id);
-  });
-
-  it("search contact group", async () => {
-    const searchResult = await moduleToTest.search({}, [
-      {
-        field: ContactGroupsStatic.ContactGroupSearchParameters.name,
-        value: contactGroup.name,
-        criteria: "="
-      }
-    ]);
-    expect(searchResult.length).to.be.eq(1);
-    expect(searchResult[0].id).to.be.eq(contactGroup.id);
-  });
-
-  it("show contact group", async () => {
-    const show = await moduleToTest.show({}, contactGroup.id);
-    expect(show.id).to.be.eq(contactGroup.id);
-    expect(show.name).to.be.eq(contactGroup.name);
-  });
-
-  it("overwrite contact group", async () => {
-    const overwritten = await moduleToTest.overwrite(contactGroup.id, {
-      name: `overwritten-${Date.now()}`,
-      id: contactGroup.id
-    });
-    expect(overwritten.name).include("overwritten-");
-  });
-
-  it("edit contact group", async () => {
-    const edited = await moduleToTest.edit(contactGroup.id, {
-      name: `edited-${Date.now()}`
-    });
-    expect(edited.name).include("edited-");
-  });
-
-  it.skip("delete contact group (not implemented by Bexio yet)", async () => {
-    const result = await moduleToTest.delete(contactGroup.id);
-    expect(result).to.be.true;
-  });
-
-  it("should return a not implemented error on delete", async () => {
-    try {
-      await moduleToTest.delete(contactGroup.id);
-    } catch (err) {
-      expect(err.message).to.be.eq("not implemented by Bexio yet");
-    }
+describe("ContactGroups", () => {
+  it("Should use init the base correctly", () => {
+    const token = chance.string();
+    new ContactGroups(token);
+    expect(mockedBase).toHaveBeenCalledWith(token, "/contact_group");
   });
 });

@@ -1,71 +1,20 @@
-import { expect } from "chai";
+import BaseCrud from "../resources/BaseCrud";
+import { mocked } from "ts-jest/utils";
 import BusinessActivities from "../resources/BusinessActivities";
-import { BusinessActivitiesStatic } from "../interfaces/BusinessActivitiesStatic";
-import dotenv from "dotenv";
+import Chance from "chance";
 
-dotenv.config();
+jest.mock("../resources/BaseCrud");
+const mockedBase = mocked(BaseCrud, true);
 
-describe("BusinessActivities", function () {
-  // increasing timeout to 60s
-  this.timeout(60000);
+const seedgenerator = new Chance();
+const seed = seedgenerator.hash();
+console.log(`using chance seed ${seed}`);
+const chance = new Chance(seed);
 
-  let moduleToTest: BusinessActivities;
-  let businessActivities: BusinessActivitiesStatic.BusinessActivity;
-  const { BEXIO_APITOKEN } = process.env;
-
-  it("init BusinessActivities object", () => {
-    moduleToTest = new BusinessActivities(BEXIO_APITOKEN as string);
-  });
-
-  it("create new business activity", async () => {
-    const name = `test-${Date.now()}`;
-    businessActivities = await moduleToTest.create({
-      name: name,
-      default_is_billable: false,
-      default_price_per_hour: "10.50",
-    });
-    expect(businessActivities.name).to.be.eq(name);
-  });
-
-  it("list business activities", async () => {
-    const list = await moduleToTest.list({});
-    expect(list.map((el) => el.id)).includes(businessActivities.id);
-  });
-
-  it("search business activity", async () => {
-    const searchResult = await moduleToTest.search({}, [
-      {
-        field: BusinessActivitiesStatic.BusinessActivitySearchParameters.name,
-        value: businessActivities.name,
-        criteria: "=",
-      },
-    ]);
-    expect(searchResult.length).to.be.eq(1);
-    expect(searchResult[0].id).to.be.eq(businessActivities.id);
-    expect(searchResult[0].name).to.be.eq(businessActivities.name);
-  });
-
-  it("show business activity", async () => {
-    const show = await moduleToTest.show({}, businessActivities.id);
-    expect(show.id).to.be.eq(businessActivities.id);
-  });
-
-  it("overwrite business activity", async () => {
-    const overwritten = await moduleToTest.overwrite(businessActivities.id, {
-      name: `overwritten-${Date.now()}`,
-    });
-    expect(overwritten.name).include("overwritten-");
-  });
-
-  it("edit business activity", async () => {
-    const edited = await moduleToTest.edit(businessActivities.id, {
-      name: `edited-${Date.now()}`,
-    });
-    expect(edited.name).include("edited-");
-  });
-
-  it("delete business activity", async () => {
-    const result = await moduleToTest.delete(businessActivities.id);
-    expect(result).to.be.true;
+describe("BusinessActivities", () => {
+  it("Should use init the base correctly", () => {
+    const token = chance.string();
+    new BusinessActivities(token);
+    expect(mockedBase).toHaveBeenCalledWith(token, "/client_service");
   });
 });

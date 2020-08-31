@@ -26,8 +26,7 @@ export default class Bills extends BaseCrud<
   public async issue(id: number): Promise<{ success: boolean }> {
     return this.request<{ success: boolean }>(
       "POST",
-      `${this.apiEndpoint}/${id.toString()}/issue`,
-      {}
+      `${this.apiEndpoint}/${id.toString()}/issue`
     );
   }
 
@@ -41,43 +40,42 @@ export default class Bills extends BaseCrud<
   public async revertIssue(id: number): Promise<{ success: boolean }> {
     return this.request<{ success: boolean }>(
       "POST",
-      `${this.apiEndpoint}/${id.toString()}/revert_issue`,
-      {}
+      `${this.apiEndpoint}/${id.toString()}/revert_issue`
     );
   }
 
   /**
    * List all payments for this bill
    *
-   * @param {BaseStatic.BaseOptions} options
    * @param {number} billId
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<PaymentsStatic.Payment[]>}
    * @memberof Bills
    */
   public async listPayments(
-    options: BaseStatic.BaseOptions,
-    billId: number
+    billId: number,
+    options?: BaseStatic.BaseOptions
   ): Promise<PaymentsStatic.Payment[]> {
     const paymentCrud = new Payments(this.apiToken, billId);
-    return paymentCrud.list({});
+    return paymentCrud.list(options);
   }
 
   /**
    * Show a specific payment for this bill
    *
-   * @param {BaseStatic.BaseOptions} options
    * @param {number} billId
    * @param {number} paymentId
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<PaymentsStatic.Payment>}
    * @memberof Bills
    */
   public async showPayment(
-    options: BaseStatic.BaseOptions,
     billId: number,
-    paymentId: number
+    paymentId: number,
+    options?: BaseStatic.BaseOptions,
   ): Promise<PaymentsStatic.Payment> {
     const paymentCrud = new Payments(this.apiToken, billId);
-    return paymentCrud.show({}, paymentId);
+    return paymentCrud.show(paymentId, options);
   }
 
   /**

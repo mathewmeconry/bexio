@@ -1,7 +1,7 @@
 import BaseCrud from "./BaseCrud";
 import { ExpensesStatic } from "../interfaces/ExpensesStatic";
 
-export default class Contacts extends BaseCrud<
+export default class Expenses extends BaseCrud<
   ExpensesStatic.Expense,
   ExpensesStatic.Expense,
   ExpensesStatic.Expense,
