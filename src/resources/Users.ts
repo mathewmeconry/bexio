@@ -1,6 +1,4 @@
 import BaseCrud from "./BaseCrud";
-import OAuth2 from "../libs/OAuth2";
-import { Scopes } from "..";
 import { UsersStatic } from "../interfaces/UsersStatic";
 
 export default class Users extends BaseCrud<
@@ -11,13 +9,8 @@ export default class Users extends BaseCrud<
   {},
   {}
 > {
-  constructor(bexioAuth: OAuth2) {
-    super(
-      bexioAuth,
-      "/user",
-      Scopes.GENERAL,
-      Scopes.GENERAL
-    );
+  constructor(apiToken: string) {
+    super(apiToken, "/user");
   }
 
   /**
@@ -43,10 +36,7 @@ export default class Users extends BaseCrud<
    * @returns {Promise<UsersStatic.UserFull>}
    * @memberof Users
    */
-  public async edit(
-    id: number,
-    ressource: {}
-  ): Promise<UsersStatic.UserFull> {
+  public async edit(id: number, ressource: {}): Promise<UsersStatic.UserFull> {
     throw new Error("not implemented by Bexio yet");
   }
 
@@ -57,9 +47,7 @@ export default class Users extends BaseCrud<
    * @returns {Promise<UsersStatic.UserFull>}
    * @memberof Users
    */
-  public async create(ressource: {}): Promise<
-    UsersStatic.UserFull
-  > {
+  public async create(ressource: {}): Promise<UsersStatic.UserFull> {
     throw new Error("not implemented by Bexio yet");
   }
 

@@ -1,7 +1,5 @@
 import { BillsStatic } from "./../interfaces/BillsStatic";
 import BaseCrud from "./BaseCrud";
-import OAuth2 from "../libs/OAuth2";
-import Scopes from "../constants/Scopes";
 import Payments from "./Payments";
 import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 import { BaseStatic } from "../interfaces/BaseStatic";
@@ -14,8 +12,8 @@ export default class Bills extends BaseCrud<
   BillsStatic.BillCreate,
   BillsStatic.BillOverwrite
 > {
-  constructor(bexioAuth: OAuth2) {
-    super(bexioAuth, "/kb_bill", Scopes.KB_BILL_SHOW, Scopes.KB_BILL_EDIT);
+  constructor(apiToken: string) {
+    super(apiToken, "/kb_bill");
   }
 
   /**
@@ -26,7 +24,6 @@ export default class Bills extends BaseCrud<
    * @memberof Bills
    */
   public async issue(id: number): Promise<{ success: boolean }> {
-    this.checkScopes(this.showScopes);
     return this.request<{ success: boolean }>(
       "POST",
       `${this.apiEndpoint}/${id.toString()}/issue`,
@@ -42,7 +39,6 @@ export default class Bills extends BaseCrud<
    * @memberof Bills
    */
   public async revertIssue(id: number): Promise<{ success: boolean }> {
-    this.checkScopes(this.showScopes);
     return this.request<{ success: boolean }>(
       "POST",
       `${this.apiEndpoint}/${id.toString()}/revert_issue`,
@@ -62,7 +58,7 @@ export default class Bills extends BaseCrud<
     options: BaseStatic.BaseOptions,
     billId: number
   ): Promise<PaymentsStatic.Payment[]> {
-    const paymentCrud = new Payments(this.bexioAuth, billId);
+    const paymentCrud = new Payments(this.apiToken, billId);
     return paymentCrud.list({});
   }
 
@@ -80,7 +76,7 @@ export default class Bills extends BaseCrud<
     billId: number,
     paymentId: number
   ): Promise<PaymentsStatic.Payment> {
-    const paymentCrud = new Payments(this.bexioAuth, billId);
+    const paymentCrud = new Payments(this.apiToken, billId);
     return paymentCrud.show({}, paymentId);
   }
 
@@ -96,7 +92,7 @@ export default class Bills extends BaseCrud<
     billId: number,
     payment: PaymentsStatic.PaymentCreate
   ): Promise<PaymentsStatic.Payment> {
-    const paymentCrud = new Payments(this.bexioAuth, billId);
+    const paymentCrud = new Payments(this.apiToken, billId);
     return paymentCrud.create(payment);
   }
 
@@ -112,7 +108,7 @@ export default class Bills extends BaseCrud<
     billId: number,
     paymentId: number
   ): Promise<boolean> {
-    const paymentCrud = new Payments(this.bexioAuth, billId);
+    const paymentCrud = new Payments(this.apiToken, billId);
     return paymentCrud.delete(paymentId);
   }
 }

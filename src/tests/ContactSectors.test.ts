@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import ContactSectors from "../resources/ContactSectors";
 import { ContactSectorsStatic } from "../interfaces/ContactSectorsStatic";
@@ -10,41 +10,15 @@ describe("ContactSectors", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
   let moduleToTest: ContactSectors;
   let contactSector: ContactSectorsStatic.ContactSector = {
     id: 1,
     name: "Test Don't delete"
   };
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.CONTACT_SHOW, Scopes.CONTACT_EDIT]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init ContactSectors object", () => {
-    moduleToTest = new ContactSectors(api["bexioAuth"]);
+    moduleToTest = new ContactSectors(BEXIO_APITOKEN as string);
   });
 
   it.skip("create new contact sector (not implemented by Bexio yet)", async () => {

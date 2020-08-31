@@ -1,7 +1,5 @@
 import BaseCrud from "./BaseCrud";
 import { PaymentsStatic } from "../interfaces/PaymentsStatic";
-import OAuth2 from "../libs/OAuth2";
-import { Scopes } from "..";
 import { BaseStatic } from "../interfaces/BaseStatic";
 
 export default class Payments extends BaseCrud<
@@ -12,21 +10,8 @@ export default class Payments extends BaseCrud<
   PaymentsStatic.PaymentCreate,
   {}
 > {
-  constructor(bexioAuth: OAuth2, billId: number) {
-    super(
-      bexioAuth,
-      `/kb_bill/${billId}/payment`,
-      [
-        Scopes.KB_INVOICE_SHOW,
-        Scopes.KB_BILL_SHOW,
-        Scopes.KB_CREDIT_VOUCHER_SHOW
-      ],
-      [
-        Scopes.KB_INVOICE_SHOW,
-        Scopes.KB_BILL_SHOW,
-        Scopes.KB_CREDIT_VOUCHER_SHOW
-      ]
-    );
+  constructor(apiToken: string, billId: number) {
+    super(apiToken, `/kb_bill/${billId}/payment`);
   }
 
   /**

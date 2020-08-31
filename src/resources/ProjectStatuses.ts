@@ -1,6 +1,4 @@
 import BaseCrud from "./BaseCrud";
-import OAuth2 from "../libs/OAuth2";
-import { Scopes } from "..";
 import { ProjectStatusesStatic } from "../interfaces/ProjectStatusesStatic";
 
 export default class ProjectStatuses extends BaseCrud<
@@ -11,13 +9,8 @@ export default class ProjectStatuses extends BaseCrud<
   {},
   {}
 > {
-  constructor(bexioAuth: OAuth2) {
-    super(
-      bexioAuth,
-      "/pr_project_state",
-      Scopes.PROJECT_SHOW,
-      Scopes.PROJECT_EDIT
-    );
+  constructor(apiToken: string) {
+    super(apiToken, "/pr_project_state");
   }
 
   /**

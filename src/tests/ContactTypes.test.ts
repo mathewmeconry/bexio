@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import ContactTypes from "../resources/ContactTypes";
 import { ContactTypesStatic } from "../interfaces/ContactTypesStatic";
@@ -10,38 +10,13 @@ describe("ContactTypes", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
+  
   let moduleToTest: ContactTypes;
   let contactType: ContactTypesStatic.ContactType = { id: 1, name: "Firma" };
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.CONTACT_SHOW, Scopes.CONTACT_EDIT]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init ContactTypes object", () => {
-    moduleToTest = new ContactTypes(api["bexioAuth"]);
+    moduleToTest = new ContactTypes(BEXIO_APITOKEN as string);
   });
 
   it.skip("create new contact type (not implemented by Bexio yet)", async () => {

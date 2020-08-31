@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import Expenses from "../resources/Expenses";
 import { ExpensesStatic } from "../interfaces/ExpensesStatic";
@@ -10,38 +10,13 @@ describe("Expenses", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
+  
   let moduleToTest: Expenses;
   let expense: ExpensesStatic.Expense;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.KB_EXPENSE_EDIT, Scopes.KB_EXPENSE_SHOW]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init Expenses object", () => {
-    moduleToTest = new Expenses(api["bexioAuth"]);
+    moduleToTest = new Expenses(BEXIO_APITOKEN as string);
   });
 
   it("create new expense", async () => {

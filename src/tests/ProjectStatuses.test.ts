@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import dotenv from "dotenv";
 import { ProjectStatusesStatic } from "../interfaces/ProjectStatusesStatic";
@@ -10,38 +10,13 @@ describe("ProjectStatuses", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
+  
   let moduleToTest: ProjectStatuses;
   let projectStatusEntry: ProjectStatusesStatic.ProjectStatus;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.PROJECT_EDIT, Scopes.PROJECT_SHOW]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init project", () => {
-    moduleToTest = new ProjectStatuses(api["bexioAuth"]);
+    moduleToTest = new ProjectStatuses(BEXIO_APITOKEN as string);
   });
 
   it.skip("create new project status (not implemented by Bexio yet)", async () => {
