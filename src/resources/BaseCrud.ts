@@ -1,7 +1,5 @@
 import { BaseStatic } from "./../interfaces/BaseStatic";
-import { Scopes } from "..";
-import OAuth2 from "../libs/OAuth2";
-import request from "request-promise-native";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
 export default class BaseCrud<
   Small,
@@ -11,21 +9,13 @@ export default class BaseCrud<
   Create,
   Overwrite
 > {
-  protected bexioAuth: OAuth2;
+  protected apiToken: string;
   protected apiEndpoint: string;
-  protected showScopes: Scopes[];
-  protected editScopes: Scopes[];
+  protected baseApiUrl: string = "https://api.bexio.com/2.0";
 
-  constructor(
-    bexioAuth: OAuth2,
-    apiEndpoint: string,
-    showScopes: Scopes[] | Scopes,
-    editScopes: Scopes[] | Scopes
-  ) {
-    this.bexioAuth = bexioAuth;
+  constructor(apiToken: string, apiEndpoint: string) {
+    this.apiToken = apiToken;
     this.apiEndpoint = apiEndpoint;
-    this.showScopes = showScopes instanceof Array ? showScopes : [showScopes];
-    this.editScopes = editScopes instanceof Array ? editScopes : [editScopes];
   }
 
   /**
@@ -36,7 +26,6 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async list(options: BaseStatic.BaseOptions): Promise<Array<Small>> {
-    this.checkScopes(this.showScopes);
     return this.request<Array<Small>>("GET", this.apiEndpoint, options);
   }
 
@@ -52,7 +41,6 @@ export default class BaseCrud<
     options: BaseStatic.BaseOptions,
     searchOptions: Array<BaseStatic.SearchParameter<SearchType>>
   ): Promise<Array<Search>> {
-    this.checkScopes(this.showScopes);
     return this.request<Array<Search>>(
       "POST",
       this.apiEndpoint + "/search",
@@ -73,7 +61,6 @@ export default class BaseCrud<
     options: BaseStatic.BaseOptions,
     id: number
   ): Promise<Full> {
-    this.checkScopes(this.showScopes);
     return this.request<Full>("GET", this.apiEndpoint + "/" + id, options);
   }
 
@@ -85,7 +72,6 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async create(ressource: Create): Promise<Full> {
-    this.checkScopes(this.editScopes);
     return this.request<Full>("POST", this.apiEndpoint, {}, ressource);
   }
 
@@ -98,7 +84,6 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async overwrite(id: number, ressource: Overwrite): Promise<Full> {
-    this.checkScopes(this.editScopes);
     return this.request<Full>(
       "PUT",
       this.apiEndpoint + "/" + id,
@@ -116,7 +101,6 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async edit(id: number, ressource: Partial<Overwrite>): Promise<Full> {
-    this.checkScopes(this.editScopes);
     return this.request<Full>(
       "POST",
       this.apiEndpoint + "/" + id,
@@ -133,7 +117,6 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async delete(id: number): Promise<boolean> {
-    this.checkScopes(this.editScopes);
     return (
       await this.request<{ success: boolean }>(
         "DELETE",
@@ -156,26 +139,55 @@ export default class BaseCrud<
    * @memberof Bexio
    */
   protected async request<T>(
-    method: string,
+    method:
+      | "DELETE"
+      | "get"
+      | "GET"
+      | "delete"
+      | "head"
+      | "HEAD"
+      | "options"
+      | "OPTIONS"
+      | "post"
+      | "POST"
+      | "put"
+      | "PUT"
+      | "patch"
+      | "PATCH"
+      | "purge"
+      | "PURGE"
+      | "link"
+      | "LINK"
+      | "unlink"
+      | "UNLINK",
     path: string,
     options: BaseStatic.BaseOptions,
     data?: any
   ): Promise<T> {
-    let requestOptions = {
+    let requestOptions: AxiosRequestConfig = {
       method: method,
-      url:
-        this.bexioAuth.getApiUrl() + path + "?" + this.optionsToQuery(options),
-      json: true,
+      url: this.baseApiUrl + path + "?" + this.optionsToQuery(options),
       headers: {
-        Authorization: await this.bexioAuth.getBearerHeader()
-      }
+        Authorization: `Bearer ${this.apiToken}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     };
 
     if (data) {
       //@ts-ignore
-      requestOptions.body = data;
+      requestOptions.data = data;
     }
-    return await request(requestOptions);
+
+    try {
+      const reponse = await axios(requestOptions);
+      return reponse.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return Promise.reject(
+        `Bexio request failed with status code ${error.response?.status} and message ${JSON.stringify(error.response?.data)}`
+      );
+    }
   }
 
   /**
@@ -196,20 +208,5 @@ export default class BaseCrud<
     }
 
     return str.join("&");
-  }
-
-  /**
-   * checks if the scope is authenticated. Throws error if not
-   *
-   * @protected
-   * @param {Scopes[]} scopes
-   * @memberof BaseCrud
-   */
-  protected checkScopes(scopes: Scopes[]): void {
-    for (const scope of scopes) {
-      if (!this.bexioAuth.checkScope(scope)) {
-        throw new Error("Scope " + scope + " not authenticated");
-      }
-    }
   }
 }

@@ -1,7 +1,5 @@
 import { ProjectTypesStatic } from "../interfaces/ProjectTypesStatic";
 import BaseCrud from "./BaseCrud";
-import OAuth2 from "../libs/OAuth2";
-import Scopes from "../constants/Scopes";
 
 export default class ProjectTypes extends BaseCrud<
   ProjectTypesStatic.ProjectType,
@@ -11,10 +9,9 @@ export default class ProjectTypes extends BaseCrud<
   {},
   ProjectTypesStatic.ProjectType
 > {
-  constructor(bexioAuth: OAuth2) {
-    super(bexioAuth, "/pr_project_type", Scopes.PROJECT_SHOW, Scopes.PROJECT_EDIT);
+  constructor(apiToken: string) {
+    super(apiToken, "/pr_project_type");
   }
-
 
   /**
    * Not implemented by Bexio yet
@@ -24,7 +21,7 @@ export default class ProjectTypes extends BaseCrud<
    * @memberof ProjectTypes
    */
   public async create(ressource: {}): Promise<ProjectTypesStatic.ProjectType> {
-    throw new Error('not implemented by Bexio yet')
+    throw new Error("not implemented by Bexio yet");
   }
 
   /**
@@ -35,8 +32,11 @@ export default class ProjectTypes extends BaseCrud<
    * @returns {Promise<ProjectTypesStatic.ProjectType>}
    * @memberof ProjectTypes
    */
-  public async edit(id: number, ressource: {}): Promise<ProjectTypesStatic.ProjectType> {
-    throw new Error('not implemented by Bexio yet')
+  public async edit(
+    id: number,
+    ressource: {}
+  ): Promise<ProjectTypesStatic.ProjectType> {
+    throw new Error("not implemented by Bexio yet");
   }
 
   /**
@@ -47,8 +47,11 @@ export default class ProjectTypes extends BaseCrud<
    * @returns {Promise<ProjectTypesStatic.ProjectType>}
    * @memberof ProjectTypes
    */
-  public async overwrite(id: number, ressource: {}): Promise<ProjectTypesStatic.ProjectType> {
-    throw new Error('not implemented by Bexio yet')
+  public async overwrite(
+    id: number,
+    ressource: {}
+  ): Promise<ProjectTypesStatic.ProjectType> {
+    throw new Error("not implemented by Bexio yet");
   }
 
   /**
@@ -59,6 +62,6 @@ export default class ProjectTypes extends BaseCrud<
    * @memberof ProjectTypes
    */
   public async delete(id: number): Promise<boolean> {
-    throw new Error('not implemented by Bexio yet')
+    throw new Error("not implemented by Bexio yet");
   }
 }

@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import Orders from "../resources/Orders";
 import { OrdersStatic } from "../interfaces/OrdersStatic";
@@ -10,38 +10,13 @@ describe("Orders", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
+  
   let moduleToTest: Orders;
   let order: OrdersStatic.OrderFull;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.KB_ORDER_EDIT, Scopes.KB_ORDER_SHOW]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init Orders object", () => {
-    moduleToTest = new Orders(api["bexioAuth"]);
+    moduleToTest = new Orders(BEXIO_APITOKEN as string);
   });
 
   it("create new order", async () => {

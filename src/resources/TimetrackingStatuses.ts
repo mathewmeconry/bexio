@@ -1,6 +1,4 @@
 import BaseCrud from "./BaseCrud";
-import OAuth2 from "../libs/OAuth2";
-import { Scopes } from "..";
 import { TimetrackingStatusesStatic } from "../interfaces/TimetrackingStatusesStatic";
 
 export default class TimetrackingStatuses extends BaseCrud<
@@ -11,13 +9,8 @@ export default class TimetrackingStatuses extends BaseCrud<
   {},
   {}
 > {
-  constructor(bexioAuth: OAuth2) {
-    super(
-      bexioAuth,
-      "/timesheet_status",
-      Scopes.MONITORING_SHOW,
-      Scopes.MONITORING_EDIT
-    );
+  constructor(apiToken: string) {
+    super(apiToken, "/timesheet_status");
   }
 
   /**

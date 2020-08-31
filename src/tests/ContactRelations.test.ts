@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import ContactRelations from "../resources/ContactRelations";
 import { ContactRelationsStatic } from "../interfaces/ContactRelationsStatic";
@@ -10,38 +10,13 @@ describe("ContactRelations", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
   let moduleToTest: ContactRelations;
   let contactRelation: ContactRelationsStatic.ContactRelation;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
+  const { BEXIO_APITOKEN } = process.env;
 
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.CONTACT_SHOW, Scopes.CONTACT_EDIT]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
 
   it("init ContactRelations object", () => {
-    moduleToTest = new ContactRelations(api["bexioAuth"]);
+    moduleToTest = new ContactRelations(BEXIO_APITOKEN as string);
   });
 
   it("create new contact relation", async () => {

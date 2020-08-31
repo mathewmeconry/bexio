@@ -1,4 +1,4 @@
-import Bexio, { Scopes } from "..";
+
 import { expect } from "chai";
 import dotenv from "dotenv";
 import { UsersStatic } from "../interfaces/UsersStatic";
@@ -10,38 +10,13 @@ describe("Users", function() {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
+  
   let moduleToTest: Users;
   let user: UsersStatic.UserSmall;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [Scopes.GENERAL, Scopes.GENERAL]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init user", () => {
-    moduleToTest = new Users(api["bexioAuth"]);
+    moduleToTest = new Users(BEXIO_APITOKEN as string);
   });
 
   it.skip("create new user (not implemented by Bexio yet)", async () => {

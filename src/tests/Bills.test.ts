@@ -1,4 +1,3 @@
-import Bexio, { Scopes } from "..";
 import { expect } from "chai";
 import Bills from "../resources/Bills";
 import { BillsStatic } from "../interfaces/BillsStatic";
@@ -7,48 +6,17 @@ import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 
 dotenv.config();
 
-describe("Bills", function() {
+describe("Bills", function () {
   // increasing timeout to 60s
   this.timeout(60000);
 
-  let api: Bexio;
   let moduleToTest: Bills;
   let bill: BillsStatic.BillFull;
   let payment: PaymentsStatic.Payment;
-  const {
-    BEXIO_CLIENTID,
-    BEXIO_CLIENTSECRET,
-    HOSTNAME,
-    BEXIO_USERNAME,
-    BEXIO_PASSWORD
-  } = process.env;
-
-  before(async () => {
-    if (
-      !BEXIO_CLIENTID ||
-      !BEXIO_CLIENTSECRET ||
-      !HOSTNAME ||
-      !BEXIO_USERNAME ||
-      !BEXIO_PASSWORD
-    )
-      throw new Error("not all necessary variables defined");
-
-    api = new Bexio(
-      BEXIO_CLIENTID,
-      BEXIO_CLIENTSECRET,
-      `http://${HOSTNAME}/callback`,
-      [
-        Scopes.KB_BILL_EDIT,
-        Scopes.KB_BILL_SHOW,
-        Scopes.KB_INVOICE_SHOW,
-        Scopes.KB_CREDIT_VOUCHER_SHOW
-      ]
-    );
-    await api.fakeLogin(BEXIO_USERNAME, BEXIO_PASSWORD);
-  });
+  const { BEXIO_APITOKEN } = process.env;
 
   it("init bill object", () => {
-    moduleToTest = new Bills(api["bexioAuth"]);
+    moduleToTest = new Bills(BEXIO_APITOKEN as string);
   });
 
   it("create new bill", async () => {
@@ -63,7 +31,7 @@ describe("Bills", function() {
           amount: "999",
           tax_id: 7,
           unit_price: "99.99",
-          type: "KbPositionCustom" as "KbPositionCustom"
+          type: "KbPositionCustom" as "KbPositionCustom",
         },
         {
           account_id: 90,
@@ -71,20 +39,24 @@ describe("Bills", function() {
           tax_id: 7,
           unit_price: "99.99",
           article_id: 1,
-          type: "KbPositionArticle" as "KbPositionArticle"
-        }
-      ]
+          type: "KbPositionArticle" as "KbPositionArticle",
+        },
+      ],
     });
   });
 
   it("list bills", async () => {
     const list = await moduleToTest.list({});
-    expect(list.map(el => el.id)).includes(bill.id);
+    expect(list.map((el) => el.id)).includes(bill.id);
   });
 
   it("search bill", async () => {
     const searchResult = await moduleToTest.search({}, [
-      { field: BillsStatic.SearchParameters.id, value: bill.id, criteria: "=" }
+      {
+        field: BillsStatic.SearchParameters.id,
+        value: bill.id,
+        criteria: "=",
+      },
     ]);
     expect(searchResult.length).to.be.eq(1);
     expect(searchResult[0].id).to.be.eq(bill.id);
@@ -115,24 +87,37 @@ describe("Bills", function() {
           tax_id: 7,
           unit_price: "0.99",
           type: "KbPositionCustom" as "KbPositionCustom",
-          text: "overwritten-position"
-        }
-      ]
+          text: "overwritten-position",
+        },
+      ],
     };
 
     // delete unaccepeted fields
+    // @ts-ignore
     delete overwriteBill.document_nr;
+    // @ts-ignore
     delete overwriteBill.total_gross;
+    // @ts-ignore
     delete overwriteBill.total_net;
+    // @ts-ignore
     delete overwriteBill.total_taxes;
+    // @ts-ignore
     delete overwriteBill.total_paid_payments;
+    // @ts-ignore
     delete overwriteBill.total_regards_taxes;
+    // @ts-ignore
     delete overwriteBill.total_remaining_payments;
+    // @ts-ignore
     delete overwriteBill.total_rounding_difference;
+    // @ts-ignore
     delete overwriteBill.total;
+    // @ts-ignore
     delete overwriteBill.contact_address;
+    // @ts-ignore
     delete overwriteBill.kb_item_status_id;
+    // @ts-ignore
     delete overwriteBill.updated_at;
+    // @ts-ignore
     delete overwriteBill.taxs;
 
     const overwritten = await moduleToTest.overwrite(bill.id, overwriteBill);
@@ -144,7 +129,7 @@ describe("Bills", function() {
 
   it("edit bill", async () => {
     const edited = await moduleToTest.edit(bill.id, {
-      title: `edit-${bill.title}`
+      title: `edit-${bill.title}`,
     });
     expect(edited.title).to.be.eq(`edit-${bill.title}`);
   });
@@ -157,14 +142,14 @@ describe("Bills", function() {
   it("create payment", async () => {
     payment = await moduleToTest.createPayment(bill.id, {
       date: "01-01-1970",
-      value: 1
+      value: 1,
     });
   });
 
   it("list payments", async () => {
     const payments = await moduleToTest.listPayments({}, bill.id);
     expect(payments.length).to.be.greaterThan(0);
-    expect(payments.map(p => p.id)).includes(payment.id);
+    expect(payments.map((p) => p.id)).includes(payment.id);
   });
 
   it("show payment", async () => {
