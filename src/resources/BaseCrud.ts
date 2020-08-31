@@ -21,25 +21,25 @@ export default class BaseCrud<
   /**
    * Lists the ressource
    *
-   * @param {BaseStatic.BaseOptions} options
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Array<T>>}
    * @memberof BaseCrud
    */
-  public async list(options: BaseStatic.BaseOptions): Promise<Array<Small>> {
+  public async list(options?: BaseStatic.BaseOptions): Promise<Array<Small>> {
     return this.request<Array<Small>>("GET", this.apiEndpoint, options);
   }
 
   /**
    * search for resources
    *
-   * @param {BaseStatic.BaseOptions} options
    * @param {Array<BaseStatic.SearchParameter<SearchType>>} searchOptions
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Array<Search>>}
    * @memberof BaseCrud
    */
   public async search(
-    options: BaseStatic.BaseOptions,
-    searchOptions: Array<BaseStatic.SearchParameter<SearchType>>
+    searchOptions: Array<BaseStatic.SearchParameter<SearchType>>,
+    options?: BaseStatic.BaseOptions
   ): Promise<Array<Search>> {
     return this.request<Array<Search>>(
       "POST",
@@ -52,14 +52,14 @@ export default class BaseCrud<
   /**
    * show a specific ressource
    *
-   * @param {BaseStatic.BaseOptions} options
    * @param {number} id
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
   public async show(
-    options: BaseStatic.BaseOptions,
-    id: number
+    id: number,
+    options?: BaseStatic.BaseOptions
   ): Promise<Full> {
     return this.request<Full>("GET", this.apiEndpoint + "/" + id, options);
   }
@@ -72,7 +72,7 @@ export default class BaseCrud<
    * @memberof BaseCrud
    */
   public async create(ressource: Create): Promise<Full> {
-    return this.request<Full>("POST", this.apiEndpoint, {}, ressource);
+    return this.request<Full>("POST", this.apiEndpoint, undefined, ressource);
   }
 
   /**
@@ -87,7 +87,7 @@ export default class BaseCrud<
     return this.request<Full>(
       "PUT",
       this.apiEndpoint + "/" + id,
-      {},
+      undefined,
       ressource
     );
   }
@@ -104,7 +104,7 @@ export default class BaseCrud<
     return this.request<Full>(
       "POST",
       this.apiEndpoint + "/" + id,
-      {},
+      undefined,
       ressource
     );
   }
@@ -120,8 +120,7 @@ export default class BaseCrud<
     return (
       await this.request<{ success: boolean }>(
         "DELETE",
-        this.apiEndpoint + "/" + id,
-        {}
+        this.apiEndpoint + "/" + id
       )
     ).success;
   }
@@ -133,7 +132,7 @@ export default class BaseCrud<
    * @template T
    * @param {string} method
    * @param {string} path
-   * @param {BaseStatic.BaseOptions} options
+   * @param {BaseStatic.BaseOptions} [options]
    * @param {*} [data]
    * @returns {Promise<T>}
    * @memberof Bexio
@@ -161,12 +160,12 @@ export default class BaseCrud<
       | "unlink"
       | "UNLINK",
     path: string,
-    options: BaseStatic.BaseOptions,
+    options?: BaseStatic.BaseOptions,
     data?: any
   ): Promise<T> {
     let requestOptions: AxiosRequestConfig = {
       method: method,
-      url: this.baseApiUrl + path + "?" + this.optionsToQuery(options),
+      url: this.baseApiUrl + path + this.optionsToQuery(options),
       headers: {
         Authorization: `Bearer ${this.apiToken}`,
         "Content-Type": "application/json",
@@ -180,13 +179,14 @@ export default class BaseCrud<
     }
 
     try {
-      const reponse = await axios(requestOptions);
+      const reponse = await axios.request(requestOptions);
       return reponse.data;
     } catch (e) {
       const error = e as AxiosError;
-      return Promise.reject(
-        `Bexio request failed with status code ${error.response?.status} and message ${JSON.stringify(error.response?.data)}`
-      );
+      return Promise.reject({
+        code: error.response?.status,
+        message: error.response?.data,
+      });
     }
   }
 
@@ -194,12 +194,15 @@ export default class BaseCrud<
    * Generates the querystring out of the options
    *
    * @protected
-   * @param {BaseStatic.BaseOptions} options
+   * @param {BaseStatic.BaseOptions} [options]
    * @returns {string}
    * @memberof Bexio
    */
-  protected optionsToQuery(options: BaseStatic.BaseOptions): string {
+  protected optionsToQuery(options?: BaseStatic.BaseOptions): string {
     let str = [];
+    if (!options) {
+      return "";
+    }
 
     for (let i in options) {
       if (options.hasOwnProperty(i)) {
@@ -207,6 +210,6 @@ export default class BaseCrud<
       }
     }
 
-    return str.join("&");
+    return `?${str.join("&")}`;
   }
 }

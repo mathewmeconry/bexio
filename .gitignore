@@ -66,3 +66,5 @@ lib/
 # custom exlusion
 src/test.ts
 .vscode/
+jest_html_reporters.html
+junit.xml
