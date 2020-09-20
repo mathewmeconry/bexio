@@ -13,6 +13,7 @@ import ProjectTypes from "./resources/ProjectTypes";
 import Timetrackings from "./resources/Timetrackings";
 import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 import Users from "./resources/Users";
+import Items from "./resources/Items";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
@@ -32,6 +33,7 @@ export * from "./interfaces/SalesOrderManagementStatic";
 export * from "./interfaces/TimetrackingsStatic";
 export * from "./interfaces/TimetrackingStatusesStatic";
 export * from "./interfaces/UsersStatic";
+export * from "./interfaces/ItemsStatic";
 
 export default class Bexio {
   private token: string;
@@ -64,8 +66,11 @@ export default class Bexio {
   // Users
   public users: Users;
 
+  // Items & Products
+  public items: Items;
+
   constructor(token: string) {
-    this.token = token
+    this.token = token;
 
     // Init resources
     this.businessActivities = new BusinessActivities(this.token);
@@ -83,5 +88,6 @@ export default class Bexio {
     this.timetrackings = new Timetrackings(this.token);
     this.timetrackingStatuses = new TimetrackingStatuses(this.token);
     this.users = new Users(this.token);
+    this.items = new Items(this.token);
   }
 }
