@@ -35,6 +35,8 @@ export * from "./interfaces/TimetrackingsStatic";
 export * from "./interfaces/TimetrackingStatusesStatic";
 export * from "./interfaces/UsersStatic";
 export * from "./interfaces/ItemsStatic";
+export * from "./interfaces/InvoicesStatic";
+export * from "./interfaces/PositionStatic"
 
 export default class Bexio {
   private token: string;
