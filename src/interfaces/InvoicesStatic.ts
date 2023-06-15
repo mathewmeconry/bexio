@@ -1,8 +1,6 @@
-import {BillsStatic} from "bexio";
 import {PositionStatic} from "./PositionStatic";
 
 export namespace InvoicesStatic {
-  import PositionCreate = BillsStatic.PositionCreate;
 
   export interface Invoice {
     "id":number
