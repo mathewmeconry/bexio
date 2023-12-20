@@ -45,8 +45,8 @@ export namespace InvoicesStatic {
     "show_position_taxes"?: boolean,
     "is_valid_from"?: string,
     "is_valid_to"?: string,
-    "reference"?: null,
-    "api_reference"?: null,
+    "reference"?: string|null,
+    "api_reference"?: string|null,
     "template_slug"?: string,
     "positions": PositionStatic.PositionCreate[]
   }
