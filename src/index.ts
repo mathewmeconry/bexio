@@ -36,7 +36,7 @@ export * from "./interfaces/TimetrackingStatusesStatic";
 export * from "./interfaces/UsersStatic";
 export * from "./interfaces/ItemsStatic";
 export * from "./interfaces/InvoicesStatic";
-export * from "./interfaces/PositionStatic"
+export * from "./interfaces/PositionStatic";
 
 export default class Bexio {
   private token: string;
@@ -73,7 +73,7 @@ export default class Bexio {
   public items: Items;
 
   // Invoices
-  public invoices: Invoices
+  public invoices: Invoices;
 
   constructor(token: string) {
     this.token = token;
@@ -95,6 +95,6 @@ export default class Bexio {
     this.timetrackingStatuses = new TimetrackingStatuses(this.token);
     this.users = new Users(this.token);
     this.items = new Items(this.token);
-    this.invoices = new Invoices(this.token)
+    this.invoices = new Invoices(this.token);
   }
 }
