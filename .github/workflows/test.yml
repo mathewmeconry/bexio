@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      max-parallel: 1
+      max-parallel: 6
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [14.x, 16.x, 18.x, 20.x, 22.x, 24.x]
         
 
     steps:
