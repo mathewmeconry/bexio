@@ -265,6 +265,9 @@ describe("BaseCrud", () => {
       // @ts-ignore
       await baseCrud.request(method, `/${path}`);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
+      if (!axiosParams.headers) {
+        throw new Error("Failed to get headers");
+      }
       expect(axiosParams.method).toBe(method);
       expect(axiosParams.url).toBe(`https://api.bexio.com/2.0/${path}`);
       expect(axiosParams.headers.Authorization).toBe(`Bearer ${apiToken}`);
@@ -329,14 +332,16 @@ describe("BaseCrud", () => {
     });
 
     it("Should url encode the parameters", () => {
-        const options: {[index: string]: string} = { };
-        const optionKey = chance.string()
-        options[optionKey] = chance.string()
+      const options: { [index: string]: string } = {};
+      const optionKey = chance.string();
+      options[optionKey] = chance.string();
 
-        //@ts-ignore
+      //@ts-ignore
       expect(baseCrud.optionsToQuery(options)).toBe(
-        `?${encodeURIComponent(optionKey)}=${encodeURIComponent(options[optionKey])}`
+        `?${encodeURIComponent(optionKey)}=${encodeURIComponent(
+          options[optionKey]
+        )}`
       );
-    })
+    });
   });
 });

@@ -1,10 +1,8 @@
 import BaseCrud from "../resources/BaseCrud";
-import { mocked } from "ts-jest/utils";
 import ProjectStatuses from "../resources/ProjectStatuses";
 import Chance from "chance";
 
 jest.mock("../resources/BaseCrud");
-const mockedBase = mocked(BaseCrud, true);
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -15,6 +13,6 @@ describe("ProjectStatuses", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new ProjectStatuses(token);
-    expect(mockedBase).toHaveBeenCalledWith(token, `/pr_project_state`);
+    expect(BaseCrud).toHaveBeenCalledWith(token, `/pr_project_state`);
   });
 });
