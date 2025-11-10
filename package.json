@@ -18,6 +18,9 @@
     "version": "git add -A src",
     "postversion": "git push && git push --tags"
   },
+  "engines": {
+    "node": ">=18.14.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mathewmeconry/bexio.git"

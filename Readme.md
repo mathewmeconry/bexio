@@ -23,7 +23,7 @@ The whole documentation of the API can be found here: [https://docs.bexio.com/](
 
 ## Support
 
-NodeJS >= 10.0
+NodeJS >= 18.14
 
 ## Functions
 
