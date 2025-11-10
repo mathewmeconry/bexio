@@ -11,15 +11,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js 24
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v6
       with:
         node-version: 24
+        cache: 'yarn'
     - name: install
-      run: npm install
+      run: yarn install
     - name: build
-      run: npm build
+      run: yarn build
     - name: test
-      run: npm test
+      run: yarn test
       env:
         CI: true
         BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
@@ -29,6 +30,6 @@ jobs:
         BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
         HOSTNAME: "127.0.0.1"
     - name: upload coverage
-      run: npm run report
+      run: yarn run report
       env: 
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
