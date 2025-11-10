@@ -8,23 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      max-parallel: 1
+      max-parallel: 4
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [18.x, 20.x, 22.x, 24.x]
         
 
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
     - name: install
-      run: npm install
+      run: yarn install
     - name: build
-      run: npm build
+      run: yarn build
     - name: test
-      run: npm test
+      run: yarn test
       env:
         CI: true
         BEXIO_CLIENTID: ${{ secrets.BEXIO_CLIENTID }}
@@ -34,6 +35,6 @@ jobs:
         BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
         HOSTNAME: "127.0.0.1"
     - name: upload coverage
-      run: npm run report
+      run: yarn run report
       env: 
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

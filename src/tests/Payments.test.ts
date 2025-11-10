@@ -1,10 +1,8 @@
 import BaseCrud from "../resources/BaseCrud";
-import { mocked } from "ts-jest/utils";
 import Payments from "../resources/Payments";
 import Chance from "chance";
 
 jest.mock("../resources/BaseCrud");
-const mockedBase = mocked(BaseCrud, true);
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -16,7 +14,7 @@ describe("Payments", () => {
     const token = chance.string();
     const billId = chance.integer();
     new Payments(token, billId);
-    expect(mockedBase).toHaveBeenCalledWith(
+    expect(BaseCrud).toHaveBeenCalledWith(
       token,
       `/kb_bill/${billId}/payment`
     );

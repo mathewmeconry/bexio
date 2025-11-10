@@ -1,5 +1,4 @@
 import BaseCrud from "../resources/BaseCrud";
-import { mocked } from "ts-jest/utils";
 import Bills from "../resources/Bills";
 import Chance from "chance";
 import Payments from "../resources/Payments";
@@ -7,8 +6,6 @@ import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 
 jest.mock("../resources/BaseCrud");
 jest.mock("../resources/Payments");
-const mockedBase = mocked(BaseCrud, true);
-const mockedPayment = mocked(Payments, true);
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -23,14 +20,14 @@ describe("Bills", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new Bills(token);
-    expect(mockedBase).toHaveBeenCalledWith(token, "/kb_bill");
+    expect(BaseCrud).toHaveBeenCalledWith(token, "/kb_bill");
   });
 
   it("issue request", async () => {
     const id = chance.integer({ min: 0 });
     new Bills(chance.string()).issue(id);
     // @ts-ignore
-    expect(mockedBase.prototype.request).toHaveBeenCalledWith(
+    expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
       "POST",
       `undefined/${id}/issue`
     );
@@ -40,7 +37,7 @@ describe("Bills", () => {
     const id = chance.integer({ min: 0 });
     new Bills(chance.string()).revertIssue(id);
     // @ts-ignore
-    expect(mockedBase.prototype.request).toHaveBeenCalledWith(
+    expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
       "POST",
       `undefined/${id}/revert_issue`
     );
@@ -50,14 +47,14 @@ describe("Bills", () => {
     it("Should call base list", async () => {
       new Bills(chance.string()).list();
       // @ts-ignore
-      expect(mockedBase.prototype.list).toHaveBeenCalledWith();
+      expect(BaseCrud.prototype.list).toHaveBeenCalledWith();
     });
 
     it("Should pass options to base list", async () => {
       const options = { limit: chance.integer({ min: 0 }) };
       new Bills(chance.string()).list(options);
       // @ts-ignore
-      expect(mockedBase.prototype.list).toHaveBeenCalledWith(options);
+      expect(BaseCrud.prototype.list).toHaveBeenCalledWith(options);
     });
   });
 
@@ -67,8 +64,8 @@ describe("Bills", () => {
       const billId = chance.integer({ min: 0 });
       new Bills(chance.string()).showPayment(billId, paymentId);
 
-      expect(mockedPayment).toBeCalledWith(undefined, billId);
-      expect(mockedPayment.prototype.show).toBeCalledWith(paymentId, undefined);
+      expect(Payments).toHaveBeenCalledWith(undefined, billId);
+      expect(Payments.prototype.show).toHaveBeenCalledWith(paymentId, undefined);
     });
 
     it("Should pass the options down", async () => {
@@ -77,7 +74,7 @@ describe("Bills", () => {
       const options = { limit: chance.integer({ min: 0 }) };
       new Bills(chance.string()).showPayment(billId, paymentId, options);
 
-      expect(mockedPayment.prototype.show).toBeCalledWith(paymentId, options);
+      expect(Payments.prototype.show).toHaveBeenCalledWith(paymentId, options);
     });
   });
 
@@ -90,7 +87,7 @@ describe("Bills", () => {
       };
       new Bills(chance.string()).createPayment(billId, paymentCreationPayload);
 
-      expect(mockedPayment).toBeCalledWith(undefined, billId);
+      expect(Payments).toHaveBeenCalledWith(undefined, billId);
     });
 
     it("Should call create", async () => {
@@ -101,7 +98,7 @@ describe("Bills", () => {
       };
       new Bills(chance.string()).createPayment(billId, paymentCreationPayload);
 
-      expect(mockedPayment.prototype.create).toBeCalledWith(
+      expect(Payments.prototype.create).toHaveBeenCalledWith(
         paymentCreationPayload
       );
     });
@@ -114,7 +111,7 @@ describe("Bills", () => {
 
       new Bills(chance.string()).deletePayment(billId, paymentId);
 
-      expect(mockedPayment).toBeCalledWith(undefined, billId);
+      expect(Payments).toHaveBeenCalledWith(undefined, billId);
     });
 
     it("Should call delete", async () => {
@@ -123,7 +120,7 @@ describe("Bills", () => {
 
       new Bills(chance.string()).deletePayment(billId, paymentId);
 
-      expect(mockedPayment.prototype.delete).toBeCalledWith(paymentId);
+      expect(Payments.prototype.delete).toHaveBeenCalledWith(paymentId);
     });
   });
 });
