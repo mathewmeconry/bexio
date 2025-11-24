@@ -9,7 +9,10 @@ export namespace ContactsStatic {
     salutation_form?: number;
     title_id?: number;
     birthday?: string;
-    address: string;
+    /** @deprecated */
+    address?: string;
+    street_name?: string;
+    house_number?: string;
     postcode: string;
     city: string;
     country_id: number;
@@ -58,7 +61,10 @@ export namespace ContactsStatic {
     salutation_form?: number;
     title_id?: number;
     birthday?: string;
+    /** @deprecated */
     address?: string;
+    street_name?: string;
+    house_number?: string;
     postcode?: string;
     city?: string;
     mail?: string;
@@ -82,7 +88,10 @@ export namespace ContactsStatic {
     name_1 = "name_1",
     name_2 = "name_2",
     nr = "nr",
+    /** @deprecated */
     address = "address",
+    street_name = "street_name",
+    house_number = "house_number",
     mail = "mail",
     mail_second = "mail_second",
     postcode = "postcode",

@@ -72,7 +72,7 @@ export default class Bills extends BaseCrud<
   public async showPayment(
     billId: number,
     paymentId: number,
-    options?: BaseStatic.BaseOptions,
+    options?: BaseStatic.BaseOptions
   ): Promise<PaymentsStatic.Payment> {
     const paymentCrud = new Payments(this.apiToken, billId);
     return paymentCrud.show(paymentId, options);
