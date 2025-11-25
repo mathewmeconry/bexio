@@ -29,7 +29,3 @@ jobs:
         BEXIO_PASSWORD: ${{ secrets.BEXIO_PASSWORD }}
         BEXIO_USERNAME: ${{ secrets.BEXIO_USERNAME }}
         HOSTNAME: "127.0.0.1"
-    - name: upload coverage
-      run: yarn run report
-      env: 
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
