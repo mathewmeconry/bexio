@@ -88,10 +88,7 @@ export namespace ContactsStatic {
     name_1 = "name_1",
     name_2 = "name_2",
     nr = "nr",
-    /** @deprecated */
     address = "address",
-    street_name = "street_name",
-    house_number = "house_number",
     mail = "mail",
     mail_second = "mail_second",
     postcode = "postcode",
