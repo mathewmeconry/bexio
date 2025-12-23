@@ -22,7 +22,9 @@ export namespace BaseStatic {
     | "like"
     | "not_like"
     | "is_null"
-    | "not_null";
+    | "not_null"
+    | "in"
+    | "not_in";
 
   export interface SearchParameter<T> {
     field: T;
