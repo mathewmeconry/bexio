@@ -10,6 +10,6 @@ export default class Orders extends BaseCrud<
   OrdersStatic.OrderCreate
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/kb_order");
+    super(apiToken, "/2.0/kb_order");
   }
 }

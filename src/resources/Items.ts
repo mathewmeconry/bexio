@@ -10,6 +10,6 @@ export default class Items extends BaseCrud<
   ItemsStatic.ItemOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/article");
+    super(apiToken, "/2.0/article");
   }
 }

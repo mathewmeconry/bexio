@@ -10,6 +10,6 @@ export default class Contacts extends BaseCrud<
   ContactsStatic.ContactOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/contact");
+    super(apiToken, "/2.0/contact");
   }
 }

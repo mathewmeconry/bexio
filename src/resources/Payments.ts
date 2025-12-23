@@ -11,7 +11,7 @@ export default class Payments extends BaseCrud<
   {}
 > {
   constructor(apiToken: string, billId: number) {
-    super(apiToken, `/kb_bill/${billId}/payment`);
+    super(apiToken, `/2.0/kb_bill/${billId}/payment`);
   }
 
   /**

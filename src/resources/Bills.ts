@@ -13,7 +13,7 @@ export default class Bills extends BaseCrud<
   BillsStatic.BillOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/kb_bill");
+    super(apiToken, "/2.0/kb_bill");
   }
 
   /**

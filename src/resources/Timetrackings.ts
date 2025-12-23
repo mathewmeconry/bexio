@@ -10,7 +10,7 @@ export default class Timetrackings extends BaseCrud<
   {}
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/timesheet");
+    super(apiToken, "/2.0/timesheet");
   }
 
   /**

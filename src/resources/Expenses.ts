@@ -10,6 +10,6 @@ export default class Expenses extends BaseCrud<
   ExpensesStatic.ExpenseOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/kb_expense");
+    super(apiToken, "/2.0/kb_expense");
   }
 }

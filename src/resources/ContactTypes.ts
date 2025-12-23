@@ -10,7 +10,7 @@ export default class ContactTypes extends BaseCrud<
   ContactTypesStatic.ContactType
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/contact_type");
+    super(apiToken, "/2.0/contact_type");
   }
   /**
    * Not implemented by Bexio yet
