@@ -10,6 +10,6 @@ export default class ClientServices extends BaseCrud<
   BusinessActivitiesStatic.BusinessActivityOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/client_service");
+    super(apiToken, "/2.0/client_service");
   }
 }

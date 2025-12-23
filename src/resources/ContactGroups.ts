@@ -10,7 +10,7 @@ export default class ContactGroups extends BaseCrud<
   ContactGroupsStatic.ContactGroup
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/contact_group");
+    super(apiToken, "/2.0/contact_group");
   }
 
   /**

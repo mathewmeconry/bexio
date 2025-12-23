@@ -10,7 +10,7 @@ export default class Users extends BaseCrud<
   {}
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/user");
+    super(apiToken, "/2.0/user");
   }
 
   /**

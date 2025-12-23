@@ -13,6 +13,6 @@ describe("ProjectStatuses", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new ProjectStatuses(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, `/pr_project_state`);
+    expect(BaseCrud).toHaveBeenCalledWith(token, `/2.0/pr_project_state`);
   });
 });

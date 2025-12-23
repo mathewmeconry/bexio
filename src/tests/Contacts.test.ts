@@ -13,6 +13,6 @@ describe("Contacts", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new Contacts(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, "/contact");
+    expect(BaseCrud).toHaveBeenCalledWith(token, "/2.0/contact");
   });
 });

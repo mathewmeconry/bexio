@@ -10,6 +10,6 @@ export default class Projects extends BaseCrud<
   ProjectsStatic.ProjectOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/pr_project");
+    super(apiToken, "/2.0/pr_project");
   }
 }

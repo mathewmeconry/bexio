@@ -15,6 +15,7 @@ import TimetrackingStatuses from "./resources/TimetrackingStatuses";
 import Users from "./resources/Users";
 import Items from "./resources/Items";
 import Invoices from "./resources/Invoices";
+import Currencies from "./resources/Currencies";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
@@ -37,6 +38,7 @@ export * from "./interfaces/UsersStatic";
 export * from "./interfaces/ItemsStatic";
 export * from "./interfaces/InvoicesStatic";
 export * from "./interfaces/PositionStatic";
+export * from "./interfaces/CurrenciesStatic";
 
 export default class Bexio {
   private token: string;
@@ -75,6 +77,9 @@ export default class Bexio {
   // Invoices
   public invoices: Invoices;
 
+  // Accounting
+  public currencies: Currencies;
+
   constructor(token: string) {
     this.token = token;
 
@@ -96,5 +101,6 @@ export default class Bexio {
     this.users = new Users(this.token);
     this.items = new Items(this.token);
     this.invoices = new Invoices(this.token);
+    this.currencies = new Currencies(this.token);
   }
 }

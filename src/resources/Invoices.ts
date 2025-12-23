@@ -11,7 +11,7 @@ export default class Invoices extends BaseCrud<
   InvoicesStatic.InvoiceOverwrite
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/kb_invoice");
+    super(apiToken, "/2.0/kb_invoice");
   }
   public async sent(
     id: number,

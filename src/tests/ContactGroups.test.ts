@@ -13,6 +13,6 @@ describe("ContactGroups", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new ContactGroups(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, "/contact_group");
+    expect(BaseCrud).toHaveBeenCalledWith(token, "/2.0/contact_group");
   });
 });

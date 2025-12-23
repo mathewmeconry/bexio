@@ -10,7 +10,7 @@ export default class ProjectStatuses extends BaseCrud<
   {}
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/pr_project_state");
+    super(apiToken, "/2.0/pr_project_state");
   }
 
   /**

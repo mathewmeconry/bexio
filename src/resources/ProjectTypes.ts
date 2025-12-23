@@ -10,7 +10,7 @@ export default class ProjectTypes extends BaseCrud<
   ProjectTypesStatic.ProjectType
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/pr_project_type");
+    super(apiToken, "/2.0/pr_project_type");
   }
 
   /**

@@ -13,6 +13,6 @@ describe("Users", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new Users(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, `/user`);
+    expect(BaseCrud).toHaveBeenCalledWith(token, `/2.0/user`);
   });
 });

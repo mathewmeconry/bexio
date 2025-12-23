@@ -10,7 +10,7 @@ export default class ContactSectors extends BaseCrud<
   ContactSectorsStatic.ContactSector
 > {
   constructor(apiToken: string) {
-    super(apiToken, "/contact_branch");
+    super(apiToken, "/2.0/contact_branch");
   }
 
   /**
