@@ -20,7 +20,7 @@ describe("Bills", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new Bills(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, "/kb_bill");
+    expect(BaseCrud).toHaveBeenCalledWith(token, "/2.0/kb_bill");
   });
 
   it("issue request", async () => {

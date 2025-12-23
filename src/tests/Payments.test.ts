@@ -16,7 +16,7 @@ describe("Payments", () => {
     new Payments(token, billId);
     expect(BaseCrud).toHaveBeenCalledWith(
       token,
-      `/kb_bill/${billId}/payment`
+      `/2.0/kb_bill/${billId}/payment`
     );
   });
 });

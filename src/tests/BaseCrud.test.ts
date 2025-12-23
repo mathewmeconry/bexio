@@ -31,7 +31,7 @@ describe("BaseCrud", () => {
     it("Should use the given endpoint", async () => {
       await baseCrud.list();
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
-      expect(axiosParams.url).toBe(`https://api.bexio.com/2.0/${endpoint}`);
+      expect(axiosParams.url).toBe(`https://api.bexio.com/${endpoint}`);
     });
 
     it("Should pass the options to request", async () => {
@@ -39,7 +39,7 @@ describe("BaseCrud", () => {
       await baseCrud.list({ limit });
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}?limit=${limit}`
+        `https://api.bexio.com/${endpoint}?limit=${limit}`
       );
     });
   });
@@ -64,7 +64,7 @@ describe("BaseCrud", () => {
       await baseCrud.search([searchRequest]);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/search`
+        `https://api.bexio.com/${endpoint}/search`
       );
     });
 
@@ -80,7 +80,7 @@ describe("BaseCrud", () => {
       await baseCrud.search([searchRequest], { limit });
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/search?limit=${limit}`
+        `https://api.bexio.com/${endpoint}/search?limit=${limit}`
       );
     });
   });
@@ -101,7 +101,7 @@ describe("BaseCrud", () => {
       await baseCrud.show(id);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/${id}`
+        `https://api.bexio.com/${endpoint}/${id}`
       );
     });
 
@@ -111,7 +111,7 @@ describe("BaseCrud", () => {
       await baseCrud.show(id, { limit });
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/${id}?limit=${limit}`
+        `https://api.bexio.com/${endpoint}/${id}?limit=${limit}`
       );
     });
   });
@@ -133,7 +133,7 @@ describe("BaseCrud", () => {
     it("Should use the given endpoint", async () => {
       await baseCrud.create(createRequest);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
-      expect(axiosParams.url).toBe(`https://api.bexio.com/2.0/${endpoint}`);
+      expect(axiosParams.url).toBe(`https://api.bexio.com/${endpoint}`);
     });
 
     it("Should contain the request body", async () => {
@@ -162,7 +162,7 @@ describe("BaseCrud", () => {
       await baseCrud.overwrite(id, overwriteRequest);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/${id}`
+        `https://api.bexio.com/${endpoint}/${id}`
       );
     });
 
@@ -192,7 +192,7 @@ describe("BaseCrud", () => {
       await baseCrud.edit(id, editRequest);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/${id}`
+        `https://api.bexio.com/${endpoint}/${id}`
       );
     });
 
@@ -221,7 +221,7 @@ describe("BaseCrud", () => {
       await baseCrud.delete(id);
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${endpoint}/${id}`
+        `https://api.bexio.com/${endpoint}/${id}`
       );
     });
 
@@ -269,7 +269,7 @@ describe("BaseCrud", () => {
         throw new Error("Failed to get headers");
       }
       expect(axiosParams.method).toBe(method);
-      expect(axiosParams.url).toBe(`https://api.bexio.com/2.0/${path}`);
+      expect(axiosParams.url).toBe(`https://api.bexio.com/${path}`);
       expect(axiosParams.headers.Authorization).toBe(`Bearer ${apiToken}`);
       expect(axiosParams.headers["Content-Type"]).toBe("application/json");
       expect(axiosParams.headers.Accept).toBe("application/json");
@@ -290,7 +290,7 @@ describe("BaseCrud", () => {
       await baseCrud.request(chance.string(), `/${path}`, { limit });
       const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
       expect(axiosParams.url).toBe(
-        `https://api.bexio.com/2.0/${path}?limit=${limit}`
+        `https://api.bexio.com/${path}?limit=${limit}`
       );
     });
 

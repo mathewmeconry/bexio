@@ -13,6 +13,6 @@ describe("Expenses", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new Expenses(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, "/kb_expense");
+    expect(BaseCrud).toHaveBeenCalledWith(token, "/2.0/kb_expense");
   });
 });

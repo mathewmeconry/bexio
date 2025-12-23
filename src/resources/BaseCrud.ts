@@ -11,7 +11,7 @@ export default class BaseCrud<
 > {
   protected apiToken: string;
   protected apiEndpoint: string;
-  protected baseApiUrl: string = "https://api.bexio.com/";
+  protected baseApiUrl: string = "https://api.bexio.com";
 
   constructor(apiToken: string, apiEndpoint: string) {
     this.apiToken = apiToken;

@@ -13,6 +13,6 @@ describe("TimetrackingStatuses", () => {
   it("Should use init the base correctly", () => {
     const token = chance.string();
     new TimetrackingStatuses(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, `/timesheet_status`);
+    expect(BaseCrud).toHaveBeenCalledWith(token, `/2.0/timesheet_status`);
   });
 });
