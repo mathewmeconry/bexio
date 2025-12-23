@@ -23,14 +23,7 @@ NodeJS >= 18.14
 
 ## Functions
 
-### Implemented
-
-You can find a list of all implements functions in the [wiki](https://github.com/mathewmeconry/bexio/wiki)
-
-### Missing
-
-You can find a list of all missing functions here: [Missing Functions](https://github.com/mathewmeconry/bexio/wiki#missing-functions).  
-If you need a function implemented, please fill out an issue.
+Not all API endpoints are implemented yet. If an endpoint you need is missing, please open a pull request.
 
 ## Example
 
