@@ -1,10 +1,6 @@
 # Bexio
 
-[![Dependencies](https://david-dm.org/mathewmeconry/bexio/status.svg)](https://david-dm.org/mathewmeconry/bexio)
-[![Known Vulnerabilities](https://snyk.io/test/npm/bexio/badge.svg)](https://snyk.io/test/npm/bexio)
-[![codecov](https://codecov.io/gh/mathewmeconry/bexio/branch/master/graph/badge.svg)](https://codecov.io/gh/mathewmeconry/bexio)
 [![Tests](https://github.com/mathewmeconry/bexio/workflows/Test/badge.svg)](https://github.com/mathewmeconry/bexio/actions)
-[![Publish](https://github.com/mathewmeconry/bexio/workflows/Publish/badge.svg)](https://github.com/mathewmeconry/bexio/actions)
 ![npm](https://img.shields.io/npm/v/bexio)
 
 ## Description
