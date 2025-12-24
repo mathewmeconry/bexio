@@ -1,6 +1,8 @@
-import { ContactsStatic } from "./../interfaces/ContactsStatic";
 import BaseCrud from "./BaseCrud";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
+import Payments from "./Payments";
+import { PaymentsStatic } from "../interfaces/PaymentsStatic";
+import { BaseStatic } from "../interfaces/BaseStatic";
 
 export default class Invoices extends BaseCrud<
   InvoicesStatic.Invoice,
@@ -13,6 +15,7 @@ export default class Invoices extends BaseCrud<
   constructor(apiToken: string) {
     super(apiToken, "/2.0/kb_invoice");
   }
+
   public async sent(
     id: number,
     ressource: Partial<InvoicesStatic.InvoiceSent>
@@ -24,6 +27,7 @@ export default class Invoices extends BaseCrud<
       ressource
     );
   }
+
   /**
    * revert a Invoice issue
    *
@@ -39,53 +43,68 @@ export default class Invoices extends BaseCrud<
   }
 
   /**
-   * Create a payment for an invoice
+   * List all payments for this invoice
    *
-   * @param {number} id
-   * @param {Date} date
-   * @param {string} value
-   * @param {number} [bank_account_id]
-   * @param {number} [payment_service_id]
-   * @return {*}  {Promise<InvoicesStatic.Payment>}
+   * @param {number} invoiceId
+   * @param {BaseStatic.BaseOptions} [options]
+   * @returns {Promise<PaymentsStatic.Payment[]>}
    * @memberof Invoices
    */
-  public async createPayment(
-    id: number,
-    date: Date,
-    value: string,
-    bank_account_id?: number,
-    payment_service_id?: number
-  ): Promise<InvoicesStatic.Payment> {
-    return this.request<InvoicesStatic.Payment>(
-      "POST",
-      `${this.apiEndpoint}/${id.toString()}/payment`,
-      undefined,
-      {
-        date: `${date.getFullYear()}-${(date.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`,
-        value,
-        bank_account_id,
-        payment_service_id,
-      }
-    );
+  public async listPayments(
+    invoiceId: number,
+    options?: BaseStatic.BaseOptions
+  ): Promise<PaymentsStatic.Payment[]> {
+    const paymentCrud = new Payments(this.apiToken, invoiceId, 'kb_invoice');
+    return paymentCrud.list(options);
   }
 
   /**
-   * Get a payment for an invoice
+   * Show a specific payment for this invoice
    *
    * @param {number} invoiceId
    * @param {number} paymentId
-   * @return {*}  {Promise<InvoicesStatic.Payment>}
+   * @param {BaseStatic.BaseOptions} [options]
+   * @returns {Promise<PaymentsStatic.Payment>}
    * @memberof Invoices
    */
-  public async getPayment(
+  public async showPayment(
     invoiceId: number,
     paymentId: number,
-  ): Promise<InvoicesStatic.Payment> {
-    return this.request<InvoicesStatic.Payment>(
-      "GET",
-      `${this.apiEndpoint}/${invoiceId.toString()}/payment/${paymentId.toString()}`
-    );
+    options?: BaseStatic.BaseOptions
+  ): Promise<PaymentsStatic.Payment> {
+    const paymentCrud = new Payments(this.apiToken, invoiceId, 'kb_invoice');
+    return paymentCrud.show(paymentId, options);
+  }
+
+  /**
+   * Create a new payment for this invoice
+   *
+   * @param {number} invoiceId
+   * @param {PaymentsStatic.PaymentCreate} payment
+   * @returns {Promise<PaymentsStatic.Payment>}
+   * @memberof Invoices
+   */
+  public async createPayment(
+    invoiceId: number,
+    payment: PaymentsStatic.PaymentCreate
+  ): Promise<PaymentsStatic.Payment> {
+    const paymentCrud = new Payments(this.apiToken, invoiceId, 'kb_invoice');
+    return paymentCrud.create(payment);
+  }
+
+  /**
+   * delete a specific payment for this invoice
+   *
+   * @param {number} invoiceId
+   * @param {number} paymentId
+   * @returns {Promise<boolean>}
+   * @memberof Invoices
+   */
+  public async deletePayment(
+    invoiceId: number,
+    paymentId: number
+  ): Promise<boolean> {
+    const paymentCrud = new Payments(this.apiToken, invoiceId, 'kb_invoice');
+    return paymentCrud.delete(paymentId);
   }
 }

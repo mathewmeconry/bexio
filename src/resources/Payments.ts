@@ -10,8 +10,8 @@ export default class Payments extends BaseCrud<
   PaymentsStatic.PaymentCreate,
   {}
 > {
-  constructor(apiToken: string, billId: number) {
-    super(apiToken, `/2.0/kb_bill/${billId}/payment`);
+  constructor(apiToken: string, resourceId: number, resourceType: 'kb_bill' | 'kb_invoice' = 'kb_bill') {
+    super(apiToken, `/2.0/${resourceType}/${resourceId}/payment`);
   }
 
   /**
