@@ -154,7 +154,7 @@ export namespace InvoicesStatic {
 
   export enum PAYMENT_SERVICE {
     PAYPAL = 1,
-    STRIP = 2,
+    STRIPE = 2,
     SIX_PAYMENTS = 3,
   }
 }

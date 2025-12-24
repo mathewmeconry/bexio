@@ -41,7 +41,7 @@ export default class Invoices extends BaseCrud<
   /**
    * Create a payment for an invoice
    *
-   * @param {number} id
+   * @param {number} invoiceId
    * @param {Date} date
    * @param {string} value
    * @param {number} [bank_account_id]
@@ -50,7 +50,7 @@ export default class Invoices extends BaseCrud<
    * @memberof Invoices
    */
   public async createPayment(
-    id: number,
+    invoiceId: number,
     date: Date,
     value: string,
     bank_account_id?: number,
@@ -58,7 +58,7 @@ export default class Invoices extends BaseCrud<
   ): Promise<InvoicesStatic.Payment> {
     return this.request<InvoicesStatic.Payment>(
       "POST",
-      `${this.apiEndpoint}/${id.toString()}/payment`,
+      `${this.apiEndpoint}/${invoiceId.toString()}/payment`,
       undefined,
       {
         date: `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -81,11 +81,13 @@ export default class Invoices extends BaseCrud<
    */
   public async getPayment(
     invoiceId: number,
-    paymentId: number,
+    paymentId: number
   ): Promise<InvoicesStatic.Payment> {
     return this.request<InvoicesStatic.Payment>(
       "GET",
-      `${this.apiEndpoint}/${invoiceId.toString()}/payment/${paymentId.toString()}`
+      `${
+        this.apiEndpoint
+      }/${invoiceId.toString()}/payment/${paymentId.toString()}`
     );
   }
 }
