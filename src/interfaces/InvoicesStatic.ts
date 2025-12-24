@@ -122,6 +122,21 @@ export namespace InvoicesStatic {
     success: boolean;
   }
 
+  export interface Payment {
+    id: number;
+    date: string;
+    value: string;
+    bank_account_id?: number | null;
+    title?: string | null;
+    payment_service_id?: number | null;
+    is_client_account_redemption: boolean;
+    is_cash_discount: boolean;
+    kb_invoice_id?: number | null;
+    kb_credit_voucher_id?: number | null;
+    kb_bill_id?: number | null;
+    kb_credit_voucher_text?: number | null;
+  }
+
   export enum KB_ITEM_STATUS {
     Draft = 7,
     Pending = 8,
@@ -135,5 +150,11 @@ export namespace InvoicesStatic {
     INCLUDING_TAXES = 0,
     EXCLUDING_TAXES = 1,
     EXEMPT_FROM_TAXES = 2,
+  }
+
+  export enum PAYMENT_SERVICE {
+    PAYPAL = 1,
+    STRIPE = 2,
+    SIX_PAYMENTS = 3,
   }
 }
