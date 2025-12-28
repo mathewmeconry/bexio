@@ -4,6 +4,9 @@ import Payments from "./Payments";
 import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 import { BaseStatic } from "../interfaces/BaseStatic";
 
+/**
+ * @deprecated Use BillsV4 instead
+ */
 export default class Bills extends BaseCrud<
   BillsStatic.Bill,
   BillsStatic.BillFull,
