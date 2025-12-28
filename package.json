@@ -1,6 +1,6 @@
 {
   "name": "bexio",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "NPM Package for the api of bexio.com",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -79,5 +79,6 @@
     "roots": [
       "./src"
     ]
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
