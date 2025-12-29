@@ -68,3 +68,5 @@ src/test.ts
 .vscode/
 jest_html_reporters.html
 junit.xml
+jest-html-reporters-attach/
+.yarn/

@@ -17,6 +17,8 @@ import Items from "./resources/Items";
 import Invoices from "./resources/Invoices";
 import Currencies from "./resources/Currencies";
 import BillsV4 from "./resources/BillsV4";
+import OutgoingPayments from "./resources/OutgoingPayments";
+import BankAccounts from "./resources/BankAccounts";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
@@ -41,6 +43,8 @@ export * from "./interfaces/InvoicesStatic";
 export * from "./interfaces/PositionStatic";
 export * from "./interfaces/CurrenciesStatic";
 export * from "./interfaces/BillsV4Static";
+export * from "./interfaces/OutgoingPaymentsStatic";
+export * from "./interfaces/BankAccountsStatic";
 
 export default class Bexio {
   private token: string;
@@ -60,6 +64,7 @@ export default class Bexio {
   public orders: Orders;
   public expenses: Expenses;
   public billsV4: BillsV4;
+  public outgoingPayments: OutgoingPayments;
 
   /**
    * @deprecated Use BillsV4 instead
@@ -86,6 +91,7 @@ export default class Bexio {
 
   // Accounting
   public currencies: Currencies;
+  public bankAccounts: BankAccounts;
 
   constructor(token: string) {
     this.token = token;
@@ -103,6 +109,7 @@ export default class Bexio {
     this.projectTypes = new ProjectTypes(this.token);
     this.expenses = new Expenses(this.token);
     this.billsV4 = new BillsV4(this.token);
+    this.outgoingPayments = new OutgoingPayments(this.token);
     this.bills = new Bills(this.token);
     this.timetrackings = new Timetrackings(this.token);
     this.timetrackingStatuses = new TimetrackingStatuses(this.token);
@@ -110,5 +117,6 @@ export default class Bexio {
     this.items = new Items(this.token);
     this.invoices = new Invoices(this.token);
     this.currencies = new Currencies(this.token);
+    this.bankAccounts = new BankAccounts(this.token);
   }
 }
