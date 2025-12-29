@@ -52,13 +52,13 @@ export default class BaseCrud<
   /**
    * show a specific ressource
    *
-   * @param {number} id
+   * @param {string | number} id
    * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Full>}
    * @memberof BaseCrud
    */
   public async show(
-    id: number,
+    id: string | number,
     options?: BaseStatic.BaseOptions
   ): Promise<Full> {
     return this.request<Full>("GET", this.apiEndpoint + "/" + id, options);
@@ -112,11 +112,11 @@ export default class BaseCrud<
   /**
    * delete an ressource
    *
-   * @param {number} id
+   * @param {string | number} id
    * @returns {Promise<boolean>}
    * @memberof BaseCrud
    */
-  public async delete(id: number): Promise<boolean> {
+  public async delete(id: string | number): Promise<boolean> {
     return (
       await this.request<{ success: boolean }>(
         "DELETE",
@@ -206,7 +206,14 @@ export default class BaseCrud<
 
     for (let i in options) {
       if (options.hasOwnProperty(i)) {
-        str.push(encodeURIComponent(i) + "=" + encodeURIComponent(options[i]));
+        const value = options[i];
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            str.push(encodeURIComponent(i) + "=" + encodeURIComponent(v));
+          });
+        } else {
+          str.push(encodeURIComponent(i) + "=" + encodeURIComponent(value));
+        }
       }
     }
 

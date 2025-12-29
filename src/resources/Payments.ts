@@ -3,7 +3,7 @@ import { PaymentsStatic } from "../interfaces/PaymentsStatic";
 import { BaseStatic } from "../interfaces/BaseStatic";
 
 /**
- * @deprecated Payments are now handled via BillsV4.listPayments()
+ * @deprecated 
  */
 export default class Payments extends BaseCrud<
   PaymentsStatic.Payment,

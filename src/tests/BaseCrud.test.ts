@@ -42,6 +42,18 @@ describe("BaseCrud", () => {
         `https://api.bexio.com/${endpoint}?limit=${limit}`
       );
     });
+
+    it("Should handle array options correctly", async () => {
+      const endpoint = chance.string();
+      const apiToken = chance.string();
+      const baseCrud = new BaseCrud(apiToken, `/${endpoint}`);
+      const fields = ["a", "b"];
+      await baseCrud.list({ "fields[]": fields });
+      const axiosParams = requestSpy.mock.calls[0][0] as AxiosRequestConfig;
+      expect(axiosParams.url).toBe(
+        `https://api.bexio.com/${endpoint}?fields%5B%5D=a&fields%5B%5D=b`
+      );
+    });
   });
 
   describe("search", () => {
