@@ -90,4 +90,24 @@ export default class Invoices extends BaseCrud<
       }/${invoiceId.toString()}/payment/${paymentId.toString()}`
     );
   }
+
+  /**
+   * Delete a payment for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {number} paymentId
+   * @return {*}  {Promise<void>}
+   * @memberof Invoices
+   */
+  public async deletePayment(
+    invoiceId: number,
+    paymentId: number
+  ): Promise<void> {
+    return this.request<void>(
+      "DELETE",
+      `${
+        this.apiEndpoint
+      }/${invoiceId.toString()}/payment/${paymentId.toString()}`
+    );
+  }
 }
