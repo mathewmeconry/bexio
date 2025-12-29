@@ -64,7 +64,8 @@ describe("OutgoingPayments", () => {
       await outgoingPayments.show(id);
       expect(requestSpy).toHaveBeenCalledWith(
         "GET",
-        `/4.0/purchase/outgoing-payments/${id}`
+        `/4.0/purchase/outgoing-payments/${id}`,
+        undefined
       );
     });
   });
