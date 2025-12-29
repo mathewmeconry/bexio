@@ -14,22 +14,27 @@ export default class BillsV4 extends BaseCrud<
     super(apiToken, "/4.0/purchase/bills");
   }
 
+
   /**
-   * Lists the bills
+   * Lists the ressource
    *
    * @param {BillsV4Static.ListOptions} [options]
-   * @returns {Promise<BillsV4Static.Bill[]>}
+   * @returns {Promise<Array<BillsV4Static.Bill>>}
    * @memberof BillsV4
    */
   public async list(
     options?: BillsV4Static.ListOptions
-  ): Promise<BillsV4Static.Bill[]> {
-    const response = await this.request<{ data: BillsV4Static.Bill[] }>(
-      "GET",
-      "/4.0/purchase/bills",
-      options
-    );
-    return response.data;
+  ): Promise<Array<BillsV4Static.Bill>> {
+    const resp = await this.request<{
+      data: Array<BillsV4Static.Bill>;
+      paging: {
+        page: number;
+        page_size: number;
+        page_count: number;
+        item_count: number;
+      };
+    }>("GET", this.apiEndpoint, options);
+    return resp.data;
   }
 
   /**

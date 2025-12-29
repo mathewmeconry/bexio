@@ -155,6 +155,13 @@ export namespace BillsV4Static {
     DUPLICATE = "DUPLICATE",
   }
 
+  export enum BillStatusFilter {
+    DRAFTS = "DRAFTS",
+    TODO = "TODO", 
+    PAID = "PAID",
+    OVERDUE = "OVERDUE",
+  }
+
   export interface ListOptions {
     limit?: number;
     page?: number;
@@ -162,7 +169,7 @@ export namespace BillsV4Static {
     sort?: string;
     search_term?: string;
     "fields[]"?: string[];
-    status?: "DRAFTS" | "TODO" | "PAID" | "OVERDUE";
+    status?: BillStatusFilter;
     bill_date_start?: string;
     bill_date_end?: string;
     due_date_start?: string;

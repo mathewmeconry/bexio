@@ -2,8 +2,7 @@ import BaseCrud from "../resources/BaseCrud";
 import BillsV4 from "../resources/BillsV4";
 import Chance from "chance";
 import { BillsV4Static } from "../interfaces/BillsV4Static";
-
-jest.mock("../resources/BaseCrud");
+import { BaseStatic } from "../interfaces/BaseStatic";
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -11,24 +10,33 @@ console.log(`using chance seed ${seed}`);
 const chance = new Chance(seed);
 
 describe("BillsV4", () => {
+  let requestSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    requestSpy = jest
+      .spyOn(BaseCrud.prototype as any, "request")
+      .mockResolvedValue({});
+  });
+
   afterEach(() => {
-    jest.resetAllMocks();
+    requestSpy.mockRestore();
   });
 
   it("Should use init the base correctly", () => {
     const token = chance.string();
-    new BillsV4(token);
-    expect(BaseCrud).toHaveBeenCalledWith(token, "/4.0/purchase/bills");
+    const billsV4 = new BillsV4(token);
+    // @ts-ignore
+    expect(billsV4.apiToken).toBe(token);
+    // @ts-ignore
+    expect(billsV4.apiEndpoint).toBe("/4.0/purchase/bills");
   });
 
   describe("list", () => {
     it("Should call request with GET", async () => {
       const billsV4 = new BillsV4(chance.string());
-      // @ts-ignore
-      BaseCrud.prototype.request.mockResolvedValue({ data: [] });
+      requestSpy.mockResolvedValue({ data: [] });
       await billsV4.list();
-      // @ts-ignore
-      expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
+      expect(requestSpy).toHaveBeenCalledWith(
         "GET",
         "/4.0/purchase/bills",
         undefined
@@ -37,15 +45,77 @@ describe("BillsV4", () => {
 
     it("Should pass options to request", async () => {
       const billsV4 = new BillsV4(chance.string());
-      const options: BillsV4Static.ListOptions = { limit: chance.integer({ min: 0 }) };
-      // @ts-ignore
-      BaseCrud.prototype.request.mockResolvedValue({ data: [] });
+      const options: BaseStatic.BaseOptions = { limit: chance.integer() };
+      requestSpy.mockResolvedValue({ data: [] });
       await billsV4.list(options);
-      // @ts-ignore
-      expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
+      expect(requestSpy).toHaveBeenCalledWith(
         "GET",
         "/4.0/purchase/bills",
         options
+      );
+    });
+
+    it("should list bills with options", async () => {
+      const billsV4 = new BillsV4(chance.string());
+      const bills = [
+        { id: chance.guid(), document_no: "B-1", lastname_company: "Test" },
+      ];
+      requestSpy.mockResolvedValue({ data: bills });
+
+      const options: BillsV4Static.ListOptions = {
+        limit: 10,
+        page: 1,
+        "fields[]": ["document_no", "title"],
+      };
+      const result = await billsV4.list(options);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        "/4.0/purchase/bills",
+        options
+      );
+      expect(result).toEqual(bills);
+    });
+  });
+
+  describe("updateStatus", () => {
+    it("Should call request with PUT and correct path", async () => {
+      const billsV4 = new BillsV4(chance.string());
+      const id = chance.guid();
+      const status = BillsV4Static.BillStatusUpdate.BOOKED;
+      await billsV4.updateStatus(id, status);
+      expect(requestSpy).toHaveBeenCalledWith(
+        "PUT",
+        `/4.0/purchase/bills/${id}/bookings/${status}`
+      );
+    });
+  });
+
+  describe("executeAction", () => {
+    it("Should call request with POST and correct path and data", async () => {
+      const billsV4 = new BillsV4(chance.string());
+      const id = chance.guid();
+      const action = BillsV4Static.BillAction.DUPLICATE;
+      await billsV4.executeAction(id, action);
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/4.0/purchase/bills/${id}/actions`,
+        undefined,
+        { action }
+      );
+    });
+  });
+
+  describe("validateDocumentNumber", () => {
+    it("Should call request with GET and correct path and data", async () => {
+      const billsV4 = new BillsV4(chance.string());
+      const documentNo = chance.string();
+      requestSpy.mockResolvedValue({ valid: true });
+      await billsV4.validateDocumentNumber(documentNo);
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        "/4.0/purchase/documentnumbers/bills",
+        { document_no: documentNo }
       );
     });
   });
@@ -53,7 +123,9 @@ describe("BillsV4", () => {
   describe("search", () => {
     it("Should throw not implemented error", async () => {
       const billsV4 = new BillsV4(chance.string());
-      await expect(billsV4.search([])).rejects.toThrow("not implemented by Bexio yet");
+      await expect(billsV4.search([])).rejects.toThrow(
+        "not implemented by Bexio yet"
+      );
     });
   });
 
@@ -66,7 +138,7 @@ describe("BillsV4", () => {
       // @ts-ignore
       expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
         "PUT",
-        `undefined/${id}/bookings/${status}`
+        `/4.0/purchase/bills/${id}/bookings/${status}`
       );
     });
   });
@@ -80,7 +152,7 @@ describe("BillsV4", () => {
       // @ts-ignore
       expect(BaseCrud.prototype.request).toHaveBeenCalledWith(
         "POST",
-        `undefined/${id}/actions`,
+        `/4.0/purchase/bills/${id}/actions`,
         undefined,
         { action }
       );
