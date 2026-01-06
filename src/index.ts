@@ -19,6 +19,9 @@ import Currencies from "./resources/Currencies";
 import BillsV4 from "./resources/BillsV4";
 import OutgoingPayments from "./resources/OutgoingPayments";
 import BankAccounts from "./resources/BankAccounts";
+import Accounts from "./resources/Accounts";
+import ManualEntries from "./resources/ManualEntries";
+import Taxes from "./resources/Taxes";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";
@@ -45,6 +48,9 @@ export * from "./interfaces/CurrenciesStatic";
 export * from "./interfaces/BillsV4Static";
 export * from "./interfaces/OutgoingPaymentsStatic";
 export * from "./interfaces/BankAccountsStatic";
+export * from "./interfaces/AccountsStatic";
+export * from "./interfaces/ManualEntriesStatic";
+export * from "./interfaces/TaxesStatic";
 
 export default class Bexio {
   private token: string;
@@ -92,6 +98,9 @@ export default class Bexio {
   // Accounting
   public currencies: Currencies;
   public bankAccounts: BankAccounts;
+  public accounts: Accounts;
+  public manualEntries: ManualEntries;
+  public taxes: Taxes;
 
   constructor(token: string) {
     this.token = token;
@@ -118,5 +127,8 @@ export default class Bexio {
     this.invoices = new Invoices(this.token);
     this.currencies = new Currencies(this.token);
     this.bankAccounts = new BankAccounts(this.token);
+    this.accounts = new Accounts(this.token);
+    this.manualEntries = new ManualEntries(this.token);
+    this.taxes = new Taxes(this.token);
   }
 }
