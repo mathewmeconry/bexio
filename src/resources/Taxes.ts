@@ -1,7 +1,7 @@
 import { TaxesStatic } from '../interfaces/TaxesStatic';
 import BaseCrud from './BaseCrud';
 
-export class Taxes extends BaseCrud<
+export default class Taxes extends BaseCrud<
   TaxesStatic.Tax,
   TaxesStatic.Tax,
   TaxesStatic.Tax,

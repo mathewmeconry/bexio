@@ -21,7 +21,7 @@ import OutgoingPayments from "./resources/OutgoingPayments";
 import BankAccounts from "./resources/BankAccounts";
 import Accounts from "./resources/Accounts";
 import ManualEntries from "./resources/ManualEntries";
-import { Taxes } from "./resources/Taxes";
+import Taxes from "./resources/Taxes";
 
 export * from "./interfaces/BillsStatic";
 export * from "./interfaces/BusinessActivitiesStatic";

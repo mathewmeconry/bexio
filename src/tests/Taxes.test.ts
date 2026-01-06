@@ -1,4 +1,4 @@
-import { Taxes } from '../resources/Taxes';
+import Taxes from '../resources/Taxes';
 import BaseCrud from '../resources/BaseCrud';
 import { TaxesStatic } from '../interfaces/TaxesStatic';
 
