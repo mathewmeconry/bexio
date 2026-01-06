@@ -11,6 +11,7 @@ export namespace ManualEntriesStatic {
     debit_account_id: number;
     credit_account_id: number;
     tax_id?: number;
+    tax_account_id?: number;
     amount: number;
     currency_id: number;
     exchange_rate?: number;
