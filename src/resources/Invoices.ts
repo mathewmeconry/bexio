@@ -24,6 +24,14 @@ export default class Invoices extends BaseCrud<
       ressource
     );
   }
+
+  public async cancel(id: number): Promise<InvoicesStatic.InvoiceCancelled> {
+    return this.request<InvoicesStatic.InvoiceCancelled>(
+      "POST",
+      `${this.apiEndpoint}/${id}/cancel`,
+    );
+  }
+
   /**
    * revert a Invoice issue
    *

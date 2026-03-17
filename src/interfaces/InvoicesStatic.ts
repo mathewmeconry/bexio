@@ -118,6 +118,11 @@ export namespace InvoicesStatic {
     mark_as_open: boolean;
     attach_pdf?: boolean;
   }
+
+  export interface InvoiceCancelled {
+    success: boolean
+  }
+
   export interface InvoiceSentAnswer {
     success: boolean;
   }
