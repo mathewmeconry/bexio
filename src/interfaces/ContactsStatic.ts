@@ -39,32 +39,21 @@ export namespace ContactsStatic {
   }
 
   export interface ContactCreate {
+    nr?: string;
     name_1: string;
     user_id: number;
-    country_id: number;
+    country_id?: number;
     owner_id: number;
     contact_type_id: number;
-    contact_group_ids: Array<number>;
-  }
-
-  export interface ContactOverwrite {
-    nr: string;
-    name_1: string;
-    user_id: number;
-    country_id: number;
-    owner_id: number;
-    contact_type_id: number;
-    contact_group_ids: Array<number>;
-    id?: number;
+    contact_group_ids?: Array<number>;
     name_2?: string;
     salutation_id?: number;
     salutation_form?: number;
     title_id?: number;
     birthday?: string;
-    /** @deprecated */
-    address?: string;
     street_name?: string;
     house_number?: string;
+    address_addition?: string;
     postcode?: string;
     city?: string;
     mail?: string;
@@ -77,10 +66,38 @@ export namespace ContactsStatic {
     skype_name?: string;
     remarks?: string;
     language_id?: number;
-    is_lead?: boolean;
     contact_branch_ids?: string;
-    updated_at?: string;
-    profile_image?: string;
+  }
+
+  export interface ContactOverwrite {
+    nr?: string;
+    name_1: string;
+    user_id: number;
+    country_id?: number;
+    owner_id: number;
+    contact_type_id: number;
+    contact_group_ids?: Array<number>;
+    name_2?: string;
+    salutation_id?: number;
+    salutation_form?: number;
+    title_id?: number;
+    birthday?: string;
+    street_name?: string;
+    house_number?: string;
+    address_addition?: string;
+    postcode?: string;
+    city?: string;
+    mail?: string;
+    mail_second?: string;
+    phone_fixed?: string;
+    phone_fixed_second?: string;
+    phone_mobile?: string;
+    fax?: string;
+    url?: string;
+    skype_name?: string;
+    remarks?: string;
+    language_id?: number;
+    contact_branch_ids?: string;
   }
 
   export enum ContactSearchParameters {
