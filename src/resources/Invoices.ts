@@ -1,6 +1,10 @@
 import { ContactsStatic } from "./../interfaces/ContactsStatic";
 import BaseCrud from "./BaseCrud";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
+import { PositionsStatic } from "../interfaces/PositionsStatic";
+import CustomPositions from "./CustomPositions";
+import ArticlePositions from "./ArticlePositions";
+import TextPositions from "./TextPositions";
 
 export default class Invoices extends BaseCrud<
   InvoicesStatic.Invoice,
@@ -116,6 +120,57 @@ export default class Invoices extends BaseCrud<
       `${
         this.apiEndpoint
       }/${invoiceId.toString()}/payment/${paymentId.toString()}`
+    );
+  }
+
+  /**
+   * Create a custom position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {PositionsStatic.CustomPositionCreate} position
+   * @returns {Promise<PositionsStatic.CustomPosition>}
+   * @memberof Invoices
+   */
+  public async createCustomPosition(
+    invoiceId: number,
+    position: PositionsStatic.CustomPositionCreate
+  ): Promise<PositionsStatic.CustomPosition> {
+    return new CustomPositions(this.apiToken, "kb_invoice", invoiceId).create(
+      position
+    );
+  }
+
+  /**
+   * Create an article position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {PositionsStatic.ArticlePositionCreate} position
+   * @returns {Promise<PositionsStatic.ArticlePosition>}
+   * @memberof Invoices
+   */
+  public async createArticlePosition(
+    invoiceId: number,
+    position: PositionsStatic.ArticlePositionCreate
+  ): Promise<PositionsStatic.ArticlePosition> {
+    return new ArticlePositions(this.apiToken, "kb_invoice", invoiceId).create(
+      position
+    );
+  }
+
+  /**
+   * Create a text position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {PositionsStatic.TextPositionCreate} position
+   * @returns {Promise<PositionsStatic.TextPosition>}
+   * @memberof Invoices
+   */
+  public async createTextPosition(
+    invoiceId: number,
+    position: PositionsStatic.TextPositionCreate
+  ): Promise<PositionsStatic.TextPosition> {
+    return new TextPositions(this.apiToken, "kb_invoice", invoiceId).create(
+      position
     );
   }
 }

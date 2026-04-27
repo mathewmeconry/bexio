@@ -44,6 +44,7 @@ export * from "./interfaces/UsersStatic";
 export * from "./interfaces/ItemsStatic";
 export * from "./interfaces/InvoicesStatic";
 export * from "./interfaces/PositionStatic";
+export * from "./interfaces/PositionsStatic";
 export * from "./interfaces/CurrenciesStatic";
 export * from "./interfaces/BillsV4Static";
 export * from "./interfaces/OutgoingPaymentsStatic";

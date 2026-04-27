@@ -2,6 +2,7 @@ import BaseCrud from "../resources/BaseCrud";
 import Invoices from "../resources/Invoices";
 import Chance from "chance";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
+import { PositionsStatic } from "../interfaces/PositionsStatic";
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -144,6 +145,69 @@ describe("Invoices", () => {
       expect(requestSpy).toHaveBeenCalledWith(
         "DELETE",
         `/2.0/kb_invoice/${invoiceId}/payment/${paymentId}`
+      );
+    });
+  });
+
+  describe("createCustomPosition", () => {
+    it("Should call request with POST and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const position: PositionsStatic.CustomPositionCreate = {
+        amount: chance.string(),
+        unit_price: chance.string(),
+        text: chance.string(),
+        tax_id: chance.integer(),
+      };
+
+      await invoices.createCustomPosition(invoiceId, position);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_custom`,
+        undefined,
+        position
+      );
+    });
+  });
+
+  describe("createArticlePosition", () => {
+    it("Should call request with POST and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const position: PositionsStatic.ArticlePositionCreate = {
+        article_id: chance.integer(),
+        amount: chance.string(),
+        text: chance.string(),
+      };
+
+      await invoices.createArticlePosition(invoiceId, position);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_article`,
+        undefined,
+        position
+      );
+    });
+  });
+
+  describe("createTextPosition", () => {
+    it("Should call request with POST and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const position: PositionsStatic.TextPositionCreate = {
+        text: chance.string(),
+        show_pos_nr: chance.bool(),
+      };
+
+      await invoices.createTextPosition(invoiceId, position);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_text`,
+        undefined,
+        position
       );
     });
   });
