@@ -149,18 +149,25 @@ describe("Invoices", () => {
     });
   });
 
-  describe("createCustomPosition", () => {
+  describe("createDefaultPosition", () => {
     it("Should call request with POST and correct path", async () => {
       const invoices = new Invoices(chance.string());
       const invoiceId = chance.integer();
-      const position: PositionsStatic.CustomPositionCreate = {
+      const position: PositionsStatic.DefaultPositionCreate = {
         amount: chance.string(),
-        unit_price: chance.string(),
-        text: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
         tax_id: chance.integer(),
+        text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
 
-      await invoices.createCustomPosition(invoiceId, position);
+      await invoices.createDefaultPosition(invoiceId, position);
 
       expect(requestSpy).toHaveBeenCalledWith(
         "POST",
@@ -171,17 +178,26 @@ describe("Invoices", () => {
     });
   });
 
-  describe("createArticlePosition", () => {
+  describe("createItemPosition", () => {
     it("Should call request with POST and correct path", async () => {
       const invoices = new Invoices(chance.string());
       const invoiceId = chance.integer();
-      const position: PositionsStatic.ArticlePositionCreate = {
+      const position: PositionsStatic.ItemPositionCreate = {
         article_id: chance.integer(),
         amount: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
+        tax_id: chance.integer(),
         text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
 
-      await invoices.createArticlePosition(invoiceId, position);
+      await invoices.createItemPosition(invoiceId, position);
 
       expect(requestSpy).toHaveBeenCalledWith(
         "POST",

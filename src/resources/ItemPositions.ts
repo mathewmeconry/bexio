@@ -2,12 +2,12 @@ import BaseCrud from "./BaseCrud";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
 import { BaseStatic } from "../interfaces/BaseStatic";
 
-export default class CustomPositions extends BaseCrud<
-  PositionsStatic.CustomPosition,
-  PositionsStatic.CustomPosition,
+export default class ItemPositions extends BaseCrud<
+  PositionsStatic.ItemPosition,
+  PositionsStatic.ItemPosition,
   {},
   {},
-  PositionsStatic.CustomPositionCreate,
+  PositionsStatic.ItemPositionCreate,
   {}
 > {
   constructor(
@@ -17,7 +17,7 @@ export default class CustomPositions extends BaseCrud<
   ) {
     super(
       apiToken,
-      `/2.0/${documentType}/${documentId}/kb_position_custom`
+      `/2.0/${documentType}/${documentId}/kb_position_article`
     );
   }
 
@@ -27,7 +27,7 @@ export default class CustomPositions extends BaseCrud<
    * @param {Array<BaseStatic.SearchParameter<{}>>} searchOptions
    * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Array<{}>>}
-   * @memberof CustomPositions
+   * @memberof ItemPositions
    */
   public async search(
     searchOptions: Array<BaseStatic.SearchParameter<{}>>,
@@ -41,13 +41,13 @@ export default class CustomPositions extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<PositionsStatic.CustomPosition>}
-   * @memberof CustomPositions
+   * @returns {Promise<PositionsStatic.ItemPosition>}
+   * @memberof ItemPositions
    */
   public async overwrite(
     id: number,
     ressource: {}
-  ): Promise<PositionsStatic.CustomPosition> {
+  ): Promise<PositionsStatic.ItemPosition> {
     throw new Error("not implemented by Bexio yet");
   }
 
@@ -56,13 +56,13 @@ export default class CustomPositions extends BaseCrud<
    *
    * @param {number} id
    * @param {Partial<{}>} ressource
-   * @returns {Promise<PositionsStatic.CustomPosition>}
-   * @memberof CustomPositions
+   * @returns {Promise<PositionsStatic.ItemPosition>}
+   * @memberof ItemPositions
    */
   public async edit(
     id: number,
     ressource: Partial<{}>
-  ): Promise<PositionsStatic.CustomPosition> {
+  ): Promise<PositionsStatic.ItemPosition> {
     throw new Error("not implemented by Bexio yet");
   }
 }

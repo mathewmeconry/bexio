@@ -1,8 +1,8 @@
 import { OrdersStatic } from "./../interfaces/OrdersStatic";
 import BaseCrud from "./BaseCrud";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
-import CustomPositions from "./CustomPositions";
-import ArticlePositions from "./ArticlePositions";
+import DefaultPositions from "./DefaultPositions";
+import ItemPositions from "./ItemPositions";
 import TextPositions from "./TextPositions";
 
 export default class Orders extends BaseCrud<
@@ -18,35 +18,35 @@ export default class Orders extends BaseCrud<
   }
 
   /**
-   * Create a custom position for an order
+   * Create a default position for an order
    *
    * @param {number} orderId
-   * @param {PositionsStatic.CustomPositionCreate} position
-   * @returns {Promise<PositionsStatic.CustomPosition>}
+   * @param {PositionsStatic.DefaultPositionCreate} position
+   * @returns {Promise<PositionsStatic.DefaultPosition>}
    * @memberof Orders
    */
-  public async createCustomPosition(
+  public async createDefaultPosition(
     orderId: number,
-    position: PositionsStatic.CustomPositionCreate
-  ): Promise<PositionsStatic.CustomPosition> {
-    return new CustomPositions(this.apiToken, "kb_order", orderId).create(
+    position: PositionsStatic.DefaultPositionCreate
+  ): Promise<PositionsStatic.DefaultPosition> {
+    return new DefaultPositions(this.apiToken, "kb_order", orderId).create(
       position
     );
   }
 
   /**
-   * Create an article position for an order
+   * Create an item position for an order
    *
    * @param {number} orderId
-   * @param {PositionsStatic.ArticlePositionCreate} position
-   * @returns {Promise<PositionsStatic.ArticlePosition>}
+   * @param {PositionsStatic.ItemPositionCreate} position
+   * @returns {Promise<PositionsStatic.ItemPosition>}
    * @memberof Orders
    */
-  public async createArticlePosition(
+  public async createItemPosition(
     orderId: number,
-    position: PositionsStatic.ArticlePositionCreate
-  ): Promise<PositionsStatic.ArticlePosition> {
-    return new ArticlePositions(this.apiToken, "kb_order", orderId).create(
+    position: PositionsStatic.ItemPositionCreate
+  ): Promise<PositionsStatic.ItemPosition> {
+    return new ItemPositions(this.apiToken, "kb_order", orderId).create(
       position
     );
   }

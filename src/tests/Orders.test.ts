@@ -1,14 +1,14 @@
 import BaseCrud from "../resources/BaseCrud";
 import Orders from "../resources/Orders";
 import Chance from "chance";
-import CustomPositions from "../resources/CustomPositions";
-import ArticlePositions from "../resources/ArticlePositions";
+import DefaultPositions from "../resources/DefaultPositions";
+import ItemPositions from "../resources/ItemPositions";
 import TextPositions from "../resources/TextPositions";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
 
 jest.mock("../resources/BaseCrud");
-jest.mock("../resources/CustomPositions");
-jest.mock("../resources/ArticlePositions");
+jest.mock("../resources/DefaultPositions");
+jest.mock("../resources/ItemPositions");
 jest.mock("../resources/TextPositions");
 
 const seedgenerator = new Chance();
@@ -27,16 +27,25 @@ describe("Orders", () => {
     expect(BaseCrud).toHaveBeenCalledWith(token, "/2.0/kb_order");
   });
 
-  describe("createCustomPosition", () => {
-    it("Should create a new CustomPosition object", async () => {
+  describe("createDefaultPosition", () => {
+    it("Should create a new DefaultPosition object", async () => {
       const orderId = chance.integer({ min: 0 });
-      const position: PositionsStatic.CustomPositionCreate = {
+      const position: PositionsStatic.DefaultPositionCreate = {
         amount: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
+        tax_id: chance.integer(),
         text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
-      new Orders(chance.string()).createCustomPosition(orderId, position);
+      new Orders(chance.string()).createDefaultPosition(orderId, position);
 
-      expect(CustomPositions).toHaveBeenCalledWith(
+      expect(DefaultPositions).toHaveBeenCalledWith(
         undefined,
         "kb_order",
         orderId
@@ -45,26 +54,45 @@ describe("Orders", () => {
 
     it("Should call create", async () => {
       const orderId = chance.integer({ min: 0 });
-      const position: PositionsStatic.CustomPositionCreate = {
+      const position: PositionsStatic.DefaultPositionCreate = {
         amount: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
+        tax_id: chance.integer(),
         text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
-      new Orders(chance.string()).createCustomPosition(orderId, position);
+      new Orders(chance.string()).createDefaultPosition(orderId, position);
 
-      expect(CustomPositions.prototype.create).toHaveBeenCalledWith(position);
+      expect(DefaultPositions.prototype.create).toHaveBeenCalledWith(position);
     });
   });
 
-  describe("createArticlePosition", () => {
-    it("Should create a new ArticlePosition object", async () => {
+  describe("createItemPosition", () => {
+    it("Should create a new ItemPosition object", async () => {
       const orderId = chance.integer({ min: 0 });
-      const position: PositionsStatic.ArticlePositionCreate = {
+      const position: PositionsStatic.ItemPositionCreate = {
         article_id: chance.integer(),
         amount: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
+        tax_id: chance.integer(),
+        text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
-      new Orders(chance.string()).createArticlePosition(orderId, position);
+      new Orders(chance.string()).createItemPosition(orderId, position);
 
-      expect(ArticlePositions).toHaveBeenCalledWith(
+      expect(ItemPositions).toHaveBeenCalledWith(
         undefined,
         "kb_order",
         orderId
@@ -73,13 +101,23 @@ describe("Orders", () => {
 
     it("Should call create", async () => {
       const orderId = chance.integer({ min: 0 });
-      const position: PositionsStatic.ArticlePositionCreate = {
+      const position: PositionsStatic.ItemPositionCreate = {
         article_id: chance.integer(),
         amount: chance.string(),
+        amount_reserved: chance.string(),
+        amount_open: chance.string(),
+        amount_completed: chance.string(),
+        unit_id: chance.integer(),
+        account_id: chance.integer(),
+        tax_id: chance.integer(),
+        text: chance.string(),
+        unit_price: chance.string(),
+        discount_in_percent: chance.string(),
+        is_optional: chance.bool(),
       };
-      new Orders(chance.string()).createArticlePosition(orderId, position);
+      new Orders(chance.string()).createItemPosition(orderId, position);
 
-      expect(ArticlePositions.prototype.create).toHaveBeenCalledWith(position);
+      expect(ItemPositions.prototype.create).toHaveBeenCalledWith(position);
     });
   });
 
@@ -88,6 +126,7 @@ describe("Orders", () => {
       const orderId = chance.integer({ min: 0 });
       const position: PositionsStatic.TextPositionCreate = {
         text: chance.string(),
+        show_pos_nr: chance.bool(),
       };
       new Orders(chance.string()).createTextPosition(orderId, position);
 
@@ -102,6 +141,7 @@ describe("Orders", () => {
       const orderId = chance.integer({ min: 0 });
       const position: PositionsStatic.TextPositionCreate = {
         text: chance.string(),
+        show_pos_nr: chance.bool(),
       };
       new Orders(chance.string()).createTextPosition(orderId, position);
 

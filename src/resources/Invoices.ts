@@ -2,8 +2,8 @@ import { ContactsStatic } from "./../interfaces/ContactsStatic";
 import BaseCrud from "./BaseCrud";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
-import CustomPositions from "./CustomPositions";
-import ArticlePositions from "./ArticlePositions";
+import DefaultPositions from "./DefaultPositions";
+import ItemPositions from "./ItemPositions";
 import TextPositions from "./TextPositions";
 
 export default class Invoices extends BaseCrud<
@@ -124,35 +124,35 @@ export default class Invoices extends BaseCrud<
   }
 
   /**
-   * Create a custom position for an invoice
+   * Create a default position for an invoice
    *
    * @param {number} invoiceId
-   * @param {PositionsStatic.CustomPositionCreate} position
-   * @returns {Promise<PositionsStatic.CustomPosition>}
+   * @param {PositionsStatic.DefaultPositionCreate} position
+   * @returns {Promise<PositionsStatic.DefaultPosition>}
    * @memberof Invoices
    */
-  public async createCustomPosition(
+  public async createDefaultPosition(
     invoiceId: number,
-    position: PositionsStatic.CustomPositionCreate
-  ): Promise<PositionsStatic.CustomPosition> {
-    return new CustomPositions(this.apiToken, "kb_invoice", invoiceId).create(
+    position: PositionsStatic.DefaultPositionCreate
+  ): Promise<PositionsStatic.DefaultPosition> {
+    return new DefaultPositions(this.apiToken, "kb_invoice", invoiceId).create(
       position
     );
   }
 
   /**
-   * Create an article position for an invoice
+   * Create an item position for an invoice
    *
    * @param {number} invoiceId
-   * @param {PositionsStatic.ArticlePositionCreate} position
-   * @returns {Promise<PositionsStatic.ArticlePosition>}
+   * @param {PositionsStatic.ItemPositionCreate} position
+   * @returns {Promise<PositionsStatic.ItemPosition>}
    * @memberof Invoices
    */
-  public async createArticlePosition(
+  public async createItemPosition(
     invoiceId: number,
-    position: PositionsStatic.ArticlePositionCreate
-  ): Promise<PositionsStatic.ArticlePosition> {
-    return new ArticlePositions(this.apiToken, "kb_invoice", invoiceId).create(
+    position: PositionsStatic.ItemPositionCreate
+  ): Promise<PositionsStatic.ItemPosition> {
+    return new ItemPositions(this.apiToken, "kb_invoice", invoiceId).create(
       position
     );
   }

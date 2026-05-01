@@ -2,12 +2,12 @@ import BaseCrud from "./BaseCrud";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
 import { BaseStatic } from "../interfaces/BaseStatic";
 
-export default class ArticlePositions extends BaseCrud<
-  PositionsStatic.ArticlePosition,
-  PositionsStatic.ArticlePosition,
+export default class DefaultPositions extends BaseCrud<
+  PositionsStatic.DefaultPosition,
+  PositionsStatic.DefaultPosition,
   {},
   {},
-  PositionsStatic.ArticlePositionCreate,
+  PositionsStatic.DefaultPositionCreate,
   {}
 > {
   constructor(
@@ -17,7 +17,7 @@ export default class ArticlePositions extends BaseCrud<
   ) {
     super(
       apiToken,
-      `/2.0/${documentType}/${documentId}/kb_position_article`
+      `/2.0/${documentType}/${documentId}/kb_position_custom`
     );
   }
 
@@ -27,7 +27,7 @@ export default class ArticlePositions extends BaseCrud<
    * @param {Array<BaseStatic.SearchParameter<{}>>} searchOptions
    * @param {BaseStatic.BaseOptions} [options]
    * @returns {Promise<Array<{}>>}
-   * @memberof ArticlePositions
+   * @memberof DefaultPositions
    */
   public async search(
     searchOptions: Array<BaseStatic.SearchParameter<{}>>,
@@ -41,13 +41,13 @@ export default class ArticlePositions extends BaseCrud<
    *
    * @param {number} id
    * @param {{}} ressource
-   * @returns {Promise<PositionsStatic.ArticlePosition>}
-   * @memberof ArticlePositions
+   * @returns {Promise<PositionsStatic.DefaultPosition>}
+   * @memberof DefaultPositions
    */
   public async overwrite(
     id: number,
     ressource: {}
-  ): Promise<PositionsStatic.ArticlePosition> {
+  ): Promise<PositionsStatic.DefaultPosition> {
     throw new Error("not implemented by Bexio yet");
   }
 
@@ -56,13 +56,13 @@ export default class ArticlePositions extends BaseCrud<
    *
    * @param {number} id
    * @param {Partial<{}>} ressource
-   * @returns {Promise<PositionsStatic.ArticlePosition>}
-   * @memberof ArticlePositions
+   * @returns {Promise<PositionsStatic.DefaultPosition>}
+   * @memberof DefaultPositions
    */
   public async edit(
     id: number,
     ressource: Partial<{}>
-  ): Promise<PositionsStatic.ArticlePosition> {
+  ): Promise<PositionsStatic.DefaultPosition> {
     throw new Error("not implemented by Bexio yet");
   }
 }
