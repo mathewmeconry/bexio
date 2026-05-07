@@ -111,7 +111,7 @@ export namespace InvoicesStatic {
     updated_at = "updated_at",
   }
 
-  export interface InvoiceSent {
+  export interface InvoiceSend {
     recipient_email: string;
     subject: string;
     message: string;
@@ -119,8 +119,17 @@ export namespace InvoicesStatic {
     attach_pdf?: boolean;
   }
 
+  /**
+   * @deprecated Use `InvoiceSend` instead.
+   */
+  export type InvoiceSent = InvoiceSend;
+
   export interface InvoiceCancelled {
     success: boolean
+  }
+
+  export interface InvoiceIssued {
+    success: boolean;
   }
 
   export interface InvoiceSentAnswer {
