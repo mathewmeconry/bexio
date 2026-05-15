@@ -53,6 +53,34 @@ describe("Invoices", () => {
     });
   });
 
+  describe("showPdf", () => {
+    it("Should call request with GET and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.showPdf(id);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        `/2.0/kb_invoice/${id}/pdf`,
+        undefined
+      );
+    });
+
+    it("Should pass logopaper option when provided", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.showPdf(id, 0);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        `/2.0/kb_invoice/${id}/pdf`,
+        { logopaper: 0 }
+      );
+    });
+  });
+
   describe("revertIssue", () => {
     it("Should call request with POST and correct path", async () => {
       const invoices = new Invoices(chance.string());

@@ -1,5 +1,6 @@
 import { ContactsStatic } from "./../interfaces/ContactsStatic";
 import BaseCrud from "./BaseCrud";
+import { BaseStatic } from "../interfaces/BaseStatic";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
 import DefaultPositions from "./DefaultPositions";
@@ -33,6 +34,25 @@ export default class Invoices extends BaseCrud<
     return this.request<InvoicesStatic.InvoiceCancelled>(
       "POST",
       `${this.apiEndpoint}/${id}/cancel`,
+    );
+  }
+
+  /**
+   * This action returns a pdf document of the invoice.
+   *
+   * @param {number} id
+   * @param {0 | 1} [logopaper] Whether the PDF should be generated using the letterhead, or not.
+   * @returns {Promise<BaseStatic.PdfResponse>}
+   * @memberof Invoices
+   */
+  public async showPdf(
+    id: number,
+    logopaper?: 0 | 1
+  ): Promise<BaseStatic.PdfResponse> {
+    return this.request<BaseStatic.PdfResponse>(
+      "GET",
+      `${this.apiEndpoint}/${id}/pdf`,
+      logopaper !== undefined ? { logopaper } : undefined
     );
   }
 
