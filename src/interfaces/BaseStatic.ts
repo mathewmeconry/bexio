@@ -6,6 +6,10 @@ export namespace BaseStatic {
     content: string;
   }
 
+  export type BufferPdfResponse = Omit<PdfResponse, "content"> & {
+    content: Buffer;
+  };
+
   export type SearchCriteria =
     | "="
     | "!="
