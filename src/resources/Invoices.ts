@@ -18,9 +18,18 @@ export default class Invoices extends BaseCrud<
   constructor(apiToken: string) {
     super(apiToken, "/2.0/kb_invoice");
   }
-  public async sent(
+
+  /**
+   * Send an invoice by email.
+   *
+   * @param {number} id
+   * @param {Partial<InvoicesStatic.InvoiceSend>} ressource
+   * @returns {Promise<InvoicesStatic.InvoiceSentAnswer>}
+   * @memberof Invoices
+   */
+  public async send(
     id: number,
-    ressource: Partial<InvoicesStatic.InvoiceSent>
+    ressource: Partial<InvoicesStatic.InvoiceSend>
   ): Promise<InvoicesStatic.InvoiceSentAnswer> {
     return this.request<InvoicesStatic.InvoiceSentAnswer>(
       "POST",
@@ -28,6 +37,16 @@ export default class Invoices extends BaseCrud<
       undefined,
       ressource
     );
+  }
+
+  /**
+   * @deprecated Use `send` instead.
+   */
+  public async sent(
+    id: number,
+    ressource: Partial<InvoicesStatic.InvoiceSend>
+  ): Promise<InvoicesStatic.InvoiceSentAnswer> {
+    return this.send(id, ressource);
   }
 
   public async cancel(id: number): Promise<InvoicesStatic.InvoiceCancelled> {
@@ -53,6 +72,36 @@ export default class Invoices extends BaseCrud<
       "GET",
       `${this.apiEndpoint}/${id}/pdf`,
       logopaper !== undefined ? { logopaper } : undefined
+    );
+  }
+
+  /**
+   * Issue an invoice. The invoice must be in the draft status.
+   *
+   * @param {number} id
+   * @returns {Promise<InvoicesStatic.InvoiceIssued>}
+   * @memberof Invoices
+   */
+  public async issue(id: number): Promise<InvoicesStatic.InvoiceIssued> {
+    return this.request<InvoicesStatic.InvoiceIssued>(
+      "POST",
+      `${this.apiEndpoint}/${id}/issue`
+    );
+  }
+
+  /**
+   * Mark an invoice as sent.
+   *
+   * @param {number} id
+   * @returns {Promise<InvoicesStatic.InvoiceSentAnswer>}
+   * @memberof Invoices
+   */
+  public async markAsSent(
+    id: number
+  ): Promise<InvoicesStatic.InvoiceSentAnswer> {
+    return this.request<InvoicesStatic.InvoiceSentAnswer>(
+      "POST",
+      `${this.apiEndpoint}/${id}/mark_as_sent`
     );
   }
 

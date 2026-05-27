@@ -31,24 +31,52 @@ describe("Invoices", () => {
     expect(invoices.apiEndpoint).toBe("/2.0/kb_invoice");
   });
 
-  describe("sent", () => {
+  describe("send", () => {
     it("Should call request with POST and correct path", async () => {
       const invoices = new Invoices(chance.string());
       const id = chance.integer();
-      const sentData: Partial<InvoicesStatic.InvoiceSent> = {
+      const sendData: Partial<InvoicesStatic.InvoiceSend> = {
         recipient_email: chance.email(),
         subject: chance.string(),
         message: chance.string(),
         mark_as_open: true,
       };
 
-      await invoices.sent(id, sentData);
+      await invoices.send(id, sendData);
 
       expect(requestSpy).toHaveBeenCalledWith(
         "POST",
         `/2.0/kb_invoice/${id}/send`,
         undefined,
-        sentData
+        sendData
+      );
+    });
+  });
+
+  describe("issue", () => {
+    it("Should call request with POST and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.issue(id);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/2.0/kb_invoice/${id}/issue`
+      );
+    });
+  });
+
+  describe("markAsSent", () => {
+    it("Should call request with POST and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.markAsSent(id);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "POST",
+        `/2.0/kb_invoice/${id}/mark_as_sent`
       );
     });
   });
