@@ -81,6 +81,49 @@ describe("Invoices", () => {
     });
   });
 
+  describe("showPdf", () => {
+    beforeEach(() => {
+      requestSpy.mockResolvedValue({ content: "" });
+    });
+
+    it("Should call request with GET and correct path", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.showPdf(id);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        `/2.0/kb_invoice/${id}/pdf`,
+        undefined
+      );
+    });
+
+    it("Should pass logopaper option when provided", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+
+      await invoices.showPdf(id, 0);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "GET",
+        `/2.0/kb_invoice/${id}/pdf`,
+        { logopaper: 0 }
+      );
+    });
+
+    it("Should decode the base64 content into a Buffer", async () => {
+      const invoices = new Invoices(chance.string());
+      const id = chance.integer();
+      const base64 = "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+      requestSpy.mockResolvedValueOnce({ content: base64 });
+
+      const result = await invoices.showPdf(id);
+
+      expect(result.content).toEqual(Buffer.from(base64, "base64"));
+    });
+  });
+
   describe("revertIssue", () => {
     it("Should call request with POST and correct path", async () => {
       const invoices = new Invoices(chance.string());

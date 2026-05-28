@@ -3,7 +3,7 @@ export namespace BaseStatic {
     name: string;
     size: number;
     mime: string;
-    content: string;
+    content: Buffer;
   }
 
   export type SearchCriteria =
