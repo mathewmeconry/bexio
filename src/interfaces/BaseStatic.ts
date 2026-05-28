@@ -3,12 +3,8 @@ export namespace BaseStatic {
     name: string;
     size: number;
     mime: string;
-    content: string;
-  }
-
-  export type BufferPdfResponse = Omit<PdfResponse, "content"> & {
     content: Buffer;
-  };
+  }
 
   export type SearchCriteria =
     | "="

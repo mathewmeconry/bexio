@@ -61,14 +61,16 @@ export default class Invoices extends BaseCrud<
    *
    * @param {number} id
    * @param {0 | 1} [logopaper] Whether the PDF should be generated using the letterhead, or not.
-   * @returns {Promise<BaseStatic.BufferPdfResponse>}
+   * @returns {Promise<BaseStatic.PdfResponse>}
    * @memberof Invoices
    */
   public async showPdf(
     id: number,
     logopaper?: 0 | 1
-  ): Promise<BaseStatic.BufferPdfResponse> {
-    const response = await this.request<BaseStatic.PdfResponse>(
+  ): Promise<BaseStatic.PdfResponse> {
+    const response = await this.request<
+      Omit<BaseStatic.PdfResponse, "content"> & { content: string }
+    >(
       "GET",
       `${this.apiEndpoint}/${id}/pdf`,
       logopaper !== undefined ? { logopaper } : undefined
