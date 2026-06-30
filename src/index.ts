@@ -53,7 +53,7 @@ export * from "./interfaces/AccountsStatic";
 export * from "./interfaces/ManualEntriesStatic";
 export * from "./interfaces/TaxesStatic";
 
-export default class Bexio {
+export class Bexio {
   private token: string;
 
   // Resources
@@ -133,3 +133,5 @@ export default class Bexio {
     this.taxes = new Taxes(this.token);
   }
 }
+
+export default Bexio;

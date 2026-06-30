@@ -1,5 +1,6 @@
 src
 tsconfig.json
+tsup.config.ts
 yarn.lock
 .vscode/
 lib/test.js

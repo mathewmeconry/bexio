@@ -2,8 +2,23 @@
   "name": "bexio",
   "version": "3.8.1",
   "description": "NPM Package for the api of bexio.com",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.mts",
+        "default": "./lib/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "keywords": [
     "bexio",
     "bexioAPI",
@@ -13,7 +28,7 @@
   "scripts": {
     "test": "jest",
     "report": "./node_modules/.bin/codecov",
-    "build": "./node_modules/.bin/tsc",
+    "build": "tsup",
     "prepare": "npm run build",
     "version": "git add -A src",
     "postversion": "git push && git push --tags"
@@ -45,6 +60,7 @@
     "jest-html-reporters": "^3.1.7",
     "jest-junit": "^16.0.0",
     "ts-jest": "^29.4.5",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
   "jest": {
