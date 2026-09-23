@@ -50,6 +50,7 @@ export namespace InvoicesStatic {
     title?: string | null;
     contact_id: number;
     contact_sub_id?: number | null;
+    contact_address_manual?: string | null;
     user_id: number;
     pr_project_id?: number | null;
     logopaper_id?: number;
@@ -73,6 +74,7 @@ export namespace InvoicesStatic {
     title?: string | null;
     contact_id?: number;
     contact_sub_id?: number | null;
+    contact_address_manual?: string | null;
     user_id?: number;
     pr_project_id?: number | null;
     logopaper_id?: number;
