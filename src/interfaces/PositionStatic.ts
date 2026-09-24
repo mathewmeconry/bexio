@@ -1,3 +1,5 @@
+import { PositionsStatic } from "./PositionsStatic";
+
 export namespace PositionStatic {
     export interface PositionCreate {
         amount?: string,
@@ -16,7 +18,7 @@ export namespace PositionStatic {
     }
     export interface Position {
         id: number,
-        type: string,
+        type: PositionsStatic.PositionType,
         amount: string,
         unit_id: number,
         account_id: number,
@@ -25,12 +27,12 @@ export namespace PositionStatic {
         tax_value: string,
         text: string,
         unit_price: string,
-        discount_in_percent: null,
+        discount_in_percent: string | null,
         position_total: string,
         pos: string,
         internal_pos: number,
-        parent_id: null,
-        is_optional: false
+        parent_id: number | null,
+        is_optional: boolean
 
     }
 }

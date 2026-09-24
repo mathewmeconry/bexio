@@ -298,4 +298,108 @@ describe("Invoices", () => {
       );
     });
   });
+
+  describe("deleteDefaultPosition", () => {
+    it("Should call request with DELETE and correct path", async () => {
+      const success = chance.bool();
+      requestSpy.mockResolvedValueOnce({ success });
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const positionId = chance.integer();
+
+      const result = await invoices.deleteDefaultPosition(invoiceId, positionId);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "DELETE",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_custom/${positionId}`
+      );
+      expect(result).toBe(success);
+    });
+  });
+
+  describe("deleteItemPosition", () => {
+    it("Should call request with DELETE and correct path", async () => {
+      const success = chance.bool();
+      requestSpy.mockResolvedValueOnce({ success });
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const positionId = chance.integer();
+
+      const result = await invoices.deleteItemPosition(invoiceId, positionId);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "DELETE",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_article/${positionId}`
+      );
+      expect(result).toBe(success);
+    });
+  });
+
+  describe("deleteTextPosition", () => {
+    it("Should call request with DELETE and correct path", async () => {
+      const success = chance.bool();
+      requestSpy.mockResolvedValueOnce({ success });
+      const invoices = new Invoices(chance.string());
+      const invoiceId = chance.integer();
+      const positionId = chance.integer();
+
+      const result = await invoices.deleteTextPosition(invoiceId, positionId);
+
+      expect(requestSpy).toHaveBeenCalledWith(
+        "DELETE",
+        `/2.0/kb_invoice/${invoiceId}/kb_position_text/${positionId}`
+      );
+      expect(result).toBe(success);
+    });
+  });
+
+  describe("deletePosition", () => {
+    const endpoints: Record<PositionsStatic.PositionType, string> = {
+      KbPositionCustom: "kb_position_custom",
+      KbPositionArticle: "kb_position_article",
+      KbPositionText: "kb_position_text",
+      KbPositionSubtotal: "kb_position_subtotal",
+      KbPositionPagebreak: "kb_position_pagebreak",
+      KbPositionDiscount: "kb_position_discount",
+      KbPositionSubposition: "kb_position_subposition",
+    };
+    const cases = Object.entries(endpoints) as Array<
+      [PositionsStatic.PositionType, string]
+    >;
+
+    it.each(cases)(
+      "Should call request with DELETE and correct path for %s",
+      async (type, endpoint) => {
+        const success = chance.bool();
+        requestSpy.mockResolvedValueOnce({ success });
+        const invoices = new Invoices(chance.string());
+        const invoiceId = chance.integer();
+        const positionId = chance.integer();
+
+        const result = await invoices.deletePosition(invoiceId, {
+          id: positionId,
+          type,
+        });
+
+        expect(requestSpy).toHaveBeenCalledWith(
+          "DELETE",
+          `/2.0/kb_invoice/${invoiceId}/${endpoint}/${positionId}`
+        );
+        expect(result).toBe(success);
+      }
+    );
+
+    it("Should reject an unknown position type without calling the api", async () => {
+      const invoices = new Invoices(chance.string());
+
+      await expect(
+        invoices.deletePosition(chance.integer(), {
+          id: chance.integer(),
+          // @ts-expect-error unknown types are rejected at runtime for untyped callers
+          type: "KbPositionUnknown",
+        })
+      ).rejects.toThrow('Unknown position type "KbPositionUnknown"');
+      expect(requestSpy).not.toHaveBeenCalled();
+    });
+  });
 });

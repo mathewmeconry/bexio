@@ -3,9 +3,11 @@ import BaseCrud from "./BaseCrud";
 import { BaseStatic } from "../interfaces/BaseStatic";
 import { InvoicesStatic } from "../interfaces/InvoicesStatic";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
+import { PositionStatic } from "../interfaces/PositionStatic";
 import DefaultPositions from "./DefaultPositions";
 import ItemPositions from "./ItemPositions";
 import TextPositions from "./TextPositions";
+import Positions from "./Positions";
 
 export default class Invoices extends BaseCrud<
   InvoicesStatic.Invoice,
@@ -248,5 +250,76 @@ export default class Invoices extends BaseCrud<
     return new TextPositions(this.apiToken, "kb_invoice", invoiceId).create(
       position
     );
+  }
+
+  /**
+   * Delete a default position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {number} positionId
+   * @returns {Promise<boolean>}
+   * @memberof Invoices
+   */
+  public async deleteDefaultPosition(
+    invoiceId: number,
+    positionId: number
+  ): Promise<boolean> {
+    return new DefaultPositions(this.apiToken, "kb_invoice", invoiceId).delete(
+      positionId
+    );
+  }
+
+  /**
+   * Delete an item position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {number} positionId
+   * @returns {Promise<boolean>}
+   * @memberof Invoices
+   */
+  public async deleteItemPosition(
+    invoiceId: number,
+    positionId: number
+  ): Promise<boolean> {
+    return new ItemPositions(this.apiToken, "kb_invoice", invoiceId).delete(
+      positionId
+    );
+  }
+
+  /**
+   * Delete a text position for an invoice
+   *
+   * @param {number} invoiceId
+   * @param {number} positionId
+   * @returns {Promise<boolean>}
+   * @memberof Invoices
+   */
+  public async deleteTextPosition(
+    invoiceId: number,
+    positionId: number
+  ): Promise<boolean> {
+    return new TextPositions(this.apiToken, "kb_invoice", invoiceId).delete(
+      positionId
+    );
+  }
+
+  /**
+   * Delete a position for an invoice, whatever its type
+   *
+   * @param {number} invoiceId
+   * @param {Pick<PositionStatic.Position, "id" | "type">} position
+   * @returns {Promise<boolean>}
+   * @memberof Invoices
+   */
+  public async deletePosition(
+    invoiceId: number,
+    position: Pick<PositionStatic.Position, "id" | "type">
+  ): Promise<boolean> {
+    return new Positions(
+      this.apiToken,
+      "kb_invoice",
+      invoiceId,
+      position.type
+    ).delete(position.id);
   }
 }

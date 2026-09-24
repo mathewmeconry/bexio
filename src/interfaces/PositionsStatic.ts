@@ -1,6 +1,15 @@
 export namespace PositionsStatic {
   export type KbDocumentType = "kb_invoice" | "kb_offer" | "kb_order";
 
+  export type PositionType =
+    | "KbPositionCustom"
+    | "KbPositionArticle"
+    | "KbPositionText"
+    | "KbPositionSubtotal"
+    | "KbPositionPagebreak"
+    | "KbPositionDiscount"
+    | "KbPositionSubposition";
+
   export interface DefaultPositionCreate {
     amount: string;
     amount_reserved: string;

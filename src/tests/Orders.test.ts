@@ -4,12 +4,14 @@ import Chance from "chance";
 import DefaultPositions from "../resources/DefaultPositions";
 import ItemPositions from "../resources/ItemPositions";
 import TextPositions from "../resources/TextPositions";
+import Positions from "../resources/Positions";
 import { PositionsStatic } from "../interfaces/PositionsStatic";
 
 jest.mock("../resources/BaseCrud");
 jest.mock("../resources/DefaultPositions");
 jest.mock("../resources/ItemPositions");
 jest.mock("../resources/TextPositions");
+jest.mock("../resources/Positions");
 
 const seedgenerator = new Chance();
 const seed = seedgenerator.hash();
@@ -146,6 +148,120 @@ describe("Orders", () => {
       new Orders(chance.string()).createTextPosition(orderId, position);
 
       expect(TextPositions.prototype.create).toHaveBeenCalledWith(position);
+    });
+  });
+
+  describe("deleteDefaultPosition", () => {
+    it("Should create a new DefaultPosition object", async () => {
+      const orderId = chance.integer({ min: 0 });
+      new Orders(chance.string()).deleteDefaultPosition(
+        orderId,
+        chance.integer()
+      );
+
+      expect(DefaultPositions).toHaveBeenCalledWith(
+        undefined,
+        "kb_order",
+        orderId
+      );
+    });
+
+    it("Should call delete", async () => {
+      const positionId = chance.integer();
+      new Orders(chance.string()).deleteDefaultPosition(
+        chance.integer({ min: 0 }),
+        positionId
+      );
+
+      expect(DefaultPositions.prototype.delete).toHaveBeenCalledWith(
+        positionId
+      );
+    });
+  });
+
+  describe("deleteItemPosition", () => {
+    it("Should create a new ItemPosition object", async () => {
+      const orderId = chance.integer({ min: 0 });
+      new Orders(chance.string()).deleteItemPosition(orderId, chance.integer());
+
+      expect(ItemPositions).toHaveBeenCalledWith(
+        undefined,
+        "kb_order",
+        orderId
+      );
+    });
+
+    it("Should call delete", async () => {
+      const positionId = chance.integer();
+      new Orders(chance.string()).deleteItemPosition(
+        chance.integer({ min: 0 }),
+        positionId
+      );
+
+      expect(ItemPositions.prototype.delete).toHaveBeenCalledWith(positionId);
+    });
+  });
+
+  describe("deleteTextPosition", () => {
+    it("Should create a new TextPosition object", async () => {
+      const orderId = chance.integer({ min: 0 });
+      new Orders(chance.string()).deleteTextPosition(orderId, chance.integer());
+
+      expect(TextPositions).toHaveBeenCalledWith(
+        undefined,
+        "kb_order",
+        orderId
+      );
+    });
+
+    it("Should call delete", async () => {
+      const positionId = chance.integer();
+      new Orders(chance.string()).deleteTextPosition(
+        chance.integer({ min: 0 }),
+        positionId
+      );
+
+      expect(TextPositions.prototype.delete).toHaveBeenCalledWith(positionId);
+    });
+  });
+
+  describe("deletePosition", () => {
+    const types: Array<PositionsStatic.PositionType> = [
+      "KbPositionCustom",
+      "KbPositionArticle",
+      "KbPositionText",
+      "KbPositionSubtotal",
+      "KbPositionPagebreak",
+      "KbPositionDiscount",
+      "KbPositionSubposition",
+    ];
+
+    it.each(types)(
+      "Should create a new Positions object for %s",
+      async (type) => {
+        const orderId = chance.integer({ min: 0 });
+        new Orders(chance.string()).deletePosition(orderId, {
+          id: chance.integer(),
+          type,
+        });
+
+        expect(Positions).toHaveBeenCalledWith(
+          undefined,
+          "kb_order",
+          orderId,
+          type
+        );
+      }
+    );
+
+    it("Should call delete", async () => {
+      const positionId = chance.integer();
+      new Orders(chance.string()).deletePosition(chance.integer({ min: 0 }), {
+        id: positionId,
+        type: "KbPositionCustom",
+      });
+
+      expect(Positions.prototype.delete).toHaveBeenCalledWith(positionId);
     });
   });
 });
