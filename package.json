@@ -6,6 +6,9 @@
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "sideEffects": false,
+  "files": [
+    "lib"
+  ],
   "exports": {
     ".": {
       "import": {
@@ -27,7 +30,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "report": "./node_modules/.bin/codecov",
+    "report": "codecov",
     "build": "tsup",
     "prepare": "npm run build",
     "version": "git add -A src",
